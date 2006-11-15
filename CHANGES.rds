@@ -1,0 +1,11 @@
+0.9beta21:
+- started changelog (this file)
+- added license notice to README.rds
+- archive extraction commands given in README.rds
+changes proposed by B. Assmann (thank you):
+- corrected PackageInfo.g 	
+- moved source files to lib/ directory
+- set package state to "deposited"
+
+
+

@@ -1,0 +1,184 @@
+% This file was created automatically from ordered_sigs.msk.
+% DO NOT EDIT!
+\Chapter{Ordered Signatures}
+
+In this chapter, we will discuss two methods to calculate ordered
+signatures. The first one can be used for relative difference sets
+with forbidden set, while the second one does only work for ordinary
+difference sets.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Ordered signatures by quotient images}
+
+Let $D\subseteq G$ be a relative difference set with forbidden set
+$N\subseteq G$. Let $U\leq G$ be a normal subgroup such that
+$U\subseteq N$. 
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Ordered signatures using representations}
+
+This chapter contains some methods for ordered signatures in ordinary
+difference sets. Unfortunately, these methods are not as comfortable
+as those for unordered signatures. The reason for this is simply that
+I didn't have any time to tie them together to high-level functions.
+If you need help here, don't hesitate to contact me.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\Section{Definition}
+
+Let $R \subseteq G$ be a (partial) ordinary difference set (for
+definition see "Introduction"). Let $U\leq G$ be a normal subgroup and
+$C=\{g_1,\dots, g_{|G:U|}\}$ be a system of representatives of $G/U$.
+
+As in "The Coset Signature" we may define the coset signature of $R$
+relative to $U$.
+
+Let $U=g_1,\dots,g_{|G:U|}$ be an enumeration of $G/U$. An
+``admissible ordered signature'' for $U$ is a tuple
+$(v_1,\dots,v_{|G:U|})$ such that 
+
+$$
+\matrix{
+\sum v_i=k\cr
+\sum v_i^2=\lambda(|U|-1)+k\cr
+\sum_j v_j v_{ij}=
+	 \lambda(|U|-1)&{\rm for }\   g_i\not\in U}
+$$ 
+
+holds where we index the $v_i$ by elements of $G/U$, so $v_i=v_{g_i}$
+and write $v_{ij}=v_{g_ig_j}$. Observe that the third equation is a
+restriction on the ordering of the tuple $(v_1,\dots,v_{|G:U|})$. If
+$v$ is an admissible ordered signature, then the multiset of $v$ is an
+unordered signature.
+
+Getting ordered admissible signatures from unordered ones can be done
+by taking all permutations of the unordered signature and verifying
+the above equations. Obviously, this method isn't very satisfying
+(nevertheless, the methods for testing unordered signatures from
+section "The Coset Signature" do this to find out if there is an
+ordered signature at all. Except that they stop when they find an
+ordered signature).
+
+For ordinary difference sets in extensions of semidirect products of
+cyclic groups, ordered signatures may be calculated a lot easier (see
+\cite{RoederDiss} for details).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\Section{Methods for calculating ordered signatures}
+
+\>NormalSubgroupsForRep( <groupdata>, <divisor> ) O
+
+Let <groupdata> be the output of `PermutationRepForDiffsetCalculations' and 
+<divisor> an integer. Then `NormalSubgroupsForRep' calculates all  normal 
+subgroups of <groupdata.G> such that the size of the factor group is divisible 
+by <divisor> and the factor group is a semidirect product of cyclic groups.
+
+The output is a record consisting of 
+\beginlist
+ \item{1.} a normal subgroup <.Nsg> of <G>
+ \item{2.} the factor group <.fgrp>:=<G>/<Nsg> 
+ \item{3.} the epimorphism <.epi> from <G> to <.fgrp>
+ \item{4.} a root of unity <.root>
+ \item{5.} a galois automorphism <.alpha>
+ \item{6.+7.} generators of the factor group <G>/<.Nsg> named <.a> and <.b> 
+           such that <.a> is normalized by <.b>.
+ \item{8}  a list <.int2pairtable> such that the $i^{th}$ entry ist the pair 
+           <[m,n]> with that <Glist[i]^epi=a^(m-1)\*b^(n-1)>
+\endlist
+
+<.alpha> and <.root> may be used as input for `OrderedSigs'
+
+
+
+\>OrderedSigs( <coeffSums>, <absSum>, <alpha>, <root> ) O
+
+Let $G$ be group which contains a normal subgroup of index $s$ such that 
+the coset signature for a difference set for this normal subgroup is 
+<coeffSums>. Let $N$ be a normal subgroup of $G$ such that $G/N$ is a 
+semidirect product of cyclic group of orders $s,q$  and 
+$i$ divides the order of $G/N$. 
+
+Then `OrderedSigs(<coeffSums>,<absSum>,<alpha>,<root>)' calculates 
+all ordered signatures for $N$. Here <root> is a primitive $q$-th root 
+of unity and <alpha> is a Galois- automorphism of $CS(q)$ with order 
+dividing $s$. <absSum> is the order of the difference set.
+(i.e. $order=k-\lambda$).
+
+`OrderedSigs' is based on calculations using an $s$-dimensional unitary 
+representation of $G/N$. 
+In this representation a subset of $G$ induces a semi-circular matrix.
+The returned value is a list of lists $s$-tuples
+The entries of the $s$-tuples are coefficients of  numbers in 
+$\Z[<root>]$ such that the semi-circular matrix defined by these numbers
+together with <alpha> meets necessary conditions for matrices induced
+by difference sets.
+To gain the algebraic numbers from the $s$-tuple <tup>, use 
+`List(<tup>,i->CoeffList2CyclotomicList(i,<root>))'
+
+Each $|<coeffSums>|$-tuple returned defines an ordered signature. The ordering
+of $G/N$ is chosen to fit to the data returned by `NormalSubgroupsForRep':
+
+$[a^0,a^1,\dots,a^{q-1}],[a^0b,a^1b,\dots,a^{q-1}b],\dots,[a^0b^{s-1},\dots,a^{q-1}b^{s-1}]$
+
+
+
+So for the calculation of ordered signatures, smaller ordered
+signatures <coeffSums> have to be known. But this is not so bad, as
+small signatures are easy to calculate.
+The following example shows an application.
+
+\begintt
+gap> G:=SmallGroup(273,3);                              
+<pc group of size 273 with 3 generators>
+gap> Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap> CosetSignatures(273,273/3,16);
+[ [ 3, 7, 7 ] ]
+gap> nsgs:=NormalSubgroupsForRep(Gdata,3);           
+[ rec( Nsg := Group([ f2 ]), alpha := ANFAutomorphism( CF(13), 3 ), 
+      root := E(13), fgrp := Group([ f1, <identity> of ..., f2 ]), 
+      epi := [ f1, f2, f3 ] -> [ f1, <identity> of ..., f2 ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 2, 1 ], [ 1, 3 ], 
+...
+          [ 8, 3 ], [ 11, 3 ], [ 5, 2 ], [ 11, 3 ] ] ), 
+  rec( Nsg := Group([ f3 ]), alpha := ANFAutomorphism( CF(7), 2 ), 
+      root := E(7), fgrp := Group([ f1, f2, <identity> of ... ]), 
+      epi := [ f1, f2, f3 ] -> [ f1, f2, <identity> of ... ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 1, 1 ], [ 1, 3 ], 
+...
+          [ 6, 3 ], [ 4, 3 ], [ 4, 2 ], [ 6, 3 ] ] ) ]
+gap> osigs:=OrderedSigs([3,7,7],16,nsgs[2].alpha,nsgs[2].root);
+[ [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 0, 1, 2, 2, 0, 2 ], [ 2, 2, 0, 2, 0, 0, 1 ] ], 
+  [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 1, 2, 2, 0, 2, 0 ], [ 2, 0, 0, 1, 2, 2, 0 ] ], 
+...
+   [ [ 1, 1, 0, 1, 0, 0, 0 ], [ 2, 2, 1, 0, 0, 2, 0 ], [ 2, 1, 0, 0, 2, 0, 2 ] ] ]
+gap> Size(osigs);
+98
+gap> Set(osigs,g->SortedList(Concatenation(g)));
+[ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ] ]
+\endtt
+
+Note that the signature `[3, 7, 7]' can be assumed to be ordered (by
+passing to a suitable translate). So even if we are not interested in
+*ordered* signatures, we have found out that there is only one admissible
+unordered signature for this normal subgroup. To get this result using
+`TestedSignatures' would have taken a *very* long time.
+
+Of course, ordered signatures can also be used directly.
+
+\>OrderedSignatureOfSet( set, normal_data ) O
+
+takes a set <set> of integers (meant to be a partial difference set) and
+a list of records as returned by `NormalSubgroupsForRep'.
+The returned value is a list of lists which is the ordered signature of the
+partial difference set <set> and can be compared to the output of `OrderedSigs'
+
+
+
+\beginexample
+gap> OrderedSignatureOfSet([2,3,4,5],nsgs[2]);  
+[ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0 ] ]
+\endexample

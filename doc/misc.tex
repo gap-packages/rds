@@ -1,0 +1,306 @@
+% This file was created automatically from misc.msk.
+% DO NOT EDIT!
+\Chapter{Some functions for everyday use}
+
+This chapter contains a number of functions that did not fit in
+anywhere else. Some of them might be useful for other people, too, so
+they were included here.
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Groups and actions}
+
+\>OnSubgroups( <subgroup>, <aut> ) F
+
+For a group $G$ and an automorphism <aut> of $G$, 
+`OnSubgroups(<subgroup>,<aut>)' is the image of <subgroup> under <aut>
+
+
+\beginexample
+gap> G:=Group((1,2,3),(2,3));
+Group([ (1,2,3), (2,3) ])
+gap> alpha:=InnerAutomorphism(G,(1,2,3));
+^(1,2,3)
+gap> OnSubgroups(Subgroup(G,[(2,3)]),alpha);
+Group([ (1,3) ])
+\endexample
+
+\>RepsCClassesGivenOrder( <group>, <order> ) O
+
+`RepsCClassesGivenOrder( <group>, <order> )' returns all elements of 
+order <order> up to conjugacy. Note that the representatives are *not*
+always the smallest elements of each conjugacy class.
+
+
+\beginexample
+gap> RepsCClassesGivenOrder(SymmetricGroup(5),2);
+[ (4,5), (2,3)(4,5) ]
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Iterators}
+
+\>CartesianIterator( <tuplelist> ) O
+
+Returns an iterator for `Cartesian(<tuplelist>)'
+
+
+
+\>ConcatenationOfIterators( <iterlist> ) F
+
+`ConcatenationOfIterators(<iterlist>)' returns an iterator which runs 
+through all iterators in <iterlist>. Note that the returned iterator loops 
+over the iterators in <iterlist> *sequentially* beginning with the first 
+one.
+
+
+
+
+\beginexample
+gap> it:=Iterator([1,2,3]);;
+gap> it2:=CartesianIterator([[9,10],[11]]);;
+gap> cit:=ConcatenationOfIterators([it,it2]);;
+gap> repeat
+> Print(NextIterator(cit),",\c");
+> until IsDoneIterator(cit);
+1,2,3,[ 9, 11 ],[ 10, 11 ],
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Lists and Matrices}
+
+\>IsListOfIntegers( <list> ) P
+
+`IsListOfIntegers( <list> )' returns `IsSubset(Integers, <list> )' if <list>
+is a dense list and `false' otherwise.
+
+
+
+\>List2Tuples( <list>, <int> ) O
+
+If `Size( <list> )' is divisible by <int>, `List2Tuples( <list>,<int>)'
+returns a list <list2> of size <int> such that 
+`Concatenation( <list2> )= <list>' and every element of <list2> has the 
+same size.
+
+
+\beginexample
+gap> List2Tuples([1..6],2);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+\endexample
+
+\>MatTimesTransMat( <mat> ) O
+
+does the same as `<mat>*TransposedMat( <mat> )' but uses slightly less 
+space and time for large matrices.
+
+
+
+\>PartitionByFunctionNF( <list>, <f> ) O
+
+`PartitionByFunctionNF( <list>, <f> )' partitions the list <list> 
+according to the values of the function <f> defined on <list>. 
+If <f> returns `fail' for some element of <list>, 
+`PartitionByFunctionNF( <list>, <f> )' enters a break loop. 
+Leaving the break loop with 'return;' is safe because 
+`PartitionByFunctionNF' treats `fail' as all other results of <f>.
+
+
+
+\>PartitionByFunction( <list>, <f> ) O
+
+`PartitionByFunction( <list>, <f> )' partitions the list <list> 
+according to the values of the function <f> defined on <list>. 
+All elements, for which <f> returns `fail' are omitted, so 
+`PartitionByFunction' does not necessarily return a partition.
+If `InfoLevel(InfoRDS)'\index{InfoRDS@{\tt InfoRDS}} is at least 2, the number of 
+elements for which <f> returns `fail' is shown 
+(if `fail' is returned at all).
+
+
+\begintt
+
+gap> PartitionByFunctionNF([-1..5],x->x^2);
+[ [ 0 ], [ -1, 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+gap> test:=function(x) 
+> if x>0 then return Sqrt(x);
+>  else return fail;
+> fi;
+> end;
+function( x ) ... end
+gap> PartitionByFunction([-1..5],test);  
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap> SetInfoLevel(InfoRDS,2);
+gap> PartitionByFunction([-1..5],test);  
+#I  -2-
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap> PartitionByFunctionNF([-1..5],test);
+Error, function returned <fail> called from
+...
+brk> return;
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ], [ -1, 0 ] ]
+\endtt
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Cyclotomic numbers}
+
+\>IsRootOfUnity( <cyc> ) P
+
+`IsRootOfUnity' tests if a given cyclotomic is actually a root of unity.
+
+
+
+\>CoeffList2CyclotomicList( <list>, <root> ) O
+
+`CoeffList2CyclogomicList( <list>, <root> )' takes a list of integers 
+<list> and a root of unity <root> and returns a list <list2>, where 
+<list2[i]=list[i]\* root^(i-1)>.
+
+
+
+\>AbssquareInCyclotomics( <list>, <root> ) O
+
+For a list of integers and a root of unity, 
+`AbssquareInCyclotomics( <list>, <root> )' returns 
+the modulus of `Sum(CoeffList2CyclotomicList( <list>, <root> ))'.
+
+
+
+\>CycsGivenCoeffSum( <sum>, <root> ) O
+
+`CycsGivenCoeffSum( <sum>, <root> )' returns all elements of $\Z[ root ]$
+such that the coefficient sum is <sum> and all coefficients are 
+non-negative.
+The returned list has the following form:
+The cyclotomic numbers are represented by coefficients. 
+`CoeffList2CyclotomicList' can be used to get the 
+algebraic number represented by <list>.
+The list is partitioned into equivalence classes of elements having the 
+same modulus.
+For each class the modulus is returned.
+This means that `CycsGivenCoeffSum' returns a list of pairs where the first
+entry of each pair is the square of the modulus of an element of the 
+second entry. And the second entry is a list of coefficient lists of 
+cyclotomics in $\Z[ <root> ]$ having the coefficient sum <sum>. 
+
+
+\beginexample
+gap> CycsGivenCoeffSum(3,E(3));
+[ [ 0, [ [ 1, 1, 1 ] ] ], 
+  [ 3, [ [ 0, 1, 2 ], [ 0, 2, 1 ], [ 1, 0, 2 ], [ 1, 2, 0 ], [ 2, 0, 1 ], 
+          [ 2, 1, 0 ] ] ], [ 9, [ [ 0, 0, 3 ], [ 0, 3, 0 ], [ 3, 0, 0 ] ] ] ]
+gap> CycsGivenCoeffSum(2,E(2));
+[ [ 0, [ [ 1, 1 ] ] ], [ 4, [ [ 0, 2 ], [ 2, 0 ] ] ] ]
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Filters and Categories}
+
+The following was originally posted at the \GAP\ forum by Thomas
+Breuer \cite{BreuersAnswer}. 
+
+Each filter in \GAP\ is either a simple filter or a meet of filters.
+For example, `IsInt' and `IsPosRat' are simple filters,
+and `IsPosInt' is defined as their meet `IsInt and IsPosRat'.
+
+Each *simple filter* is of one of the following kinds.
+
+
+1. property:
+   Such a filter is an operation, the filter value can be computed.
+   The (unary) methods of this operation must return `true' or `false',
+   and the return value is stored in the argument,
+   except if the argument is of a basic data type such as cyclotomic
+   (including rationals and integers), finite field element, permutation,
+   or internally represented list --the latter with a few exceptions.
+   Examples of properties are `IsFinite', `IsAbelian', `IsSSortedList'.
+
+2. attribute tester:
+   Such a filter is associated to an operation that has been created
+   via `DeclareAttribute',
+   in the sense that the value is `true' if and only if a return value
+   for (a unary method of) this operation is stored in the argument.
+   Currently, attribute values are stored in objects in the filter
+   `IsAttributeStoringRep'.
+   Examples of attribute testers are `HasSize', `HasCentre',
+   `HasDerivedSubgroup'.
+
+2.' property tester:
+   Such a filter is similar to an attribute tester,
+   but the associated operation is a property.
+   So property testers can return `true' also if the argument is not in
+   the filter `IsAttributeStoringRep'.
+   Examples of property testers are `HasIsFinite', `HasIsAbelian',
+   `HasIsSSortedList'.
+
+3. category or representation:
+   These filters are not associated to operations, their values cannot
+   be computed but are set upon creation of an object and should not be
+   changed later, such that for a filter of this kind, one can rely on
+   the fact that if the value is `true' then it was `true' already when
+   the object in question was created.
+
+   The distinction between representation and category is intended to
+   express dependency on or independence of the way how the object is
+   stored internally.
+   For example, `IsPositionalObjectRep', `IsComponentObjectRep', and
+   `IsInternalRep' are filters of the representation kind;
+   the idea is that such filters are used in low level methods,
+   and that higher level methods can be implemented without referring
+   to these filters.
+
+   Examples of categories are `IsInt', `IsRat', `IsPerm', `IsFFE',
+   and filters expressing algebraic structures,
+   such as `IsMagma', `IsMagmaWithOne', `IsAdditiveMagma'.
+   When one calls such a filter, one can be sure that no computation is
+   triggered.
+   For example, whenever a quotient of two integers is formed, the result
+   is clearly in the filter `IsRat', but the system also stores the value
+   of `IsInt', i.e., \GAP\ does not support ``unevaluated rationals'' for
+   which the `IsInt' value is computed on demand and then stored.
+
+4. other filters:
+   Some filters do not belong to the above kinds,
+   they are not associated to operations but they are intended to be
+   set (or even reset) by the user or by functions also after the creation
+   of objects.
+   Examples are `IsQuickPositionList', `CanEasilyTestMembership',
+   `IsHandledByNiceBasis'.
+
+Each *meet of filters* can involve computable simple filters (properties,
+attribute and property testers) and not computable simple filters
+(categories, representations, other filters).
+When one calls a meet of two filters then the two filters from which
+the meet was formed are evaluated (if necessary).
+So a meet of filters is computable only if at least one computable simple
+filter is involved.
+
+\>IsComputableFilter( <filter> ) F
+
+
+
+
+'IsComputableFilter(<filter>)' returns <true> if a the filter <filter>
+is computable. Filters for which 'IsComputableFilter' returns <false>
+may be used in 'DeclareOperation'.
+
+\beginexample
+    gap> IsComputableFilter( IsFinite );
+    true
+    gap> IsComputableFilter( HasSize );
+    true
+    gap> IsComputableFilter( HasIsFinite );
+    true
+    gap> IsComputableFilter( IsPositionalObjectRep );
+    false
+    gap> IsComputableFilter( IsInt );
+    false
+    gap> IsComputableFilter( IsQuickPositionList );
+    false
+    gap> IsComputableFilter( IsInt and IsPosRat );
+    false
+    gap> IsComputableFilter( IsMagma );
+    false
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%E  misc.msk       ... end of file.

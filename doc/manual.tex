@@ -1,0 +1,75 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%W  manual.tex                RDS documentation             Marc Roeder
+%%
+%H $Id$
+%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input ./gapmacro
+\input ./version
+%
+\Package{RDS}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  BeginningOfBook . . . . . . . . . . . . . . . . . . .  start the book
+%%
+\BeginningOfBook{RDS}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  TitlePage . . . . . . . . . . . . . . . . . . . . . . nice title page
+%%
+\TitlePage{
+  \centerline{\titlefont RDS}\medskip
+  \centerline{\titlefont ---}\medskip
+  \centerline{\titlefont A GAP4 Package}\medskip
+  \centerline{\titlefont for Relative Difference Sets}\bigskip\bigskip
+  \centerline{\secfont Version \RDSversion}\vfill
+  \centerline{\secfont by}\vfill
+  \centerline{\secfont Marc R{\accent127 o}der}\medskip
+  \centerline{Fachbereich Mathematik, TU Kaiserslautern}\medskip
+  \centerline{\Mailto{roeder@mathematik.uni-kl.de}}
+  \centerline{\Mailto{marc_roeder@web.de}}\vfill
+  \centerline{\secfont{\Month} \Year}
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  TableOfContents . . . . . . . . . . . .  generate a table of contents
+%%
+\TableOfContents
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  FrontMatter 
+%%
+\FrontMatter
+\immediate\write\citeout{\bs bibdata{manual}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  Chapters 
+%%
+\Chapters
+\Input{about}
+\Input{jumpstart}
+\Input{startsets}
+\Input{sigs}
+\Input{example}
+\Input{orderedsigs}
+\Input{iso}
+\Input{misc}
+%
+\Bibliography
+\Index
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%F  EndOfBook . . . . . . . . . . . . . . . . . . . . . . . . . that's it
+%%
+\EndOfBook
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%E manual.tex      .... END
