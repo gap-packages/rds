@@ -11,7 +11,11 @@ ReadPackage( "RDS", "lib/startsets.gi");
 ReadPackage( "RDS", "lib/misc.gi" );
 
 ## brute force methods:
-ReadPackage( "RDS", "lib/force.gi");
+ReadPackage( "RDS", "lib/AllDiffsets.gi");
+ReadPackage( "RDS", "lib/OneDiffset.gi");
+
+##Generating projective planes as BlockDesigns
+ReadPackage( "RDS", "lib/designs.gi");
 
 ## methods to determine isomophism class of projective plane
 ReadPackage( "RDS", "lib/plane_isomorphisms.gi");

@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -24,6 +24,160 @@
 ##
 Revision.("rds/lib/lazy_gi"):=
 	"@(#)$Id$";
+#############################################################################
+##
+#O IsDiffset(<diffset>,[<forbidden>],<Gdata>,[<lambda>])
+##
+InstallMethod(IsDiffset,[IsDenseList,IsRecord],
+        function(diffset,Gdata)
+    return IsDiffset(diffset,[],Gdata,1);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsRecord,IsPosInt],
+        function(diffset,Gdata,lambda)
+    return IsDiffset(diffset,[],Gdata,lambda);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsDenseList,IsRecord],
+        function(diffset,forbidden,Gdata)
+    return IsDiffset(diffset,forbidden,Gdata,1);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsDenseList,IsRecord,IsPosInt],
+        function(diffset,forbidden,Gdata,lambda)
+    local   pres;
+    if not IsSubset([1..Size(Gdata.Glist)],Union(forbidden,diffset))
+       then
+       Error("<forbidden> and <diffset> must consist of integers less than the group size"); 
+    fi;
+    pres:=Collected(AllPresentables(diffset,Gdata));
+    if Set(pres,i->i[1])=Difference([2..Size(Gdata.Glist)],forbidden) 
+       and Set(pres,i->i[2])=[lambda]
+       then
+        return true;
+    else
+        return false;
+    fi;
+end);
+
+#############################################################################
+##
+#O IsPartialDiffset(<diffset>,[<forbidden>],<Gdata>,[<lambda>])
+##
+InstallMethod(IsPartialDiffset,[IsDenseList,IsRecord],
+        function(diffset,Gdata)
+    return IsPartialDiffset(diffset,[],Gdata,1);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsRecord,IsPosInt],
+        function(diffset,Gdata,lambda)
+    return IsPartialDiffset(diffset,[],Gdata,lambda);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsDenseList,IsRecord],
+        function(diffset,forbidden,Gdata)
+    return IsPartialDiffset(diffset,forbidden,Gdata,1);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsDenseList,IsRecord,IsPosInt],
+        function(diffset,forbidden,Gdata,lambda)
+    local   pres;
+    if not IsSubset([1..Size(Gdata.Glist)],Union(forbidden,diffset))
+       then
+       Error("<forbidden> and <diffset> must consist of integers less than the group size"); 
+    fi;
+    pres:=Collected(AllPresentables(diffset,Gdata));
+    if IsSubset(Difference([2..Size(Gdata.Glist)],forbidden),Set(pres,i->i[1])) 
+       and Set(pres,i->i[2])<=[lambda]
+       then
+        return true;
+    else
+        return false;
+    fi;
+end);
+
+
+#############################################################################
+##
+#O IsDiffset(<diffset>,[<forbidden>],<group>,[<lambda>])
+##
+InstallMethod(IsDiffset,[IsDenseList,IsGroup],
+        function(diffset,group)
+    return IsDiffset(diffset,[],group,1);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsGroup,IsPosInt],
+        function(diffset,group,lambda)
+    return IsDiffset(diffset,[],group,lambda);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsDenseList,IsGroup],
+        function(diffset,forbidden,group)
+    return IsDiffset(diffset,forbidden,group,1);
+end);
+
+InstallMethod(IsDiffset,[IsDenseList,IsDenseList,IsGroup,IsPosInt],
+        function(diffset,forbidden,group,lambda)
+    local   iso,  Gdata;
+    if not (IsSubset(group,forbidden) and IsSubset(group,diffset))
+       then
+        Error("<forbidden> and <diffset> must be contained in <group>");
+    fi;
+    if Set(group)[1]<>One(group)
+       then
+        iso:=IsomorphismPermGroup(group);
+    else
+        iso:=IdentityMapping(group);
+    fi;
+    Gdata:=PermutationRepForDiffsetCalculations(Image(iso));
+    return IsDiffset(GroupList2PermList(Image(iso,diffset),Gdata),
+                   Set(GroupList2PermList(Image(iso,forbidden),Gdata)),
+                   Gdata,
+                   lambda);
+end);
+
+
+
+#############################################################################
+##
+#O IsPartialDiffset(<diffset>,[<forbidden>],<group>,[<lambda>])
+##
+InstallMethod(IsPartialDiffset,[IsDenseList,IsGroup],
+        function(diffset,group)
+    return IsPartialDiffset(diffset,[],group,1);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsGroup,IsPosInt],
+        function(diffset,group,lambda)
+    return IsPartialDiffset(diffset,[],group,lambda);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsDenseList,IsGroup],
+        function(diffset,forbidden,group)
+    return IsPartialDiffset(diffset,forbidden,group,1);
+end);
+
+InstallMethod(IsPartialDiffset,[IsDenseList,IsDenseList,IsGroup,IsPosInt],
+        function(diffset,forbidden,group,lambda)
+    local   iso,  Gdata;
+    if not (IsSubset(group,forbidden) and IsSubset(group,diffset))
+       then
+        Error("<forbidden> and <diffset> must be contained in <group>");
+    fi;
+    if Set(group)[1]<>One(group)
+       then
+        iso:=IsomorphismPermGroup(group);
+    else
+        iso:=IdentityMapping(group);
+    fi;
+    Gdata:=PermutationRepForDiffsetCalculations(Image(iso));
+    return IsPartialDiffset(GroupList2PermList(Image(iso,diffset),Gdata),
+                   Set(GroupList2PermList(Image(iso,forbidden),Gdata)),
+                   Gdata,
+                   lambda);
+end);
+
+
 #############################################################################
 ##
 #F StartsetsInCoset(<ssets>,<coset>,<forbiddenSet>,<aim>,<autlist>,<sigdat>,<data>,<lambda>)

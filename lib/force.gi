@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -26,7 +26,7 @@ Revision.("rds/lib/force_gi"):=
 	"@(#)$Id$";
 #############################################################################
 ##
-#O  AllDiffsets(<diffset>,<completions>,<aim>,<forbidden>,<Gdata>,lambda)  calculates ordinary difference sets containing the partial difference set <diffset>.
+#O  AllDiffsets(<partial>,<completions>,<aim>,<forbidden>,<Gdata>,<lambda>)  calculates ordinary difference sets containing the partial difference set <partial>.
 ##
 InstallMethod(AllDiffsets,
         [IsDenseList,IsDenseList,IsInt,IsDenseList,IsRecord,IsPosInt],
@@ -158,6 +158,292 @@ InstallMethod(AllDiffsets,
     fi;
     return founddiffsets;
 end);
+
+
+
+#############################################################################
+##
+#O AllDiffsets(<group>)
+#O AllDiffsets(<Gdata>)
+##
+InstallMethod(AllDiffsets,[IsGroup],
+        function(group)
+    local   Gdata;
+    Gdata:=PermutationRepForDiffsetCalculations(group);
+    return AllDiffsets([],[1],Gdata,1);
+end);
+
+InstallMethod(AllDiffsets,[IsRecord],
+        function(Gdata)
+    return AllDiffsets([],[1],Gdata,1);
+end);
+
+#############################################################################
+##
+#O AllDiffsets(<start>,<group>)
+#O AllDiffsets(<start>,<Gdata>)
+##
+InstallMethod(AllDiffsets,[IsDenseList,IsGroup],
+        function(start,group)
+    local   Gdata;
+    Gdata:=PermutationRepForDiffsetCalculations(group);    
+    return AllDiffsets(GroupList2PermList(start,Gdata),
+                   []
+                   Gdata,
+                   1);
+end);
+InstallMethod(AllDiffsets,[IsDenseList,IsRecord,IsInt],
+        function(start,Gdata,lambda)
+    return AllDiffsets(start,[],Gdata,1);
+end);
+
+
+#############################################################################
+##
+#O AllDiffsets(<start>,<group>,<lambda>)
+#O AllDiffsets(<start>,<Gdata>,<lambda>)
+##
+InstallMethod(AllDiffsets,[IsDenseList,IsGroup,IsInt],
+        function(start,group,lambda)
+    local   Gdata;
+    Gdata:=PermutationRepForDiffsetCalculations(group);    
+    return AllDiffsets(GroupList2PermList(start,Gdata),
+                   []
+                   Gdata,
+                   lambda);
+end);
+InstallMethod(AllDiffsets,[IsDenseList,IsRecord,IsInt],
+        function(start,Gdata,lambda)
+    return AllDiffsets(start,[],Gdata,lambda);
+end);
+
+
+#############################################################################
+##
+#O AllDiffsets(<start>,<forbidden>,<group>)
+#O AllDiffsets(<start>,<forbidden>,<Gdata>)
+#O AllDiffsets(<start>,<forbidden>,<group>,<lambda>)
+#O AllDiffsets(<start>,<forbidden>,<Gdata>,<lambda>)
+##
+InstallMethod(AllDiffsets,[IsDenseList,IsDenseList,IsGroup],
+        function(start,forbidden,group)
+    return AllDiffsets(star,forbidden,group,1);
+end);
+InstallMethod(AllDiffsets,[IsDenseList,IsDenseList,IsGroup,IsInt],
+        function(start,forbidden,group,lambda)
+    local   Gdata;
+    Gdata:=PermutationRepForDiffsetCalculations(group);    
+    return AllDiffsets(GroupList2PermList(start,Gdata),
+                   GroupList2PermList(forbidden,Gdata),
+                   Gdata,
+                   lambda);
+end);
+
+InstallMethod(AllDiffsets,[IsDenseList,IsDenseList,IsRecord],
+        function(start,forbidden,Gdata)
+    return AllDiffsets(star,forbidden,Gdata,1);
+end);
+
+InstallMethod(AllDiffsets,[IsDenseList,IsDenseList,IsRecord,IsInt],
+        function(start,forbidden,Gdata,lambda)
+    local   aim;
+    if not 1 in forbidden
+       then
+        Add(forbidden, 1);
+    fi;
+    aim:=Sqrt(lambda*(Size(group)-Size(Set(forbidden)))+1/4)-1/2;
+    if not IsInt(aim)
+       then
+        Info(InfoRDS,1,"group order of the wrong form");
+        return [];
+    else
+        return AllDiffsets([],aim, forbidden,Glist,lambda);
+    fi;
+end);
+
+
+
+#############################################################################
+##
+#O AllDiffsets(<start>, <aim>, <forbidden>, <group>)
+#O AllDiffsets(<start>, <aim>, <forbidden>, <Gdata>)
+#O AllDiffsets(<start>, <aim>, <forbidden>, <group>, <lambda>)
+#O AllDiffsets(<start>, <aim>, <forbidden>, <Gdata>, <lambda>)
+##
+InstallMethod(AllDiffsets,
+        [IsDenseList,IsInt,IsDenseList,IsGroup],
+        function(start,aim,forbidden,group)
+    return AllDiffsets(start,aim,forbidden,group,1);
+end);
+InstallMethod(AllDiffsets,[IsDenseList,IsInt,IsDenseList,IsRecord],
+        function(start,aim,forbidden,Gdata)
+    return AllDiffsets(start,aim,forbidden,Gdata,1);
+end);
+
+InstallMethod(AllDiffsets,
+        [IsDenseList,IsInt,IsDenseList,IsGroup,IsInt],
+        function(start,aim,forbidden,group,lamdba)
+    local   Gdata;
+    Gdata:=PermutationRepForDiffsetCalculations(group);
+    return AllDiffsets(GroupList2PermList(start,Gdata),
+                   aim,
+                   Set(GroupList2PermList(forbidden)),
+                   Gdata,
+                   lambda);
+end);
+
+InstallMethod(AllDiffsets,[IsDenseList,IsInt,IsDenseList,IsRecord,IsInt],
+        function(start,aim,forbidden,Gdata,lambda)
+    local   completions;
+    if not 1 in forbidden
+       then
+        Add(forbidden, 1);
+    fi;
+    if aim>Sqrt(lambda*(Size(group)-Size(Set(forbidden)))+1/4)-1/2
+       then
+        Info(InfoRDS,1,"<aim> too large. No difference sets");
+        return [];
+    fi;
+    completions:=RemainingCompletionsNoSort(start,[1..Size(Gdata.Glist)],forbidden,Gdata,lambda);
+    return AllDiffsets(start,completions,aim,forbidden,Gdata,lambda);
+end);
+
+
+
+#############################################################################
+## Here are the NoSort versions:
+#############################################################################
+
+
+
+#############################################################################
+##
+#O AllDiffsetsNoSort(<start>,<aim>,[<forbidden>],<group>,[<lambda>])
+#O AllDiffsetsNoSort(<start>,<aim>,[<forbidden>],<Gdata>,[<lambda>])
+##
+#############################################################################
+## first (<start>,<aim>,G/Gdata,[<lambda>]):
+##
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsGroup],
+        function(start,aim,group)
+    return AllDiffsetsNoSort(start,aim,[],group,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsRecord],
+        function(start,aim,Gdata)
+    return AllDiffsetsNoSort(start,aim,[],Gdata,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsGroup,IsInt],
+        function(start,aim,group,lambda)
+    return AllDiffsetsNoSort(start,aim,[],group,lambda);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsRecord,IsInt],
+        function(start,aim,Gdata,lambda)
+    return AllDiffsetsNoSort(start,aim,[],Gdata,lambda);
+end);
+
+#############################################################################
+## now (<start>,<aim>,<forbidden>,G/Gdata,[<lambda>])
+##
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsDenseList,IsGroup],
+        function(start,aim,forbidden,group)
+    return AllDiffsetsNoSort(start,aim,forbidden,group,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsDenseList,IsRecord],
+        function(start,aim,forbidden,Gdata)
+    return AllDiffsetsNoSort(start,aim,forbidden,Gdata,1);
+end);
+
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsDenseList,IsGroup,IsInt],
+        function(start,aim,forbidden,group,lambda)
+    local   Gdata,  completions;
+    Gdata:=PermutationRepForDiffsetCalculations(group);
+    return AllDiffsetsNoSort(GroupList2PermList(start,Gdata),
+                   aim,
+                   GroupList2PermList(forbidden,Gdata),
+                   Gdata,lambda);
+end);
+
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsInt,IsDenseList,IsRecord,IsInt],
+        function(start,aim,forbidden,Gdata,lambda)
+    return AllDiffsetsNoSort(start,Gdata.Glist,aim,forbidden,Gdata,lambda);
+end);
+
+
+
+#############################################################################
+## now (<start>,<completions>,aim,G/Gdata,[<lambda>]
+##
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsGroup],
+        function(start,completions,aim,group)
+    return AllDiffsetsNoSort(start,completions,aim,[],group,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsGroup,IsInt],
+        function(start,completions,aim,group,lambda)
+    return AllDiffsetsNoSort(start,completions,aim,[],group,lambda);
+end);
+
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsRecord],
+        function(start,completions,aim,Gdata,lambda)
+    return AllDiffsetsNoSort(start,completions,aim,[],Gdata,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsRecord,IsInt],
+        function(start,completions,aim,Gdata,lambda)
+    return AllDiffsetsNoSort(start,completions,aim,[],Gdata,lambda);
+end);
+    
+#############################################################################
+## finally (<start>,<completions>,aim,<forbidden>,G/Gdata,[<lambda>])
+## 
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsDenseList,IsGroup],
+        function(start,completions,aim,forbidden,group)
+    return AllDiffsetsNoSort(start,completions,aim,forbidden,group,1);
+end);
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsDenseList,IsRecord],
+        function(start,completions,aim,forbidden,Gdata)
+    return AllDiffsetsNoSort(start,completions,aim,forbidden,Gdata,1);
+end);
+
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsDenseList,IsGroup,IsInt],
+        function(start,completions,aim,forbidden,group,lambda)
+    Gdata:=PermutationRepForDiffsetCalculations(group);
+    return AllDiffsetsNoSort(GroupList2PermList(start,Gdata),
+                   GroupList2PermList(completions,Gdata),
+                   aim,
+                   GroupList2PermList(forbidden,Gdata),
+                   Gdata,lambda);
+end);
+    
+
+InstallMethod(AllDiffsetsNoSort,
+        [IsDenseList,IsDenseList,IsInt,IsDenseList,IsRecord,IsInt],
+        function(start,completions,aim,forbidden,Gdata,lambda)
+    local comps;
+    if aim>Sqrt(lambda*(Size(group)-Size(Set(forbidden)))+1/4)-1/2
+       then
+        Info(InfoRDS,1,"<aim> too large. No difference sets");
+        return [];
+    fi;
+    comps:=RemainingCompletionsNoSort(start,[1..Size(Gdata.Glist)],forbidden,Gdata,lambda);
+    return Union(List(comps,c->
+                   AllDiffsets(Concatenation(start,[c]),comps,aim,forbidden,Gdata,lambda))
+                 );
+end);
+
 
 
 #############################################################################

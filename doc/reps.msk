@@ -104,5 +104,5 @@ Of course, ordered signatures can also be used directly.
 
 \beginexample
 gap> OrderedSignatureOfSet([2,3,4,5],nsgs[2]);  
-[ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0 ] ]
+[ [ 1, 1, 0, 0, 0, 0, 0 ], [ 1, 0, 0, 0, 0, 0, 0 ], [ 1, 0, 0, 0, 0, 0, 0 ] ]
 \endexample

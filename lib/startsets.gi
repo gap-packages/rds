@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -39,7 +39,7 @@ InstallMethod(PermutationRepForDiffsetCalculations,"for groups",
     gsize:=Size(Glist);
     if not Glist[1]=One(group)
        then
-        Error("Unable to generate <Glist>\n");
+        Error("smallest element of group is not the identity. Try `IsomorphismPermGroup'");
     fi;
     A:=AutomorphismGroup(group);
     achom:=ActionHomomorphism(A,Glist);
@@ -245,13 +245,13 @@ InstallMethod(RemainingCompletionsNoSort,
         [IsDenseList,IsDenseList,IsDenseList,IsMatrix,IsPosInt],
         function(diffset,completions,forbidden,difftable,lambda)
     local   pres,  comps,  wrongels,  g,  newpres;
-    
     if not IsSet(completions) 
        then 
         Error("\ncompletions must be a SET\n");
     fi;
     pres:=AllPresentables(diffset,difftable);
-    if pres=[] or Intersection(diffset,forbidden)<>[]
+    #if pres=[] or ForAny(diffset,i-> i in forbidden)
+    if ForAny(diffset,i->i in forbidden)
        then 
         Error("diffset is no partial diffset");
         return [];
@@ -263,7 +263,7 @@ InstallMethod(RemainingCompletionsNoSort,
     for g in comps
       do
         newpres:=NewPresentables(diffset,g,difftable);
-        if Intersection(newpres,forbidden)<>[] or 
+        if ForAny(newpres,i->i in forbidden) or 
            not Maximum(Set(Collected(Concatenation(pres,newpres)),c->c[2]))<=lambda
            then 
             Add(wrongels,g);
@@ -288,8 +288,8 @@ InstallMethod(RemainingCompletionsNoSort,
        then 
         Error("\ncompletions must be a SET\n");
     fi;
-    pres:=AllPresentables(diffset,difftable);
-    if pres=[] or Intersection(diffset,forbidden)<>[]
+   pres:=AllPresentables(diffset,difftable);
+    if pres=[] or ForAny(diffset,i->i in forbidden)
        then 
         Error("diffset is no partial diffset");
         return [];

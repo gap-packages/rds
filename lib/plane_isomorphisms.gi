@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -24,454 +24,400 @@
 ##
 Revision.("rds/lib/plane_isomorphisms_gi"):=
 	"@(#)$Id$";
+##############################################################################
+###
+##O  DualPlane( <plane> )  generate dual plane
+###
+#InstallMethod(DualPlane,
+#        "for projective planes",
+#        [IsRecord],
+#        function(plane)
+#    local   points,  returnblocks,  image,  p,  locblocks,  dualblock;
+#    if not IsBlockDesign(plane)
+#       then
+#        Error("projective plane must be a block design");
+#    fi;
+#    points:=[1..plane.v];
+#    returnblocks:=[];
+#    image:=ListWithIdenticalEntries(Size(points),0);;
+#    for p in points
+#      do
+#        locblocks:=Filtered(blocks,b->p in b);
+#        dualblock:=Set(locblocks,b->Position(blocks,b));
+#        Add(returnblocks,dualblock);
+#        image[p]:=dualblock;
+#    od;
+#    return rec(blocks:=Set(returnblocks),image:=image);;
+#end);
+#
 #############################################################################
 ##
-#O  DualPlane( <blocks> )  generate dual plane
+#O ProjectiveClosureOfPointSet(<points>,<plane>)
 ##
-InstallMethod(DualPlane,
+InstallMethod(ProjectiveClosureOfPointSet,
         "for projective planes",
-        [IsDenseList],
-        function(blocks)
-    local   points,  returnblocks,  image,  p,  locblocks,  dualblock;
-    points:=[1..Size(Set(Flat(blocks)))];
-    returnblocks:=[];
-    image:=ListWithIdenticalEntries(Size(points),0);;
-    for p in points
-      do
-        locblocks:=Filtered(blocks,b->p in b);
-        dualblock:=Set(locblocks,b->Position(blocks,b));
-        Add(returnblocks,dualblock);
-        image[p]:=dualblock;
-    od;
-    return rec(blocks:=Set(returnblocks),image:=image);;
+        [IsDenseList,IsRecord],
+        function(points,plane)
+    return ProjectiveClosureOfPointSet(points,0,plane);
 end);
-
+    
 #############################################################################
 ##
-#O ProjectiveClosureOfPointSet(<points>,<maxsize>,<data>)
+#O ProjectiveClosureOfPointSet(<points>,<maxsize>,<plane>)
 ##
 InstallMethod(ProjectiveClosureOfPointSet,
         "for projective planes",
         [IsDenseList,IsInt,IsRecord],
-        function(points,maxsize,data)
-    local   newpoints,  oldpoints,  newblocks,  oldblocks;
+        function(points,maxsize,plane)
+    local   newpoints,  oldpoints,  newblocks,  oldblocks,  
+            returnplane,  embedding,  invemb;
+
+    if not IsProjectivePlane(plane)
+       then
+        TryNextMethod();
+    fi;
     newpoints:=[];
     oldpoints:=Set(points);
-    newblocks:=Set(Combinations(oldpoints,2),i->data.jblock[i[1]][i[2]]);
+    newblocks:=Set(Combinations(oldpoints,2),i->plane.jblock[i[1]][i[2]]);
     oldblocks:=[];
     if maxsize=0
        then
-        maxsize:=Size(data.points)-1;
+        maxsize:=plane.v-1;
     fi;
     repeat
-        newpoints:=Set(Cartesian(oldblocks,newblocks),i->Intersection(data.blocks[i[1]],data.blocks[i[2]])[1]);
-        UniteSet(newpoints,List(Combinations(newblocks,2),i->Intersection(data.blocks[i[1]],data.blocks[i[2]])[1]));
+        newpoints:=Set(Cartesian(oldblocks,newblocks),i->Intersection(plane.blocks[i[1]],plane.blocks[i[2]])[1]);
+        UniteSet(newpoints,List(Combinations(newblocks,2),i->Intersection(plane.blocks[i[1]],plane.blocks[i[2]])[1]));
         SubtractSet(newpoints,oldpoints);
         UniteSet(oldblocks,newblocks);
-        newblocks:=Set(Cartesian(oldpoints,newpoints),i->data.jblock[i[1]][i[2]]);
-        UniteSet(newblocks,List(Combinations(newpoints,2),i->data.jblock[i[1]][i[2]]));
+        newblocks:=Set(Cartesian(oldpoints,newpoints),i->plane.jblock[i[1]][i[2]]);
+        UniteSet(newblocks,List(Combinations(newpoints,2),i->plane.jblock[i[1]][i[2]]));
         SubtractSet(newblocks,oldblocks);
         UniteSet(oldpoints,newpoints);
-    until newpoints=[] or newblocks=[] or Size(oldpoints)+Size(newpoints)>maxsize;   
-    if newpoints=[]
+    until newpoints=[] or newblocks=[] or Size(oldpoints)>maxsize;   
+    
+    if Size(oldpoints)>maxsize
        then
-        return oldpoints;
-    else 
-        return data.points;
+        oldpoints:=[1..plane.v];
     fi;
+    if oldpoints=[1..plane.v]
+       then 
+        returnplane:=plane;
+        embedding:=();
+    elif Size(oldpoints)=1
+      then
+        embedding:=(1,oldpoints[1]);
+        returnplane:=BlockDesign(1,[[1]]);
+    else
+        newblocks:=Set(plane.blocks,i->Intersection(i,oldpoints));
+        newblocks:=Filtered(newblocks,i->Size(i)>1);
+        embedding:=MappingPermListList([1..Size(oldpoints)],Set(oldpoints));
+        invemb:=embedding^-1;
+        Apply(newblocks,i->OnSets(i,invemb));
+        if Number(newblocks,b->Size(b)>2)<7
+           then
+            returnplane:=BlockDesign(Size(oldpoints),newblocks);
+        else
+            newblocks:=Filtered(newblocks,i->Size(i)>2);
+            returnplane:=ProjectivePlane(newblocks);
+            if IsBound(plane.jpoint)
+               then
+                PointJoiningLinesProjectivePlane(returnplane);
+            fi;
+        fi;             
+    fi;
+    if IsBound(plane.pointNames)
+       then
+        returnplane.pointNames:=Immutable(List([1..returnplane.v],i->
+                                        plane.pointNames[i^embedding]));
+    fi;
+    return rec(closure:=returnplane,embedding:=embedding);
 end);
 
 
 #############################################################################
 ##
-#O  IsIsomorphismOfProjectivePlanes( <perm>,<blocks1>,<blocks2> )  test for isomorphism of projective planes on the same points
+#O  IsIsomorphismOfProjectivePlanes( <perm>,<plane1>,<plane2> )  test for isomorphism of projective planes.
 ##
 InstallMethod(IsIsomorphismOfProjectivePlanes,
         "for projective planes",
-        [IsPerm,IsDenseList,IsDenseList],
-        function(perm,blocks1,blocks2)
+        [IsPerm,IsRecord,IsRecord],
+        function(perm,plane1,plane2)
     local   points,  point,  pointblocks,  pointblocks_image;
-
-    points:=Set(Flat(blocks1));
-    if not points=Set(Flat(blocks2))
+    
+    if not IsBlockDesign(plane1) and IsBlockDesign(plane2)
        then
-        Error("isomorphisms can only be tested for planes which have the same points");
+        Error("this does just work for block designs");
     fi;
-    return ForAll(blocks1,b->OnSets(b,perm) in blocks2);
+    points:=[1..plane1.v];
+    return ForAll(plane1.blocks,b->OnSets(b,perm) in plane2.blocks);
 end);
 
 
 #############################################################################
 ##
-#O  IsCollineationOfProjectivePlane( <perm>,<blocks> )  test if a permutation is a collineation of a projective plane
+#O  IsCollineationOfProjectivePlane( <perm>,<plane> )  test if a permutation is a collineation of a projective plane
 ##
-InstallMethod(IsCollineationOfProjectivePlane,
-        "for projective planes",
-        [IsPerm,IsDenseList],
-        function(perm,blocks)
-    return ForAll(blocks,b->OnSets(b,perm) in blocks);
-end);
-
 InstallMethod(IsCollineationOfProjectivePlane,
         "for projective planes",
         [IsPerm,IsRecord],
-        function(perm,data)
-    return IsCollineationOfProjectivePlane(perm,data.blocks);
+        function(perm,plane)
+    return IsIsomorphismOfProjectivePlanes(perm,plane,plane);
 end);
 
 
 #############################################################################
 ##
-#F  ElationPrecalc( <blocks> )  generate data for calculating elations
+#O  ElationByPair( <centre>,<axis>,<pair>,<plane>)  calculate elations of projective planes.
 ##
-InstallGlobalFunction("ElationPrecalc",
-        function(blocks)
-    local   points,  lines,  strange,  jblock,  jpoint,  blocknr,  p,  
-            i,  point,  pointblocks,  b,  blocksize,  block,  p1,  
-            entrylist,  pblocks;
-
-    points:=AsSet(Flat(blocks));
-    lines:=AsSet(blocks);
-    if not Size(points)=Size(lines)
-       then
-        Error("Numbers of points and blocks are different. You may proceed, but be warned!");
-        strange:=true;
-    else 
-        strange:=false;
-    fi;    
-    jblock:=NullMat(Maximum(points),Maximum(points));
-    jpoint:=NullMat(Size(lines),Size(lines));
-
-    if strange
-       then
-        for blocknr in [1..Size(lines)]
-          do
-            for p in block
-              do
-                jblock[p]{block}:=List([1..Size(block)],i->blocknr);
-            od;
-        od;
-        for i in [1..Size(lines)]
-          do
-            jblock[i][i]:=0;
-        od;
-            
-        for point in points
-          do
-            pointblocks:=Filtered(lines,i->point in i);
-            pointblocks:=Set(pointblocks,i->PositionSet(lines,i));
-            for b in pointblocks
-              do
-                jpoint[b]{pointblocks}:=List([1..Size(pointblocks)],i->point);
-            od;
-        od;
-        for i in [1..Size(jpoint)]
-          do
-            jpoint[i][i]:=0;
-        od;
-    else
-        blocksize:=Size(lines[1]);
-        for blocknr in [1..Size(lines)]
-          do
-            block:=lines[blocknr];
-            for p1 in [1..blocksize]
-              do
-                entrylist:=List([p1+1..blocksize],i->blocknr);
-                jblock[block[p1]]{block{[p1+1..blocksize]}}:=entrylist;
-                jblock{block{[p1+1..blocksize]}}[block[p1]]:=entrylist;
-            od;
-        od;
-        for point in points
-          do
-            pblocks:=Set(jblock[point]);
-            RemoveSet(pblocks,0);
-            blocksize:=Size(pblocks);
-            for b in [1..blocksize]
-              do
-                entrylist:=List([b+1..blocksize],i->point);
-                jpoint[pblocks[b]]{pblocks{[b+1..blocksize]}}:=entrylist;
-                jpoint{pblocks{[b+1..blocksize]}}[pblocks[b]]:=entrylist;
-            od;
-        od;
-    fi;
-    return rec(jpoint:=jpoint,jblock:=jblock,points:=points,blocks:=lines);
-end);
-
-
-#############################################################################
-##
-#F  ElationPrecalcSmall( <blocks> )  generate data for calculating elations
-##
-InstallGlobalFunction("ElationPrecalcSmall",
-        function(blocks)
-    local   points,  lines,  nrofblocks,  jblock,  blocksize,  
-            blocknr,  block,  p1,  entrylist;
-
-    points:=AsSet(Flat(blocks));
-    lines:=AsSet(blocks);
-    nrofblocks:=Size(lines);
-    if not Size(points)=nrofblocks
-       then
-        Error("Numbers of points and blocks are different. This is not permitted");
-    fi;    
-    jblock:=NullMat(nrofblocks,nrofblocks);
-    blocksize:=Size(lines[1]);
-    for blocknr in [1..nrofblocks]
-      do
-        block:=lines[blocknr];
-        for p1 in [1..blocksize]
-          do
-            entrylist:=List([p1+1..blocksize],i->blocknr);
-            jblock[block[p1]]{block{[p1+1..blocksize]}}:=entrylist;
-            jblock{block{[p1+1..blocksize]}}[block[p1]]:=entrylist;
-        od;
-    od;
-    return rec(jblock:=jblock,points:=points,blocks:=lines);
-end);
-
-
-#############################################################################
-##
-#O  ElationsByPairs( <centre>,<axis>,<pairs>,<data>)  calculate elations of projective planes.
-#O  ElationsByPairs( <centre>,<axis>,<pairs>,<blocks>)  calculate elations of projective planes.
-##
-InstallMethod(ElationsByPairs,
+InstallMethod(ElationByPair,
         "for projective planes",
-        [IsInt,IsDenseList,IsDenseList,IsRecord],
-        function(centre,axis,pairs,data)
-    local   blocks,  points,  jpoint,  jblock,  blockslist,  axispos,  
-            init_cblocks,  axispoints,  returnlist,  pair,  permlist,  
-            cblocks,  projpairs,  pairblock,  point,  pblock1,  
-            pblock2,  cblock,  x,  y,  cblockpair,  nogood,  ppair,  
-            perm;
+        [IsInt,IsVector,IsVector,IsRecord],
+        function(centre,axis,pair,plane)
+    local   points,  blockslist,  axispos,  init_cblocks,  axispoints,  
+            returnlist,  permlist,  cblocks,  projpairs,  pairblock,  
+            point,  pblock1,  pblock2,  cblock,  x,  y,  cblockpair,  
+            nogood,  ppair,  perm;
+    
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    
+    if not IsBound(plane.jpoint)
+       then
+        TryNextMethod();
+    fi;
+    
+    points:=[1..plane.v];
+    
+    if not IsSubset(points,pair)
+       then
+        Error("<pair> must be a pair of points");
+    fi;
 
-
-    blocks:=data.blocks;
-    points:=data.points;
-    jpoint:=data.jpoint;
-    jblock:=data.jblock;
-
-    # die Punkte muessen integers sein!
-    if not axis in blocks
+    if not axis in plane.blocks
        then 
         Error("The axis must be a block");
-        return fail;
     fi;
-    blockslist:=[1..Size(blocks)];    
-    axispos:=Position(blocks,axis);
-
-    init_cblocks:=Difference(Set(jblock[centre]),[0]);
+    blockslist:=[1..plane.v];    
+    axispos:=Position(plane.blocks,axis);
+    
+    init_cblocks:=Difference(Set(plane.jblock[centre]),[0]);
     RemoveSet(init_cblocks,axispos);
 
     axispoints:=Difference(axis,[centre]);
 
     returnlist:=[];
 
-    for pair in pairs
+    if Intersection(pair,axis)<>[] 
+       then 
+        Error("The axis must be fixed pointwise");
+    fi;
+    permlist:=[1..plane.v];
+    cblocks:=ShallowCopy(init_cblocks);
+    projpairs:=[];
+    pairblock:=plane.jblock[pair[1]][pair[2]];
+    
+    if not centre in plane.blocks[pairblock] 
+       then 
+        Error("The centre must be fixed blockwise");
+    fi;
+    RemoveSet(cblocks,pairblock);
+    
+    for point in axispoints 
       do
-        if Intersection(pair,axis)<>[] 
-           then 
-            Error("The axis must be fixed pointwise");
-            return fail;
-        fi;
-        permlist:=[1..Maximum(points)];
-        cblocks:=ShallowCopy(init_cblocks);
-        projpairs:=[];
-        pairblock:=jblock[pair[1]][pair[2]];
-
-        if not centre in blocks[pairblock] 
-           then 
-            Error("The centre must be fixed blockwise");
-            return fail;
-        fi;
-        RemoveSet(cblocks,pairblock);
-
-        for point in axispoints 
+        pblock1:=plane.jblock[point][pair[1]];
+        pblock2:=plane.jblock[point][pair[2]];
+        for cblock in cblocks
           do
-            pblock1:=jblock[point][pair[1]];
-            pblock2:=jblock[point][pair[2]];
-            for cblock in cblocks
-              do
-                x:=jpoint[cblock][pblock1];
-                y:=jpoint[cblock][pblock2];
-                Add(projpairs,[x,y]);
-            od;
-        od;            
-        cblockpair:=Representative(projpairs);
-        cblock:=jblock[cblockpair[1]][cblockpair[2]];
-
-        for point in axispoints
-          do
-            pblock1:=jblock[point][cblockpair[1]];
-            pblock2:=jblock[point][cblockpair[2]];
-            x:=jpoint[pblock1][pairblock];
-            y:=jpoint[pblock2][pairblock];
+            x:=plane.jpoint[cblock][pblock1];
+            y:=plane.jpoint[cblock][pblock2];
             Add(projpairs,[x,y]);
         od;
-        nogood:=false;
-
-        for ppair in projpairs
-          do
-            if permlist[ppair[1]] in [ppair[1],ppair[2]] 
-               then
-                permlist[ppair[1]]:=ppair[2];
-            else
-                nogood:=true;
-            fi;
-        od;
-
-        if not nogood
+    od;            
+    cblockpair:=Representative(projpairs);
+    cblock:=plane.jblock[cblockpair[1]][cblockpair[2]];
+    
+    for point in axispoints
+      do
+        pblock1:=plane.jblock[point][cblockpair[1]];
+        pblock2:=plane.jblock[point][cblockpair[2]];
+        x:=plane.jpoint[pblock1][pairblock];
+        y:=plane.jpoint[pblock2][pairblock];
+        Add(projpairs,[x,y]);
+    od;
+    nogood:=false;
+    
+    for ppair in projpairs
+      do
+        if permlist[ppair[1]] in [ppair[1],ppair[2]] 
            then
-            perm:=PermList(permlist);
-            if IsCollineationOfProjectivePlane(perm,data)
-               then
-                Add(returnlist,perm);
-            fi;
+            permlist[ppair[1]]:=ppair[2];
+        else
+            nogood:=true;
         fi;
     od;
-    return Set(returnlist);
+    
+    if not nogood
+       then
+        perm:=PermList(permlist);
+        if IsCollineationOfProjectivePlane(perm,plane)
+           then
+            return perm;
+        else
+            Error("Unable to generate elation");
+        fi;
+    else
+        Error("Unable to generate elation");
+    fi;
 end);
 
 
 #############################################################################
 ##
-#O  ElationsByPairsSmall( <centre>,<axis>,<pairs>,<data>)  calculate elations of projective planes.
+#O  ElationByPair( <centre>,<axis>,<pair>,<plane>)  calculate elations of projective planes.
+##  This is the "small" implementation. It does not use .jpoint 
 ##
-InstallMethod(ElationsByPairsSmall,
+InstallMethod(ElationByPair,
         "for projective planes",
-        [IsInt,IsDenseList,IsDenseList,IsRecord],
-        function(centre,axis,pairs,data)
-    local   blocks,  points,  jblock,  blockslist,  axispos,  
-            init_cblocks,  axispoints,  returnlist,  pair,  permlist,  
-            cblocks,  projpairs,  pairblock,  point,  pblock1,  
-            pblock2,  cblock,  x,  y,  cblockpair,  nogood,  ppair,  
-            perm;
+        [IsInt,IsVector,IsVector,IsRecord],
+        function(centre,axis,pair,plane)
+    local   blockslist,  axispos,  init_cblocks,  axispoints,  
+            permlist,  cblocks,  projpairs,  pairblock,  point,  
+            pblock1,  pblock2,  cblock,  x,  y,  cblockpair,  nogood,  
+            ppair,  perm;
 
-
-    blocks:=data.blocks;
-    points:=data.points;
-    jblock:=data.jblock;
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    if IsBound(plane.jpoint)
+       then
+        TryNextMethod();
+    fi;
     
+    if not IsSubset([1..plane.v],pair)
+       then
+        Error("<pair> must be a pair of points");
+    fi;
+              
     # die Punkte muessen integers sein!
-    if not axis in blocks
+    if not axis in plane.blocks
        then 
         Error("The axis must be a block");
-        return fail;
     fi;
     if not centre in axis
        then
         Error("The centre must lie on the axis");
-        return fail;
     fi;
-    blockslist:=[1..Size(blocks)];    
-    axispos:=PositionSet(blocks,axis);
+    blockslist:=[1..plane.v];    
+    axispos:=PositionSet(plane.blocks,axis);
 
-    init_cblocks:=Set(Filtered(blocks,b->centre in b));
+    init_cblocks:=Set(Filtered(plane.blocks,b->centre in b));
     RemoveSet(init_cblocks,axis);
 
     axispoints:=Difference(axis,[centre]);
     
-    returnlist:=[];
-
-    for pair in pairs
+    if pair[1]=pair[2]
+       then
+        Error("There can only be one axis. <pair> must contain two different points.");
+    fi;
+    if Intersection(pair,axis)<>[] 
+       then 
+        Error("The axis must be fixed pointwise");
+    fi;
+    permlist:=[1..plane.v];
+    cblocks:=ShallowCopy(init_cblocks);
+    projpairs:=[];
+    pairblock:=plane.blocks[plane.jblock[pair[1]][pair[2]]];
+    
+    if not centre in pairblock 
+       then 
+        Error("The centre must be fixed blockwise");
+    fi;
+    RemoveSet(cblocks,pairblock);
+    
+    for point in axispoints 
       do
-        if pair[1]=pair[2]
-           then
-            Error("There can only be one axis.");
-        fi;
-        if Intersection(pair,axis)<>[] 
-           then 
-            Error("The axis must be fixed pointwise");
-            return fail;
-        fi;
-        permlist:=[1..Maximum(points)];
-        cblocks:=ShallowCopy(init_cblocks);
-        projpairs:=[];
-        pairblock:=blocks[jblock[pair[1]][pair[2]]];
-
-        if not centre in pairblock 
-           then 
-            Error("The centre must be fixed blockwise");
-            return fail;
-        fi;
-        RemoveSet(cblocks,pairblock);
-
-        for point in axispoints 
+        pblock1:=plane.blocks[plane.jblock[point][pair[1]]];
+        pblock2:=plane.blocks[plane.jblock[point][pair[2]]];
+        for cblock in cblocks
           do
-            pblock1:=blocks[jblock[point][pair[1]]];
-            pblock2:=blocks[jblock[point][pair[2]]];
-            for cblock in cblocks
-              do
 #                x:=First(cblock,i->i in pblock1);
 #                y:=First(cblock,i->i in pblock2);
-                x:=Intersection2(cblock,pblock1)[1];
-                y:=Intersection2(cblock,pblock2)[1];
-                Add(projpairs,[x,y]);
-            od;
-        od;            
-        cblockpair:=Representative(projpairs);
-        cblock:=blocks[jblock[cblockpair[1]][cblockpair[2]]];
-        for point in axispoints
-          do
-            pblock1:=blocks[jblock[point][cblockpair[1]]];
-            pblock2:=blocks[jblock[point][cblockpair[2]]];
-#            x:=First(pblock1,i->i in pairblock);
-#            y:=First(pblock2,i->i in pairblock);
-            x:=Intersection2(pblock1,pairblock)[1];
-            y:=Intersection2(pblock2,pairblock)[1];
+            x:=Intersection2(cblock,pblock1)[1];
+            y:=Intersection2(cblock,pblock2)[1];
             Add(projpairs,[x,y]);
         od;
-        nogood:=false;
-
-        for ppair in projpairs
-          do
-            if permlist[ppair[1]] in [ppair[1],ppair[2]] 
-               then
-                permlist[ppair[1]]:=ppair[2];
-            else
-                nogood:=true;
-                Error("panik");
-            fi;
-        od;
-
-        if not nogood
+    od;            
+    cblockpair:=Representative(projpairs);
+    cblock:=plane.blocks[plane.jblock[cblockpair[1]][cblockpair[2]]];
+    for point in axispoints
+      do
+        pblock1:=plane.blocks[plane.jblock[point][cblockpair[1]]];
+        pblock2:=plane.blocks[plane.jblock[point][cblockpair[2]]];
+#            x:=First(pblock1,i->i in pairblock);
+#            y:=First(pblock2,i->i in pairblock);
+        x:=Intersection2(pblock1,pairblock)[1];
+        y:=Intersection2(pblock2,pairblock)[1];
+        Add(projpairs,[x,y]);
+    od;
+    nogood:=false;
+    
+    for ppair in projpairs
+      do
+        if permlist[ppair[1]] in [ppair[1],ppair[2]] 
            then
-            perm:=PermList(permlist);
-            if IsCollineationOfProjectivePlane(perm,data)
-               then
-                Add(returnlist,perm);
-            fi;
+            permlist[ppair[1]]:=ppair[2];
+        else
+            nogood:=true;
         fi;
     od;
-    return Set(returnlist);
+    
+    if not nogood
+       then
+        perm:=PermList(permlist);
+        if IsCollineationOfProjectivePlane(perm,plane)
+           then
+            return perm;
+        else
+            Error("Unable to generate elation");
+        fi;
+    else
+        Error("Unable to generate elation");
+    fi;
 end);
 
 
 #############################################################################
 ##
-#O  AllElationsCentAx( <centre>,<axis>,<data>)  calculate all elations
-#O  AllElationsCentAx( <centre>,<axis>,<blocks>)  calculate all elations
-#O  AllElationsCentAx( <centre>,<axis>,<blocks>,"generators")  calculate all elations
+#O  AllElationsCentAx( <centre>,<axis>,<plane>)  calculate group of elations
+#O  AllElationsCentAx( <centre>,<axis>,<plane>,"generators")  calculate all elations
 ##
 InstallMethod(AllElationsCentAx,
         "for projective planes",
-        [IsInt,IsDenseList,IsRecord],
-        function(centre,axis,data)
-    return Set(Group(AllElationsCentAx(centre,axis,data,"generators")));
+        [IsInt,IsVector,IsRecord],
+        function(centre,axis,plane)
+    return Group(AllElationsCentAx(centre,axis,plane,"generators"));
 end);
 
 InstallMethod(AllElationsCentAx,
         "for projective planes",
-        [IsInt,IsDenseList,IsRecord,IsString],
-        function(centre,axis,data,genstring)
+        [IsInt,IsVector,IsRecord,IsString],
+        function(centre,axis,plane,genstring)
     local   blocks,  ellist,  pairs,  block,  pointset,  point,  
-            genset,  pointsetsize,  newelations;
+            genset,  pointsetsize,  newelation;
 
     if not genstring="generators"
        then
         Error("please pass >generators< as an option");
     fi;
-    blocks:=data.blocks;
+    if not IsProjectivePlane(plane)
+       then 
+        Error("<plane> must be a projective plane");
+    fi;
+    
+    blocks:=plane.blocks;
     ellist:=[];
     pairs:=[];
 
@@ -484,64 +430,10 @@ InstallMethod(AllElationsCentAx,
     while pointset<>[]
       do
         pointsetsize:=Size(pointset);
-        newelations:=ElationsByPairs(centre,axis,[[point,pointset[pointsetsize]]],data);
+        newelation:=ElationByPair(centre,axis,[point,pointset[pointsetsize]],plane);
         Unbind(pointset[pointsetsize]);
-        if newelations<>[]
-           then
-            Append(genset,newelations);
-            SubtractSet(pointset,Orbit(Group(genset),point));
-        fi;
-    od;
-
-    return genset;
-end);
-
-
-
-
-#############################################################################
-##
-#O  AllElationsCentAxSmall( <centre>,<axis>,<data>)  calculate all elations
-#O  AllElationsCentAxSmall( <centre>,<axis>,<data>,"generators")  calculate all elations
-##
-InstallMethod(AllElationsCentAxSmall,
-        "for projective planes",
-        [IsInt,IsDenseList,IsRecord],
-        function(centre,axis,data)
-    return Set(Group(AllElationsCentAxSmall(centre,axis,data,"generators")));
-end);
-
-InstallMethod(AllElationsCentAxSmall,
-        "for projective planes",
-        [IsInt,IsDenseList,IsRecord,IsString],
-        function(centre,axis,data,genstring)
-    local   blocks,  ellist,  pairs,  block,  pointset,  point,  
-            genset,  pointsetsize,  newelations;
-
-    if not genstring="generators"
-       then
-        Error("please pass >generators< as an option");
-    fi;
-    blocks:=data.blocks;
-    ellist:=[];
-    pairs:=[];
-
-    block:=First(blocks,b->(centre in b and not b=axis));
-    pointset:=Difference(block,[centre]);
-    point:=Representative(pointset);
-    RemoveSet(pointset,point);
-
-    genset:=[];       
-    while pointset<>[]
-      do
-        pointsetsize:=Size(pointset);
-        newelations:=ElationsByPairsSmall(centre,axis,[[point,pointset[pointsetsize]]],data);
-        Unbind(pointset[pointsetsize]);
-        if newelations<>[]
-           then
-            Append(genset,newelations);
-            SubtractSet(pointset,Orbit(Group(genset),point));
-        fi;
+        Add(genset,newelation);
+        SubtractSet(pointset,Orbit(Group(genset),point));
     od;
     return genset;
 end);
@@ -549,63 +441,32 @@ end);
 
 #############################################################################
 ##
-#O  AllElationsAx(<axis>,<data>)  calcualte all elations with given axis.
-#O  AllElationsAxSmall(<axis>,<data>,"generators")  calcualte all elations with given axis.
-#O  AllElationsAx(<axis>,<blocks>)  calcualte all elations with given axis.
-#O  AllElationsAx(<axis>,<blocks>,"generators")  calcualte all elations with given axis.
+#O  AllElationsAx(<axis>,<plane>)  calcualte group of elations with given axis.
+#O  AllElationsAx(<axis>,<plane>,"generators")  calcualte generators of the gorup of elations with given axis.
+##
 InstallMethod(AllElationsAx,
         "for projective planes",
         [IsDenseList,IsRecord],
-        function(axis,data)
-    return Set(Group(AllElationsAx(axis,data,"generators")));
+        function(axis,plane)
+    return Group(AllElationsAx(axis,plane,"generators"));
 end);
 
 InstallMethod(AllElationsAx,
         "for projective planes",
         [IsDenseList,IsRecord,IsString],
-        function(axis,data,genstring)
+        function(axis,plane,genstring)
     local   points,  ellist,  centre;
 
     if not genstring="generators"
        then
         Error("please pass >generators< as an option");
     fi;
-    points:=Difference(data.points,axis);
-    ellist:=[];
-    for centre in axis
-      do
-        if ellist<>[] and IsTransitive(Group(ellist),points)
-           then 
-            return Set(ellist);
-        else
-            Append(ellist,AllElationsCentAx(centre,axis,data,"generators"));
-        fi;
-    od;
-    return Set(ellist);
-end);
-
-
-InstallMethod(AllElationsAxSmall,
-        "for projective planes",
-        [IsDenseList,IsRecord],
-        function(axis,data)
-    return Set(Group(AllElationsAxSmall(axis,data,"generators")));
-end);
-
-
-InstallMethod(AllElationsAxSmall,
-        "for projective planes",
-        [IsDenseList,IsRecord,IsString],
-        function(axis,data,genstring)
-    local   ellist,  points,  centre;
-
-    ellist:=[];
-    if not genstring="generators"
+    if not IsProjectivePlane(plane)
        then
-        Error("please pass >generators< as an option");
+        Error("this is not a projective plane");
     fi;
-
-    points:=Difference(data.points,axis);
+    
+    points:=Difference([1..plane.v],axis);
     ellist:=[];
     for centre in axis
       do
@@ -613,33 +474,49 @@ InstallMethod(AllElationsAxSmall,
            then 
             return Set(ellist);
         else
-            Append(ellist,AllElationsCentAxSmall(centre,axis,data,"generators"));
+            Append(ellist,AllElationsCentAx(centre,axis,plane,"generators"));
         fi;
     od;
     return Set(ellist);
 end);
+
+
 
 #############################################################################
 ##
-#O IsTranslationPlane(<infline>,<planedata>)
+#O IsTranslationPlane(<infline>,<plane>)
+##
+InstallMethod(IsTranslationPlane,
+        "for projective planes",
+        [IsRecord],
+        function(plane)
+    if not IsProjectivePlane(plane)
+       then
+        return false;
+    fi;
+    return ForAny(plane.blocks,b->IsTranslationPlane(b,plane));
+end);
+
+
+#############################################################################
+##
+#O IsTranslationPlane(<infline>,<plane>)
 ##
 InstallMethod(IsTranslationPlane,
         "for projective planes",
         [IsDenseList,IsRecord],
-        function(infline,data)
+        function(infline,plane)
     local   cent1,  t1gens,  cent2,  t2gens;
     cent1:=Random(infline);
-    t1gens:=AllElationsCentAx(cent1,infline,data,"generators");
+    t1gens:=AllElationsCentAx(cent1,infline,plane,"generators");
     if t1gens=[] or Size(Group(t1gens))<>Size(infline)-1
        then 
         return false;
     else
         cent2:=Random(Difference(infline,[cent1]));
-        t2gens:=AllElationsCentAx(cent2,infline,data,"generators");
+        t2gens:=AllElationsCentAx(cent2,infline,plane,"generators");
     fi;
-    #affpoints:=Difference(data.points,infline);
-    #if IsTransitive(Group(Concatenation(t2gens,t1gens)),affpoints)
-    if Size(Group(Concatenation(t2gens,t1gens)))=Size(data.points)-Size(infline)
+    if Size(Group(Concatenation(t2gens,t1gens)))=plane.v-Size(infline)
        then
         return true;
     else
@@ -649,44 +526,20 @@ end);
 
 #############################################################################
 ##
-#O IsTranslationPlaneSmall(<infline>,<planedata>)
+#O GroupOfHomologies(<cetre>,<axis>,<plane>) 
 ##
-InstallMethod(IsTranslationPlaneSmall,
-        "for projective planes",
-        [IsDenseList,IsRecord],
-        function(infline,data)
-    local   cent1,  t1gens,  cent2,  t2gens;
-    cent1:=Random(infline);
-    t1gens:=AllElationsCentAxSmall(cent1,infline,data,"generators");
-    if t1gens=[] or Size(Group(t1gens))<>Size(infline)-1
-       then 
-        return false;
-    else
-        cent2:=Random(Difference(infline,[cent1]));
-        t2gens:=AllElationsCentAxSmall(cent2,infline,data,"generators");
-    fi;
-    #affpoints:=Difference(data.points,infline);
-    #if IsTransitive(Group(Concatenation(t2gens,t1gens)),affpoints)
-    if Size(Group(Concatenation(t2gens,t1gens)))=Size(data.points)-Size(infline)
-       then
-        return true;
-    else
-        return false;
-    fi;
-end);
-
-#############################################################################
-##
-#O GroupOfHomologiesSmall(<cetre>,<axis>,<planedata>) 
-##
-InstallMethod(GroupOfHomologiesSmall,
+InstallMethod(GroupOfHomologies,
         "for projective planes",
         [IsInt,IsDenseList,IsRecord],
-        function(centre,axis,data)
+        function(centre,axis,plane)
     local   line,  pointset,  point,  genlist,  
             pointsetsize,  newhomology;
-
-    line:=data.blocks[data.jblock[centre][axis[1]]];
+    
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    line:=plane.blocks[plane.jblock[centre][axis[1]]];
     pointset:=Difference(line,[centre,axis[1]]);
     point:=pointset[1];
     RemoveSet(pointset,point);
@@ -694,7 +547,7 @@ InstallMethod(GroupOfHomologiesSmall,
     while pointset<>[]
       do
         pointsetsize:=Size(pointset);
-        newhomology:=HomologyByPairSmall(centre,axis,[point,pointset[pointsetsize]],data);
+        newhomology:=HomologyByPair(centre,axis,[point,pointset[pointsetsize]],plane);
         Unbind(pointset[pointsetsize]);                
         if not newhomology=fail
            then
@@ -712,19 +565,24 @@ end);
 
 #############################################################################
 ##
-#O HomologyByPairSmall(<centre>,<axis>,<pair>,<data>);
+#O HomologyByPair(<centre>,<axis>,<pair>,<plane>);
 ##
 
-InstallMethod(HomologyByPairSmall,
+InstallMethod(HomologyByPair,
         "for projective planes",
         [IsInt,IsDenseList,IsDenseList,IsRecord],
-        function(centre,axis,pair,data)
+        function(centre,axis,pair,plane)
     local   points,  blocks,  jblock,  blockslist,  axispos,  cblocks,  
             returnlist,  permlist,  projpairs,  pairblock,  axpoint,  
             plineSource,  plineDest,  line,  ppoint,  point,  perm;
-    points:=data.points;
-    blocks:=data.blocks;
-    jblock:=data.jblock;
+    
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    points:=[1..plane.v];
+    blocks:=plane.blocks;
+    jblock:=plane.jblock;
     if  not axis in blocks
         then 
         Error("The axis must be a block");
@@ -777,7 +635,7 @@ InstallMethod(HomologyByPairSmall,
         permlist[point]:=Intersection(plineDest,pairblock)[1];
     od;
     perm:=PermList(permlist);
-    if IsCollineationOfProjectivePlane(perm,data)
+    if IsCollineationOfProjectivePlane(perm,plane)
        then
         return perm;
     else 
@@ -787,12 +645,12 @@ end);
 
 #############################################################################
 ##
-#O InducedCollineation(<baerdata>,<baercoll>,<point>,<image>,<planedata>,<liftingperm>)
+#O InducedCollineation(<baerplane>,<baercoll>,<point>,<image>,<plane>,<embedding>)
 ##
 InstallMethod(InducedCollineation,
         "for projective planes",
         [IsRecord,IsPerm,IsInt,IsInt,IsRecord,IsPerm],
-        function(baerdata,baercoll,point,image,planedata,liftingperm)
+        function(baerplane,baercoll,point,image,plane,liftingperm)
     local   blocks,  jblock,  jpoint,  baerindices,  
             liftedcollineation,  pointtangents,  pointsecant,  
             pointsecantnr,  imagesecant,  fixpoint,  imagetangents,  
@@ -801,10 +659,24 @@ InstallMethod(InducedCollineation,
             shortsecant,  secantimage,  ppoint,  ppointimage,  
             linepoint,  pline,  pointinbetween,  plineimage,  perm;
 
-    blocks:=planedata.blocks;
-    jblock:=planedata.jblock;
-    jpoint:=planedata.jpoint;
-    baerindices:=OnSets(baerdata.points,liftingperm);
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    
+    if not IsProjectivePlane(baerplane)
+       then
+        Error("the Baer plane is not a projective plane");
+    fi;
+    
+    if not IsBound(plane.jpoint)
+       then
+       PointJoiningLinesProjectivePlane(plane);; 
+    fi;
+    blocks:=plane.blocks;
+    jblock:=plane.jblock;
+    jpoint:=plane.jpoint;
+    baerindices:=OnSets([1..baerplane.v],liftingperm);
     liftedcollineation:=RestrictedPerm(baercoll^liftingperm,baerindices);
     if (point in baerindices) or (image in baerindices)
        then
@@ -850,10 +722,10 @@ InstallMethod(InducedCollineation,
         Info(DebugRDS,1,"point secant is not mapped to image secant");
         return fail;    
     fi;
-    baerblocks:=List(baerdata.blocks,b->OnSets(b,liftingperm));
+    baerblocks:=List(baerplane.blocks,b->OnSets(b,liftingperm));
     baerblocks:=Set(baerblocks,b->blocks[jblock[b[1]][b[2]]]);
     RemoveSet(baerblocks,pointsecant);
-    permlist:=List(OnTuples(planedata.points,liftedcollineation));
+    permlist:=List(OnTuples([1..plane.v],liftedcollineation));
     permlist[point]:=image;
     for tpoint in Difference(baerindices,pointsecant)
       do
@@ -867,7 +739,7 @@ InstallMethod(InducedCollineation,
             permlist[p]:=jpoint[secantimage][tangentimage];
         od;
     od;
-    ppoint:=Representative(Difference(planedata.points,Concatenation(baerindices,pointsecant)));
+    ppoint:=Representative(Difference([1..plane.v],Concatenation(baerindices,pointsecant)));
     ppointimage:=permlist[ppoint];
     for linepoint in Difference(pointsecant,Concatenation(baerindices,[point]))
       do
@@ -883,7 +755,7 @@ InstallMethod(InducedCollineation,
     elif perm=fail
       then
         return fail;
-    elif IsCollineationOfProjectivePlane(perm,planedata)
+    elif IsCollineationOfProjectivePlane(perm,plane)
       then
         return perm;
     else 
@@ -893,25 +765,31 @@ end);
 
 #############################################################################
 ##
-#O  NrFanoPlanesAtPoints(<points>,<data>)  invariant for projective planes
+#O  NrFanoPlanesAtPoints(<points>,<plane>)  invariant for projective planes
 ##
 InstallMethod(NrFanoPlanesAtPoints,
         "for projective planes",
         [IsDenseList,IsRecord],
-        function(pointlist,data)
+        function(pointlist,plane)
     local   returnlist,  points,  jblock,  jpoint,  blocks,  x,  
             nrfanos,  localblocks,  localblockssize,  points1size,  
             block1number,  block1,  points1,  block2number,  block2,  
             points2,  block3number,  block3,  point2number,  point2,  
             point3,  point4,  b24,  p24,  b34,  p34,  b324,  b234;
-    
+    if not IsProjectivePlane(plane)
+       then
+        Error("<plane> is not a projective plane");   
+    fi;
+    if not IsBound(plane.jpoint)
+       then
+        TryNextMethod();
+    fi;
     
     returnlist:=[];
-    points:=data.points;
-    jblock:=data.jblock;
-    jpoint:=data.jpoint;
-    blocks:=data.blocks;
-    ## Mal ein Bildchen, sonst verstehst Du es nie!
+    points:=[1..plane.v];
+    jblock:=plane.jblock;
+    jpoint:=plane.jpoint;
+    blocks:=plane.blocks;
     for x in pointlist
       do
         nrfanos:=0;
@@ -963,24 +841,35 @@ end);
 
 #############################################################################
 ##
-#O  NrFanoPlanesAtPointsSmall(<pointlist>,<data>)  invariant for projective planes
+#O  NrFanoPlanesAtPoints(<pointlist>,<plane>)  invariant for projective planes
 ##
-InstallMethod(NrFanoPlanesAtPointsSmall,
+## This is the "small" version
+##
+InstallMethod(NrFanoPlanesAtPoints,
         "for projective planes",
         [IsDenseList,IsRecord],
-        function(pointlist,data)
+        function(pointlist,plane)
     local   returnlist,  points,  jblock,  blocks,  x,  nrfanos,  
             localblocks,  localblockssize,  points1size,  
             block1number,  block1,  points1,  block2number,  block2,  
             points2,  block3number,  block3,  points3,  point2number,  
             point2,  point3,  point4,  b24,  p24,  b34,  p34,  b324,  
             b234;
-   
+    if not IsProjectivePlane(plane)
+       then
+        Error("<plane> is not a projective plane");   
+    fi;
+    
+    if IsBound(plane.jpoint)
+       then
+        TryNextMethod();
+    fi;
+    
     returnlist:=[];
-    points:=data.points;
-    jblock:=data.jblock;
-    blocks:=data.blocks;
-    ## Mal ein Bildchen, sonst verstehst Du es nie!
+    points:=[1..plane.v];
+    jblock:=plane.jblock;
+    blocks:=plane.blocks;
+
     for x in pointlist
       do
         nrfanos:=0;
@@ -1033,90 +922,82 @@ end);
 
 #############################################################################
 ##
-#O IncidenceMatrix(<points>,<blocks>)
-#O IncidenceMatrix(<planedata>)
+#O IncidenceMatrix(<design>)
 ##
 InstallMethod(IncidenceMatrix,
-        [IsDenseList,IsDenseList],
-        function(pointlist,blocklist)
-    local   pointnumber,  blocknumber,  mat,  blocksize,  blocknr;
-
-    if not IsListOfIntegers(pointlist) and ForAll(blocklist,b->IsListOfIntegers(b))
+        [IsRecord],
+        function(plane)
+    local   blocknumber,  mat,  blocknr,  blocksize;
+    
+    if not IsBlockDesign(plane)
        then
-        Error("the points are assumed to be integers");
+        Error("This is not a block design");
     fi;
-    pointnumber:=Size(pointlist);
-    blocknumber:=Size(blocklist);
-    mat:=NullMat(pointnumber,blocknumber);
-    blocksize:=Size(blocklist[1]);
+    blocknumber:=Size(plane.blocks);
+    mat:=NullMat(plane.v,blocknumber);
     for blocknr in [1..blocknumber]
       do
-        mat{blocklist[blocknr]}[blocknr]:=List([1..blocksize],i->1);
+        blocksize:=Size(plane.blocks[blocknr]);
+        mat{plane.blocks[blocknr]}[blocknr]:=List([1..blocksize],i->1);
     od; 
     return mat;    
 end);
 
-InstallMethod(IncidenceMatrix,
-        [IsRecord],
-        function(planedata)
-    return IncidenceMatrix(planedata.points,planedata.blocks);
-end);
-
 #############################################################################
 ##
-#O pRank(<blocklist>,<p>)
-#O pRank(<planedata>,<p>)
+#O pRank(<plane>,<p>)
 ##
-InstallMethod(pRank,
-        "for projective planes",
-        [IsDenseList,IsInt],
-        function(blocklist,p)
-    local   pointlist;
-
-    if not Size(FactorsInt(p))=1
-       then
-        Error("<p> must be a primepower");
-    fi;
-    if not (Set(blocklist,Size)=[Size(blocklist[1])] and Size(Set(Flat(blocklist)))=Size(blocklist))
-       then
-        Error("not a projective plane");
-    fi;
-    pointlist:=Set(Flat(blocklist));
-    return RankMatDestructive(IncidenceMatrix(pointlist,blocklist)*Z(p));
-end);
-
 InstallMethod(pRank,
         "for projective planes",
         [IsRecord,IsInt],
-        function(planedata,p)
-    return pRank(planedata.blocks,p);
+        function(plane,p)
+    local   pointlist;
+    
+    if not IsProjectivePlane(plane)
+       then
+        Error("This is not projective plane");
+    fi;
+    if not Size(Set(FactorsInt(p)))=1
+       then
+        Error("<p> must be a primepower or 0");
+    fi;
+    if p=0
+       then 
+        return RankMatDestructive(IncidenceMatrix(plane));
+    else
+        return RankMatDestructive(IncidenceMatrix(plane)*Z(p));
+    fi;
 end);
 
 #############################################################################
 ##
-#O FingerprintAntiFlag(<point>,<linenr>,<data>)
+#O FingerprintAntiFlag(<point>,<linenr>,<plane>)
 ##
 InstallMethod(FingerprintAntiFlag,
         [IsInt,IsInt,IsRecord],
-        function(point,linenr,data)
+        function(point,linenr,plane)
     local   infline,  lblocks,  mat,  lpoint,  projlines,  lblock,  
             permlist,  pointnr,  lblockpoint;
 
-    if point in data.blocks[linenr]
+    if not IsProjectivePlane(plane)
+       then
+        Error("this is not a projective plane");
+    fi;
+    if point in plane.blocks[linenr]
        then
         Error("This is not an anti- flag!");
     fi;
-    infline:=data.blocks[linenr];
-    lblocks:=Set(data.jblock[point]);
+    infline:=plane.blocks[linenr];
+    lblocks:=Set(plane.jblock[point]);
     RemoveSet(lblocks,0);
-    Apply(lblocks,i->data.blocks[i]);
+    Apply(lblocks,i->plane.blocks[i]);
 
     mat:=NullMat(Size(infline),Size(infline));;
     for lpoint in infline
       do
-        projlines:=Set(data.jblock[lpoint]);
+        projlines:=Set(plane.jblock[lpoint]);
         RemoveSet(projlines,0);
-        Apply(projlines,i->data.blocks[i]);
+        Apply(projlines,i->plane.blocks[i]);
         for lblock in Filtered(lblocks,b->not lpoint in b)
           do
             permlist:=[1..Size(lblock)];
@@ -1133,40 +1014,29 @@ InstallMethod(FingerprintAntiFlag,
     return Collected(List(Concatenation(MatTimesTransMat(mat)),AbsoluteValue));    
 end);
 
-#############################################################################
-##
-#O FingerprintProjPlane(<data>)
-##
-InstallMethod(FingerprintProjPlane,
-        [IsRecord],
-        function(data)
-    return FingerprintProjPlane(data.blocks);
-end);
 
 #############################################################################
 ##
-#O FingerprintProjPlane(<blocks>)
+#O FingerprintProjPlane(<plane>)
 ##
 InstallMethod(FingerprintProjPlane,
-        [IsDenseList],
-        function(blocks)
+        [IsRecord],
+        function(plane)
     local   nrOfBlocks,  mat,  points,  point,  lblocks,  
             lblocksindex,  linenr,  line,  permlist,  pointnr;
     
-    if not IsSet(blocks) and ForAll(blocks,IsSet)
+    if not IsProjectivePlane(plane)
       then
-        Error("blocklist must be a set of sets");
+        Error("this is not a projective plane");
     fi;
-    nrOfBlocks:=Size(blocks);
-    mat:=NullMat(nrOfBlocks,nrOfBlocks);
-    points:=Set(Flat(blocks));
-    for point in points
+    mat:=NullMat(plane.v,plane.v);
+    for point in [1..plane.v]
       do
-        lblocks:=Set(Filtered(blocks,b->point in b));
-        lblocksindex:=Set(lblocks,b->PositionSet(blocks,b));
-        for linenr in Difference([1..nrOfBlocks],lblocksindex)
+        lblocks:=Set(Filtered(plane.blocks,b->point in b));
+        lblocksindex:=Set(lblocks,b->PositionSet(plane.blocks,b));
+        for linenr in Difference([1..plane.v],lblocksindex)
           do
-            line:=blocks[linenr];
+            line:=plane.blocks[linenr];
             permlist:=[1..Size(line)];
             for pointnr in [1..Size(line)]
               do
@@ -1181,34 +1051,37 @@ end);
 
 #############################################################################
 ##
-#O IsomorphismProjPlanesByGenerators(<gens1>,<data1>,<gens2>,<data2>)
+#O IsomorphismProjPlanesByGenerators(<gens1>,<plane1>,<gens2>,<plane2>)
 ##
 InstallMethod(IsomorphismProjPlanesByGenerators,
         "for projective planes",
         [IsDenseList,IsRecord,IsDenseList,IsRecord],
-        function(gens1,data1,gens2,data2)
+        function(gens1,plane1,gens2,plane2)
     local   N,  hasfailed;
     
-    N:=Size(data1.points);
+    if Size(gens1)<>Size(gens2)
+       then
+        Error("<gens1> and <gens2> must be of the same length!");
+    fi;
+    if not IsProjectivePlane(plane1) and IsProjectivePlane(plane2)
+       then
+        Error("plane1 and plane2 must be projective planes");
+    fi;
+    N:=plane1.v;
     hasfailed:=false;
-    if not Size(data2.points)=N
+    if not plane2.v=N
        then
         Error("The planes must be of the same size");
         hasfailed:=true;
     fi;
-    if not data1.points=data2.points
-       then 
-        Error("The planes must live on the same points");
-        hasfailed:=true;
-    fi;
-    if (not Size(ProjectiveClosureOfPointSet(gens1,0,data1))=N)
-       or (not Size(ProjectiveClosureOfPointSet(gens2,0,data2))=N)
+    if ProjectiveClosureOfPointSet(gens1,0,plane1).closure.v<>N
+       or ProjectiveClosureOfPointSet(gens2,0,plane2).closure.v<>N
       then
         hasfailed:=true;
     fi;
     if not hasfailed 
        then
-        return IsomorphismProjPlanesByGeneratorsNC(gens1,data1,gens2,data2);
+        return IsomorphismProjPlanesByGeneratorsNC(gens1,plane1,gens2,plane2);
     else 
         return fail;
     fi;
@@ -1216,12 +1089,12 @@ end);
       
 #############################################################################
 ##
-#O IsomorphismProjPlanesByGeneratorsNC(<gens1>,<data1>,<gens2>,<data2>)
+#O IsomorphismProjPlanesByGeneratorsNC(<gens1>,<plane1>,<gens2>,<plane2>)
 ##
 InstallMethod(IsomorphismProjPlanesByGeneratorsNC,
         "for projective planes",
         [IsDenseList,IsRecord,IsDenseList,IsRecord],
-        function(gens1,data1,gens2,data2)
+        function(gens1,plane1,gens2,plane2)
     local   newpoints,  oldpoints,  newblocks,  pointimagelist,  
             blockimagelist,  pair,  oldblocks,  x,  iso;
     
@@ -1229,15 +1102,20 @@ InstallMethod(IsomorphismProjPlanesByGeneratorsNC,
        then
         Error("<gens1> and <gens2> must be of the same length!");
     fi;
+    if not (IsProjectivePlane(plane1) and IsProjectivePlane(plane2))
+       then
+        Error("plane1 and plane2 must be projective planes");
+    fi;
+    
     newpoints:=[];
     oldpoints:=Set(gens1);
     newblocks:=[];
-    pointimagelist:=ListWithIdenticalEntries(Size(data2.points),0);
+    pointimagelist:=ListWithIdenticalEntries(plane2.v,0);
     pointimagelist{gens1}:=gens2;
-    blockimagelist:=ListWithIdenticalEntries(Size(data2.blocks),0);
+    blockimagelist:=ListWithIdenticalEntries(plane2.v,0);
     newblocks:=Set(Combinations(oldpoints,2),i->
-                   [data1.jblock[i[1]][i[2]],
-                    data2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]]);
+                   [plane1.jblock[i[1]][i[2]],
+                    plane2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]]);
     if Size(Set(newblocks,i->i[1]))<>Size(Set(newblocks,i->i[1]))
        then
         Info(DebugRDS,2,"bad generators");
@@ -1251,11 +1129,11 @@ InstallMethod(IsomorphismProjPlanesByGeneratorsNC,
     oldblocks:=[];
     repeat
         newpoints:=Set(Cartesian(oldblocks,newblocks),i->
-                       [Intersection(data1.blocks[i[1]],data1.blocks[i[2]])[1],
-                        Intersection(data2.blocks[blockimagelist[i[1]]],data2.blocks[blockimagelist[i[2]]])[1]]);
+                       [Intersection(plane1.blocks[i[1]],plane1.blocks[i[2]])[1],
+                        Intersection(plane2.blocks[blockimagelist[i[1]]],plane2.blocks[blockimagelist[i[2]]])[1]]);
         UniteSet(newpoints,List(Combinations(newblocks,2),i->
-                [Intersection(data1.blocks[i[1]],data1.blocks[i[2]])[1],
-                 Intersection(data2.blocks[blockimagelist[i[1]]],data2.blocks[blockimagelist[i[2]]])[1]]));
+                [Intersection(plane1.blocks[i[1]],plane1.blocks[i[2]])[1],
+                 Intersection(plane2.blocks[blockimagelist[i[1]]],plane2.blocks[blockimagelist[i[2]]])[1]]));
         for pair in newpoints
           do
             x:=pair[1];
@@ -1273,12 +1151,12 @@ InstallMethod(IsomorphismProjPlanesByGeneratorsNC,
             newpoints:=Difference(Set(newpoints,i->i[1]),oldpoints);
             UniteSet(oldblocks,newblocks);
             newblocks:=Set(Cartesian(oldpoints,newpoints),i->
-                           [data1.jblock[i[1]][i[2]],
-                            data2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]]
+                           [plane1.jblock[i[1]][i[2]],
+                            plane2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]]
                            );
             UniteSet(newblocks,List(Combinations(newpoints,2),i->
-                    [data1.jblock[i[1]][i[2]],
-                     data2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]
+                    [plane1.jblock[i[1]][i[2]],
+                     plane2.jblock[pointimagelist[i[1]]][pointimagelist[i[2]]]
                      ]
                     ));
             for pair in newblocks
@@ -1298,8 +1176,8 @@ InstallMethod(IsomorphismProjPlanesByGeneratorsNC,
             newpoints:=[];
         fi;
     until newpoints=[];    
-    iso:=PermListList(data1.points,pointimagelist);
-    if IsPerm(iso) and IsIsomorphismOfProjectivePlanes(iso,data1.blocks,data2.blocks)
+    iso:=PermListList([1..plane1.v],pointimagelist);
+    if IsPerm(iso) and IsIsomorphismOfProjectivePlanes(iso,plane1,plane2)
        then
         return iso;
     else 

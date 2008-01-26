@@ -1,6 +1,6 @@
 \Chapter{An Example Program}
 
-Here is a similar example to that in chapter "RDS:A quick start". But
+Here is a similar example to that in chapter "RDS:A basic example". But
 now we do a little more handwork to see how things work.  Now we will
 calculate the relative difference sets of ``Dembowski-Piper type d''
 and order $16$. These difference sets represent projective planes
@@ -8,7 +8,7 @@ which admit a quasiregular collineation group such that the fixed
 structure is an anti-flag. See \cite{DembowskiPiper}, \cite{Dembowski}
 or \cite{RoederDiss} for details.
 
-To have a little more output, you may want to increase `InfoRDS':
+To have a little more output, you may want to increase "InfoRDS":
 \begintt
 gap> SetInfoLevel(InfoRDS,3);
 \endtt
@@ -40,7 +40,7 @@ gap> sigdat:=SignatureDataForNormalSubgroups(normals,globalSigData,
 
 The last step gives better results, if a larger <maxtest> is chosen.
 But it also takes more time. To find a suitable <maxtest>, the output
-of `SignatureDataForNormalSubgroups' can be used, if
+of "SignatureDataForNormalSubgroups" can be used, if
 `InfoLevel(InfoRDS)' is at least $2$. Note that for recalculating
 signatures, you will have to reset <globalSigData> to `[]'. Try experimenting
 with <maxtest> to see the effect of signatures for the generation of
@@ -48,7 +48,7 @@ startsets.
 
 Now examine the signatures found. Look if there is a normal subgroup
 which has only one admissible signature (of course, you can also use
-`NormalSgsHavingAtMostNSigs' here):
+"NormalSgsHavingAtMostNSigs" here):
 
 \beginexample
 gap> Set(Filtered(sigdat,s->Size(s.sigs)=1 and Size(s.sigs[1])<=5),i->i.sigs);
@@ -89,7 +89,7 @@ Observe that $1$ is assumed to be element of every difference set and
 is not recorded explicitly. So the partial difference sets represented
 by $ssets$ at this point are {\tt[ [ 1, 3 ], [ 1, 4 ] ]}. Now the
 startsets are extended to size $7$ using elements of $Up$. The runtime
-varies depending on the output of `SignatureDataForNormalSubgroups'
+varies depending on the output of "SignatureDataForNormalSubgroups"
 and hence on $maxtest$.
 %notest
 \beginexample
@@ -112,14 +112,14 @@ gap> repeat
 gap> Size(ssets);
 192
 \endexample
-At a higher level of `InfoRDS', the number of start sets which are
+At a higher level of "InfoRDS", the number of start sets which are
 discarded because of wrong signatures are also shown.
 Now the cosets are changed. Here we use the `NoSort' version of
-`RaiseStartSetLevel'.  This leads to a lot of start sets in the first
+"ExtendedStartsets".  This leads to a lot of start sets in the first
 step. If the number of start sets in $U$ is very large, this could be
 too much for a reduction. Then the only option is using the brute
 force method. But also for the brute force search,
-`RaiseStartSetLevelNoSort' must be called first (remember that we chos
+"ExtendedStartSetsNoSort" must be called first (remember that we chos
 an enumeration of $G$ and assume the last element from each startset
 to be the largeset ``interesting'' one for further completions).
 

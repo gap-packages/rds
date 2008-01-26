@@ -5,46 +5,176 @@ relative difference sets in non-abelian groups. Of course, it also
 works for abelian groups, but no special features are implemented for
 this case. In particular, there is no support for multipliers.
 
-Furthermore, the focus is on difference sets defining projective
-planes. So {\RDS} contains some methods for analyzing projective
-planes but has no support for other designs. Nonetheless other designs
-may be constructed if they can be described in terms of  difference sets.
-
 {\RDS} has no undocumented functions. While this is generally regarded
 as a feature, it leads to a quite long manual and a lot of
-documentation not needed for everyday work. So each chapter has a
-short introduction helping you to distinguish the ``interesting'' features
-from the ``uninteresting'' ones.
+documentation not needed for everyday work. To make reading easier,
+all but the basic chapters contain a small introductory paragraph
+pointing out which functions may be interesting for the user and which
+are merely helper functions called by other functions.
 
-For a quick overview, see chapter "RDS:A quick start".
+The structure of this manual is a follows: First, there is a chapter
+about brute force methods which are easy to use but are not suitable
+for very difficult calculations.
 
-The package is entirely written in {\GAP}. So it should run on every
-computer that runs {\GAP}.
+Then, chapter "RDS:A basic example" shows the use of the more advanced
+methods in \package{RDS} and explains the basic idea of a complete
+search for difference sets with this package. After reading this
+chapter, you should be able to use \package{RDS} even for large
+examples. 
+
+The following chapters "RDS:General concepts" and "RDS:Invariants for
+Difference Sets" contain the documentation of the functions used in a
+search for difference sets. They explain the concepts and low level
+functions which provide a lot of control over the searching process. If
+you are searching for difference sets in several groups of the same
+order, you may find this helpful.
+
+The next chapter shows an example of calculating a relative
+difference set using low level functions.
+
+Chapter "RDS:Ordered Signatures" introduces another invariant for
+difference sets. The functions for calculating this invariant do only
+work effectively in a few cases, so this part of \package{RDS} is a
+little bit experimental. However, the invariant is very powerful, so
+this chapter is kept.
+
+In "RDS:Block Designs and Projective Planes", the methods for
+generating a BlockDesign in the sense of \package{DESIGN} \cite{DESIGN} from a
+difference set are described. A few functions for analyzing projective
+planes are given as well.
+
+The final chapter describes a few functions which are not related to
+difference sets and may be useful in other situations.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Acknowledgements}
+
+I would like to thank U.~Dempwolff for supervising the thesis out of
+which \package{RDS} grew, and L.~Soicher for many suggestions which
+greatly improved the usability of this package.
+
 
 %%%%%%%%%%%%%%%%%%%%%%
 \Section{Installation}
 
-Just copy the archive to the directory where the other packages live .
-For example, {\tt gap/pkg/} in your home directory. Or use the {\tt
-  pkg/} directory in one of the paths from the \GAP variable {\tt
-  GAP_ROOT}.
+\package{RDS} depends on Leonard Soicher's \package{DESIGN} \cite{DESIGN} package
+which, in turn, depends on \package{GRAPE} \cite{GRAPE}. You need to install these
+packages before you can run \package{RDS}.
 
-Then call \GAP and type
-
-\beginexample
-gap> LoadPackage("rds");
-----------------------------------------------------------------
-Loading  RDS 0.9beta5
-by Marc Roeder
-For help, type: ?RDS
-----------------------------------------------------------------
-true
-\endexample
-
-For a test, see the example in chapter "RDS:A quick start".
+\beginlist%ordered{1}
+\item{1.} Download the package archive rds$ ver$ .$ ext$
+   where $ver$ is some version number and $ext$ is an extension like tar.bz2,
+   tar.gz, -win.zip or zoo.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item{2.} Copy the archive to the directory where the other packages live.
+   This is either the directory `pkg' in the GAP root path or a local directory in your home 
+   directory (on most unix-like systems, this will probably be {`\~{}/gap/pkg/'}).
+
+\item{3.} change directory to your package directory and unpack the
+archive by using the right one of the following commands:
+%
+  \itemitem{} %unordered{}
+                    tar -xjf rds<ver>.tar.bz2
+  \itemitem{}tar -xzf rds<ver>.tar.gz
+  \itemitem{}zoo -extract rds<ver>.zoo 
+  \itemitem{}unzip rds<ver>-win.zip 
+
+(replace $ver$ with the version number)
+
+\item{4.}%ordered{}
+  start GAP. If you have unpacked the archive to 'gap/pkg' in your
+  home directory, you might have to use ''gap -l '$homedir$/gap;' ''
+  where $homedir$ is the path of your home directory (use 'pwd' to
+  find out what it is, if you don't know it)
+
+\item{5.} Type `LoadPackage("rds");' to load \package{RDS}
+
+\endlist
+%
+For a test, see the examples in chapters "RDS:AllDiffsets and
+OneDiffset" and "RDS:A basic example".
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Verbosity}
+
+There are two info classes that control the about of additional
+information \package{RDS} prints:
+
+\Declaration{InfoRDS}
+\Declaration{DebugRDS}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Definitions and Objects}
+
+This section lists the definition of ordinary and relative difference
+sets as well as the concept of partial difference sets and their
+development.  This will be repeated in "RDS:Introduction" where a
+notion of equivalence is introduced and the implementation in
+\package{RDS} is discussed.
+
+%\input rdsshort
+Let $G$ be a finite group and $N\subseteq G$. The set $R\subseteq G$
+with $|R|=k$ is called a ``relative difference set of order
+$k-\lambda$ relative to the forbidden set $N$'' if the following
+properties hold:
+
+\beginlist%ordered{(a)}
+\item{(a)} The multiset $\{ a.b^{-1}\colon a,b\in R\}$ contains
+  every nontrivial ($\neq 1$) element of $G-N$ exactly $\lambda$
+  times.  
+\item{(b)} $\{ a.b^{-1}\colon a,b\in R\}$ does not contain
+  any non-trivial element of $N$.
+\endlist
+
+Let $D\subseteq G$ be a difference set, then the incidence structure
+with points $G$ and blocks $\{Dg\;|\;g\in G\}$ is called the
+*development* of $D$. In short:  ${\rm dev} D$. Obviously, $G$ acts on
+${\rm dev}D$ by multiplication from the right.
+
+Relative difference sets with $N=1$ are called (ordinary) difference
+sets. The development of a difference set with $N=1$ and $\lambda=1$
+is projective plane of order $k-1$.
+
+In group ring notation a relative difference set satisfies
+$$
+RR^{-1}=k+\lambda(G-N).
+$$
+
+The set $D\subseteq G$ is called *partial relative difference set*
+with forbidden set $N$, if
+$$
+    DD^{-1}=\kappa+\sum_{g\in G-N}v_gg   
+$$ 
+
+holds for some $1\leq\kappa\leq k$ and $0\leq v_g \leq \lambda$ for
+all $g\in G-N$.  If $D$ is a relative difference set then ,obviously,
+$D$ is also a partial relative difference set.
+
+
+*IMPORTANT NOTE*
+
+\package{RDS} implicitly assumes that the *every* partial difference
+set contains the identity element (see the notion of equivalence in
+"RDS:Introduction" for the mathematical reason). However, the identity
+*must not* be contained in the lists representing partial relative
+difference sets.
+
+So in \package{RDS}, the difference set `[ (), (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]' is represented by the list `[ (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]'. And no set of three non-trivial permutations will
+be accepted as an ordinary difference set of `Group((1,2,3,4,5,6,7))'.
+
+For this reason the lists returned by functions like "AllDiffsets" do
+only contain non-trivial elements and look too short.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%E ENDE 
 %%
-%E
+
 

@@ -15,10 +15,10 @@ Subtitle := "A package for searching relative difference sets",
 ##  See '?Extending: Version Numbers' in GAP help for an explanation
 ##  of valid version numbers. For an automatic package distribution update
 ##  you must provide a new version number even after small changes.
-Version := "0.9beta21",
-Date := "15/11/2006",
+Version := "1.0",
+Date := "26/01/2008",
 
-ArchiveURL := "http://www.mathematik.uni-kl.de/~roeder/rds/rds0_9beta21",
+ArchiveURL := "http://www.mathematik.uni-kl.de/~roeder/rds/rds1_0",
 
 
 ##  All provided formats as list of file extensions, separated by white
@@ -34,7 +34,7 @@ ArchiveURL := "http://www.mathematik.uni-kl.de/~roeder/rds/rds0_9beta21",
 ##  In the future we may also provide .deb or .rpm formats which allow
 ##  a convenient installation and upgrading on Linux systems.
 ##  
-ArchiveFormats := ".zoo,.tar.gz,.tar.bz2,-win.zip", # the others are generated automatically
+ArchiveFormats := ".tar.gz,.tar.bz2,-win.zip", # the others are generated automatically
 
 
 ##  If not all of the archive formats mentioned above are provided, these 
@@ -99,13 +99,13 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "marc_roeder@web.de",
-    WWWHome       := "http://www.mathematik.uni-kl.de/~roeder",
-    PostalAddress := "",#Concatenation( [
-                       #"AG 2, Fachbereich Mathematik, TU Darmstadt\n",
-                       #"Schlossgartenstr. 7, 64289 Darmstadt\n",
-                       #"Germany" ] ),
-    Place         := "Kaiserslautern",
-    Institution   := "TU Kaiserslautern"
+    WWWHome       := "http://www.maths.nuigalway.ie/~roeder",
+    PostalAddress := Concatenation( [
+                       "Department of Mathematics\n",
+                       "NUI Galway\n",
+                       "Ireland" ] ),
+    Place         := "Galway",
+    Institution   := "NUI Galway"
   ),
 # provide such a record for each author and/or maintainer ...
   
@@ -118,17 +118,14 @@ Persons := [
 ##    "dev"           for development versions of packages 
 ##    "other"         for all other packages
 ##
-# Status := "accepted",
-Status := "deposited",
+Status := "accepted",
 
 ##  You must provide the next two entries if and only if the status is 
 ##  "accepted" because is was successfully refereed:
 # format: 'name (place)'
-# CommunicatedBy := "Mike Atkinson (St. Andrews)",
-#CommunicatedBy := "",
+CommunicatedBy := "Leonard Soicher (Queen Mary, London)",
 # format: mm/yyyy
-# AcceptDate := "08/1999",
-#AcceptDate := "",
+AcceptDate := "01/2008",
 
 ##  For a central overview of all packages and a collection of all package
 ##  archives it is necessary to have two files accessible which should be
@@ -140,8 +137,8 @@ Status := "deposited",
 ##  the updating of package information on the GAP Website, and inclusion
 ##  and updating of the package in the GAP distribution.
 #
-README_URL := "http://www.mathematik.uni-kl.de/~roeder/rds/README.rds",
-           PackageInfoURL := "http://www.mathematik.uni-kl.de/~roeder/rds/PackageInfo.g",
+README_URL := "http://www.maths.nuigalway.ie/~roeder/rds/README.rds",
+PackageInfoURL := "http://www.maths.nuigalway.ie/~roeder/rds/PackageInfo.g",
 
 ##  Here you  must provide a short abstract explaining the package content 
 ##  in HTML format (used on the package overview Web page) and an URL 
@@ -157,7 +154,7 @@ AbstractHTML := "This package provides functions for the complete enumeration of
 #   is an example of how to create a <span class=\"pkgname\">GAP</span> \
 #   package. It has little functionality except for being a package",
 
-PackageWWWHome := "http://www.mathematik.uni-kl.de/~roeder",
+PackageWWWHome := "http://www.maths.nuigalway.ie/~roeder",
                
 ##  Here is the information on the help books of the package, used for
 ##  loading into GAP's online help and maybe for an online copy of the 
@@ -186,8 +183,7 @@ PackageWWWHome := "http://www.mathematik.uni-kl.de/~roeder",
 ##  position of the files as in a standard GAP installation.
 ##  
 # in case of several help books give a list of such records here:
-           
-PackageDoc := rec(
+           PackageDoc := rec(
   # use same as in GAP
   BookName  := "RDS",
   ArchiveURLSubset := ["doc", "htm"],
@@ -215,7 +211,7 @@ Dependencies := rec(
   # insensitive, least version denoted with '>=' prepended to version string.
   # without these, the package will not load
   # NeededOtherPackages := [["GAPDoc", ">= 0.99"]],
-  NeededOtherPackages := [],
+  NeededOtherPackages := [["DESIGN", ">=1.3"]],
   # without these the package will issue a warning while loading
   # SuggestedOtherPackages := [],
   SuggestedOtherPackages := [["AutPGrp",">=1.0"]],
@@ -265,9 +261,9 @@ AvailabilityTest := ReturnTrue,
 BannerString := Concatenation( 
   "----------------------------------------------------------------\n",
   "Loading  RDS ", ~.Version, "\n",
-  "by ", ~.Persons[1].FirstNames, " ", ~.Persons[1].LastName,
+  "by ", ~.Persons[1].FirstNames, " ", ~.Persons[1].LastName," (",
+  ~.Persons[1].Email,")",
         "\n",
-  "For help, type: ?RDS:About\n",
   "----------------------------------------------------------------\n" ),
 
 ##  Suggest here if the package should be *automatically loaded* when GAP is 
@@ -283,6 +279,6 @@ Autoload := false,
 ##  *Optional*: Here you can list some keyword related to the topic 
 ##  of the package.
 # Keywords := ["Smith normal form", "p-adic", "rational matrix inversion"]
-Keywords := ["relative difference sets","difference sets","projective planes"]
+Keywords := ["relative difference sets","finite geometries","projective planes"]
 
 ));

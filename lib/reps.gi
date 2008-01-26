@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -182,40 +182,40 @@ end);
 ##
 #O  NormalSubgroupsForRep( <groupdata>,<divisor> ) calculates normal subgroups to use with `OrderedSigs'
 ##
-InstallMethod(NormalSubgroupsForRep,
-        [IsMagmaWithInverses,IsInt],
-        function(group,divisor)
-    local   returnlist,  normals,  Nsg,  epi,  fgrp,  gens,  b,  a,  
-            rootorder,  m,  root;
-
-    returnlist:=[];
-    normals:=Set(Filtered(NormalSubgroups(group),i->
-                     (Index(group,i) mod divisor=0)
-                     and not Size(i)=Size(group) and not Size(i)=1 
-                     and not Index(group,i)=divisor)
-                 );
-    normals:=Filtered(normals,i->not IsAbelian(FactorGroup(group,i)));
-    for Nsg in normals
-      do
-        epi:=NaturalHomomorphismByNormalSubgroup(group,Nsg);
-        fgrp:=ImagesSource(epi);
-        fgrp:=FactorGroup(group,Nsg);
-        gens:=MinimalGeneratingSet(fgrp);
-        b:=First(gens,i->Order(i)=divisor);
-        a:=First(gens,i->Order(i)<>divisor);
-        if Size(gens)=2 and b<>fail and (a^b in Group(a))
-           then
-
-            rootorder:=Order(a);
-            m:=First([1..rootorder],i->
-                     (a^i=a^b and 1=i^divisor mod rootorder));
-            Add(returnlist,
-                rec(Nsg:=Nsg,alpha:=ANFAutomorphism(CF(rootorder),m),
-                         root:=E(rootorder),fgrp:=fgrp,epi:=epi,a:=a,b:=b));
-        fi;     
-    od; 
-    return returnlist;
-end);
+#InstallMethod(NormalSubgroupsForRep,
+#        [IsMagmaWithInverses,IsInt],
+#        function(group,divisor)
+#    local   returnlist,  normals,  Nsg,  epi,  fgrp,  gens,  b,  a,  
+#            rootorder,  m,  root;
+#
+#    returnlist:=[];
+#    normals:=Set(Filtered(NormalSubgroups(group),i->
+#                     (Index(group,i) mod divisor=0)
+#                     and not Size(i)=Size(group) and not Size(i)=1 
+#                     and not Index(group,i)=divisor)
+#                 );
+#    normals:=Filtered(normals,i->not IsAbelian(FactorGroup(group,i)));
+#    for Nsg in normals
+#      do
+#        epi:=NaturalHomomorphismByNormalSubgroup(group,Nsg);
+#        fgrp:=ImagesSource(epi);
+#        fgrp:=FactorGroup(group,Nsg);
+#        gens:=MinimalGeneratingSet(fgrp);
+#        b:=First(gens,i->Order(i)=divisor);
+#        a:=First(gens,i->Order(i)<>divisor);
+#        if Size(gens)=2 and b<>fail and (a^b in Group(a))
+#           then
+#
+#            rootorder:=Order(a);
+#            m:=First([1..rootorder],i->
+#                     (a^i=a^b and 1=i^divisor mod rootorder));
+#            Add(returnlist,
+#                rec(Nsg:=Nsg,alpha:=ANFAutomorphism(CF(rootorder),m),
+#                         root:=E(rootorder),fgrp:=fgrp,epi:=epi,a:=a,b:=b));
+#        fi;     
+#    od; 
+#    return returnlist;
+#end);
 
 #############################################################################
 ##
@@ -369,7 +369,7 @@ InstallMethod(OrderedSignatureOfSet,
     image:=Collected(List(set,i->table[i]));
     for i in image
       do
-        returnlist[i[1][1]][i[1][2]]:=i[2];
+        returnlist[i[1][2]][i[1][1]]:=i[2];
     od;
     return returnlist;
 end);

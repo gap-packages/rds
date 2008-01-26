@@ -1,5 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
+%% This file was modified by Marc Roeder (marc_roeder@web.de)
+%% The \printref command now prints a label like pkgname:labelname
+%% just as the online manual and the html manual do.
+%%
+%% This choice was made to have clickable function names in the html 
+%% version of the documentation of RDS. 
+%%
+%% Galway, 7th January 2008.
+%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
 %A  gapmacro.tex                GAP manual                   Frank Celler
 %A                                                           Heiko Theissen
 %A                                                           Alexander Hulpke
@@ -345,10 +358,20 @@
     {\let_\activeusc}%\protectedwrite{16}{Label `#1' multiply defined.}}%
   \let_\activeusc%\protectedwrite{16}{Defined label `#1'.}%
   \begingroup\edef_{|}\global\namedef{\xpandlowr}{#2}\endgroup}
+
+%%%%%%%%%% Changed the following paragraph:
+%\gdef\printref#1{\@xplowr{#1}%
+%  \@xp\ifx\csname r@\xpandlowr\endcsname\relax\lqq\xpandlowr''%
+%  \protectedwrite{16}{Label `#1' undefined.}\global\labundeftrue%
+%  \else\csname r@\xpandlowr\endcsname\fi\endgroup\let_\activeusc}
+%% to:
 \gdef\printref#1{\@xplowr{#1}%
   \@xp\ifx\csname r@\xpandlowr\endcsname\relax\lqq\xpandlowr''%
   \protectedwrite{16}{Label `#1' undefined.}\global\labundeftrue%
-  \else\csname r@\xpandlowr\endcsname\fi\endgroup\let_\activeusc}
+  \else {\tt#1}\fi\endgroup\let_\activeusc}
+%%%%%%%%%%
+%% End of changes.
+
 
 % Macros which write labels, citations and index entries on auxiliary files.
 \gdef\label#1{\@xplowr{#1}
