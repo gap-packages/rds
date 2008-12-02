@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -334,3 +334,9 @@ InstallGlobalFunction("SuitableAutomorphismsForReduction",
     Apply(cosets,c->GroupList2PermList(Set(c),Gdata));
     return [Intersection(Set(cosets,c->Stabilizer(Gdata.Ai,c,OnSets)))];
 end);
+
+
+#############################################################################
+##
+#E  END
+##

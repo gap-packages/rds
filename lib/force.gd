@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -103,3 +103,8 @@ DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsInt,IsDenseList,IsRecord]);
 DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsInt,IsDenseList,IsGroup,IsInt]);
 DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsInt,IsDenseList,IsRecord,IsInt]);
 
+
+#############################################################################
+##
+#E  END
+##

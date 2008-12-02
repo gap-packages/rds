@@ -7,7 +7,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -33,7 +33,7 @@ InstallMethod(AllDiffsets,
         [IsDenseList,IsDenseList,IsPosInt,IsDenseList,IsRecord,IsPosInt],
         function(diffset,completions,k,forbidden,data,lambda)
     local   FindDiffsetsB,  FindDiffsetsLambda,  founddiffsets,  
-            allpres,  setcomps;
+            allpres,  allpres_collpair,  setcomps;
     
     #There are two recursive functions. One for lambda=1 and one for other
     # lambda.
@@ -52,7 +52,7 @@ InstallMethod(AllDiffsets,
               do
                 diff2:=Concatenation(diffset,[i]);
                 newdiff_i_pres:=NewPresentables(diffset,i,diffTable);
-                diff2pres:=Union(allpres,newdiff_i_pres);
+                diff2pres:=AsSet(Concatenation(allpres,newdiff_i_pres));#Union(allpres,newdiff_i_pres);
                 newcomps:=[];
                 completions_for_diff_i:=Difference(completions, newdiff_i_pres);
                 pos:=PositionSorted(completions_for_diff_i,i);
@@ -89,10 +89,81 @@ InstallMethod(AllDiffsets,
     #And now for lambda>1.
     #######
     
-    FindDiffsetsLambda:=function(diffset,allpres,completions,forbidden,k,founddiffsets,diffTable,lambda)
-        local   depth,  i,  diff2,  newdiff_i_pres,  diff2pres,  
-                newcomps,  c,  tmppres;
+    FindDiffsetsLambda:=function(diffset,allpres_collpair,completions,forbidden,k,founddiffsets,diffTable,lambda)
+        local   updatedCollectedPair,  isCompatible,  depth,  i,  
+                diff2,  newdiff_i_pres,  diff2pres_collpair,  
+                newcomps,  ipos,  completions_for_diff_i,  c,  
+                tmppres,  diff2pres,  pointer,  multiplicity;
+        
+        ## take [List(coll,i->i[1]), List(coll,i->i[2])]
+        ## of coll=Collected(something)
+        ## and a list <list> and return [Aelts2,Amult2] if no element
+        ##  of Amult is larger then lambda and fail otherwise
+        updatedCollectedPair:=function(collpair,list,lambda)
+            local   listcoll,  newelts,  newmult,  mult_updated,  
+                    newpair,  el,  mult,  pos,  updatedmult,  
+                    returnelts,  returnmult;
 
+            listcoll:=Collected(list);
+            newelts:=[];
+            newmult:=[];
+            mult_updated:=ShallowCopy(collpair[2]);
+            for newpair in listcoll
+              do
+                el:=newpair[1];
+                mult:=newpair[2];
+                if mult>lambda
+                   then
+                    return fail;
+                fi;
+                pos:=PositionSet(collpair[1],el);
+                if pos<>fail
+                   then
+                    updatedmult:=collpair[2][pos]+mult;
+                    if updatedmult>lambda
+                       then
+                        return fail;
+                    else
+                        mult_updated[pos]:=updatedmult;
+                    fi;
+                else
+                    Add(newelts,el);
+                    Add(newmult,mult);
+                fi;
+            od;
+            returnelts:=Concatenation(collpair[1],newelts);
+            returnmult:=Concatenation(mult_updated,newmult);
+            SortParallel(returnelts,returnmult);
+            return [returnelts,returnmult];
+        end;
+        
+        ####################
+        # just check if collecting would give false or not:
+        
+        isCompatible:=function(collected_pair,list,lambda)
+            local   listcoll,  newpair,  el,  mult,  Apos;
+            
+            listcoll:=Collected(list);
+            for newpair in listcoll
+              do
+                el:=newpair[1];
+                mult:=newpair[2];
+                if mult>lambda
+                   then
+                    return false;
+                else
+                    Apos:=PositionSet(collected_pair[1],el);
+                    if Apos<>fail and collected_pair[2][Apos]+mult>lambda
+                       then
+                        return false;
+                    fi;
+                fi;
+            od;
+            return true;
+        end;
+        
+        ####################
+        
         depth:=Size(diffset);
         if depth+1=k
            then
@@ -106,28 +177,36 @@ InstallMethod(AllDiffsets,
                 # now we will calculate the parameters for recursion.
                 
                 newdiff_i_pres:=NewPresentables(diffset,i,diffTable);
-                diff2pres:=AsSortedList(Concatenation(allpres,newdiff_i_pres));
+                #diff2pres:=AsSortedList(Concatenation(allpres,newdiff_i_pres));
                 
+                diff2pres_collpair:=updatedCollectedPair(allpres_collpair,
+                                            newdiff_i_pres,lambda
+                                            );
                 # the list of all quotients of <diff2> (not containing 1)
                 
                 newcomps:=[]; #the set of possible completions for <diff2>.
-                for c in Filtered(completions,c->i<c) #completions_for_diff_i
+                
+                ipos:=PositionSorted(completions,i);
+                completions_for_diff_i:=completions{[ipos..Size(completions)]};
+                for c in completions_for_diff_i
                   do
                     tmppres:=NewPresentables(diff2,c,diffTable);
                     if Intersection(tmppres,forbidden)=[]
-                       and Maximum(Set(Collected(Concatenation(tmppres,diff2pres)),c->c[2]))<=lambda
+                       and 
+                       isCompatible(diff2pres_collpair,tmppres,lambda)
                        then
                         Add(newcomps,c);
                     fi;
                 od;
                 if (depth+1+Size(newcomps)>=k)
                    then
-#                if not Maximum(Set(Collected(AllPresentables(diff2,diffTable)),i->i[2]))<=lambda
-#                   then
-#                    Error("Something is terribly wrong!");
-#                fi;
+                if not Maximum(Set(Collected(AllPresentables(diff2,diffTable)),i->i[2]))<=lambda
+                   then
+                    Error("Something is terribly wrong!");
+                fi;
+                    
                     CallFuncList(FindDiffsetsLambda,
-                            [diff2,diff2pres,AsSet(newcomps),
+                            [diff2,diff2pres_collpair,AsSet(newcomps),
                              forbidden,k,founddiffsets,diffTable,lambda]); ## RECURSION !
                 fi;  ## in all other cases, the next i is processed
             od;
@@ -148,8 +227,11 @@ InstallMethod(AllDiffsets,
     allpres:=AllPresentables(diffset,data.diffTable);
     if lambda>1
        then
+        allpres_collpair:=[List(Collected(allpres),i->i[1]),
+                           List(Collected(allpres),i->i[2])
+                           ];
         setcomps:=RemainingCompletions(diffset,completions,forbidden,data.diffTable,lambda);
-        CallFuncList(FindDiffsetsLambda,[diffset,allpres,setcomps,forbidden,k,founddiffsets,data.diffTable,lambda]);
+        CallFuncList(FindDiffsetsLambda,[diffset,allpres_collpair,setcomps,forbidden,k,founddiffsets,data.diffTable,lambda]);
     elif lambda=1
       then
         setcomps:=RemainingCompletions(diffset,completions,forbidden,data.diffTable);

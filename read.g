@@ -7,6 +7,9 @@ ReadPackage( "RDS", "lib/sigs.gi" );
 ## tools for startset generation
 ReadPackage( "RDS", "lib/startsets.gi");
 
+## reduction methods:
+ReadPackage("RDS", "lib/ReducedStartsets.gi");
+        
 ## some development tools:
 ReadPackage( "RDS", "lib/misc.gi" );
 
@@ -21,3 +24,8 @@ ReadPackage( "RDS", "lib/designs.gi");
 ReadPackage( "RDS", "lib/plane_isomorphisms.gi");
 
 ReadPackage( "RDS", "lib/lazy.gi");
+
+#############################################################################
+##
+#E  END
+##
