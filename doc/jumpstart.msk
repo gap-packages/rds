@@ -32,9 +32,8 @@ group (and forbidden subgroup) and defining the parameters. Like this:
 \beginexample
 gap> LoadPackage("rds");
 ----------------------------------------------------------------
-Loading  RDS 0.9beta5
-by Marc Roeder
-For help, type: ?RDS
+Loading  RDS 1.2
+by Marc Roeder (marc_roeder@web.de)
 ----------------------------------------------------------------
 true
 gap> k:=9;;lambda:=1;;groupOrder:=81;;
@@ -107,9 +106,10 @@ gap> auts:=SuitableAutomorphismsForReduction(Gdata,U);
 [ <permutation group of size 303264 with 8 generators> ]
 gap> startsets:=StartsetsInCoset([],U,N,2,auts,sigdat,Gdata,lambda);
 #I  Size 18
-#I  1/ 0 @ 0:00:00.328
+#I  1/ 0 @ 0:00:00.071
 #I  Size 8
-#I  1/ 0 @ 0:00:00.180
+#I  1/ 0 @ 0:00:00.038
+#I  -->1 @ 0:00:00.042
 [ [ 4, 22 ] ]
 \endexample
 
@@ -144,24 +144,28 @@ gap> cosets:=RightCosets(G,U);
   RightCoset(Group( [ f1, f2, f3 ] ),f4^2) ]
 gap> startsets:=StartsetsInCoset(startsets,cosets[2],N,5,auts,sigdat,Gdata,lambda);
 #I  Size 27
-#I  1/ 0 @ 0:00:00.632
+#I  1/ 0 @ 0:00:00.127
 #I  Size 11
-#I  1/ 0 @ 0:00:00.260
-#I  Size 12
-#I  2/ 0 @ 0:00:00.340
-[ [ 4, 22, 5, 48, 59 ], [ 4, 22, 5, 59, 61 ] ]
+#I  1/ 0 @ 0:00:00.058
+#I  -->1 @ 0:00:03.311
+#I  Size 2
+#I  2/ 2 @ 0:00:00.015
+#I  -->2 @ 0:00:00.015
+[ [ 4, 22, 5, 28, 73 ], [ 4, 22, 5, 28, 77 ] ]
 \endexample
 And $3$ more from the last one (of course, we could also change to
 force, but it seems to work this way\dots).
 \beginexample
 gap> startsets:=StartsetsInCoset(startsets,cosets[3],N,8,auts,sigdat,Gdata,lambda);
 #I  Size 9
-#I  1/ 0 @ 0:00:00.300
+#I  1/ 0 @ 0:00:00.056
 #I  Size 1
-#I  1/ 1 @ 0:00:00.024
+#I  1/ 1 @ 0:00:00.006
+#I  -->1 @ 0:00:00.009
 #I  Size 1
-#I  1/ 1 @ 0:00:00.028
-[ [ 4, 22, 5, 48, 59, 29, 72, 78 ] ]
+#I  1/ 1 @ 0:00:00.006
+#I  -->1 @ 0:00:00.006
+[ [ 4, 22, 5, 28, 73, 37, 66, 78 ] ]
 \endexample
 
 So we found one difference set of order $9$ in the elementary abelian
@@ -169,8 +173,8 @@ group of order $81$. To get the difference set containing $1$
 explicitly and as a subset of $G$, say
 \beginexample
 gap> PermList2GroupList(Concatenation(startsets[1],[1]),Gdata); 
-[ f3, f1*f3^2, f4, f2*f3^2*f4, f1*f2^2*f3*f4, f2*f4^2, f1^2*f3^2*f4^2,
-f1^2*f2^2*f3*f4^2, <identity> of ... ]
+[ f3, f1*f3^2, f4, f2*f3*f4, f1*f2^2*f3^2*f4, f1^2*f4^2, f2*f3^2*f4^2, 
+  f1^2*f2^2*f3*f4^2, <identity> of ... ]
 \endexample
 
 {\bf (2)} Do a brute force search. Here we have to convert
@@ -195,8 +199,14 @@ gap> Size(foundsets);
 \endexample
 
 Now <foundsets> contains $162$ relative $(9,9,9,1)$-difference sets
-(represented by lists of length $8$). As we have see above, these are
-all equivalent.  
+(represented by lists of length $8$). These are all equivalent (as seen above). Equivalence can be tested like this:
+
+\beginexample
+gap> ReducedStartsets(foundsets,[Gdata.Aac],i->true,Gdata);
+#I  Size 162
+#I  1/ 0 @ 0:00:00.001
+[ [ 4, 22, 36, 39, 49, 50, 60, 61 ] ]
+\endexample
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%

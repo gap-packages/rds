@@ -106,8 +106,13 @@ InstallMethod(ReducedStartsets,
                 od;
                 reduceme:=Compacted(reduceme);
                 minrep:=Reversed(Minimum(List(conjugates,i->Reversed(i.pds))));
-                pos:=PositionSet(List(conjugates,i->i.pds),minrep);
-                Add(representatives,conjugates[pos]);
+                if Reversed(set.pds)<minrep
+                   then
+                    Add(representatives,set);
+                else
+                    pos:=PositionSet(List(conjugates,i->i.pds),minrep);
+                    Add(representatives,conjugates[pos]);
+                fi;
             else
                 Add(representatives,set);
             fi;
@@ -142,6 +147,10 @@ InstallMethod(ReducedStartsets,
 #                Print(Size(autgrp)," ",Size(partition[partitionpos]),"\n");
                 #                userep:= Minimum(Size(autgrp),maxorbitlength)>maxAutsizeForOrbitCalculation;
                 userep:=Size(autgrp)>maxAutsizeForOrbitCalculation;
+                if not partitionElt=partition[partitionpos]
+                   then
+                    Error("wer nicht programmieren kann, soll's lassen!");
+                fi;
                 partition[partitionpos]:=Set(oneReductionStep(partition[partitionpos],autgrp,userep));
             od;
         fi;
