@@ -15,10 +15,10 @@ Subtitle := "A package for searching relative difference sets",
 ##  See '?Extending: Version Numbers' in GAP help for an explanation
 ##  of valid version numbers. For an automatic package distribution update
 ##  you must provide a new version number even after small changes.
-Version := "1.2",
-Date := "03/06/2010",
+Version := "1.4",
+Date := "25/08/2011",
 
-ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/rds1_2",
+ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_4",
 
 
 ##  All provided formats as list of file extensions, separated by white
@@ -98,7 +98,7 @@ Persons := [
     FirstNames    := "Marc",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "marc_roeder@web.de",
+    Email         := "roeder.marc@gmail.com",
     WWWHome       := "http://csserver.evansville.edu/~mroeder",
 #    PostalAddress := Concatenation( [
 #                       "Department of Mathematics\n",
@@ -112,7 +112,7 @@ Persons := [
 ],
 
 ##  Status information. Currently the following cases are recognized:
-##    "accepted"      for successfully refereed packages
+##    "accepted      for successfully refereed packages
 ##    "deposited"     for packages for which the GAP developers agreed 
 ##                    to distribute them with the core GAP system
 ##    "dev"           for development versions of packages 
@@ -137,8 +137,8 @@ AcceptDate := "02/2008",
 ##  the updating of package information on the GAP Website, and inclusion
 ##  and updating of the package in the GAP distribution.
 #
-README_URL := "http://csserver.evansville.edu/~mroeder/rds/README.rds",
-           PackageInfoURL := "http://csserver.evansville.edu/~mroeder/rds/PackageInfo.g",
+README_URL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/README.rds",
+           PackageInfoURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/PackageInfo.g",
 
 ##  Here you  must provide a short abstract explaining the package content 
 ##  in HTML format (used on the package overview Web page) and an URL 
@@ -186,9 +186,9 @@ PackageWWWHome := "http://csserver.evansville.edu/~mroeder",
            PackageDoc := rec(
   # use same as in GAP
   BookName  := "RDS",
-  ArchiveURLSubset := ["doc", "htm"],
-  HTMLStart := "htm/chapters.htm",
-  PDFFile   := "doc/manual.pdf",
+  ArchiveURLSubset := ["gap4_5/doc", "gap4_5/htm"],
+  HTMLStart := "gap4_5/htm/chapters.htm",
+  PDFFile   := "gap4_5/doc/manual.pdf",
   # the path to the .six file used by GAP's help system
   SixFile   := "doc/manual.six",
   # a longer title of the book, this together with the book name should
@@ -206,7 +206,7 @@ PackageWWWHome := "http://csserver.evansville.edu/~mroeder",
 Dependencies := rec(
   # GAP version, use version strings for specifying exact versions,
   # prepend a '>=' for specifying a least version.
-  GAP := ">=4.4",
+  GAP := ">=4.5",
   # list of pairs [package name, (least) version],  package name is case
   # insensitive, least version denoted with '>=' prepended to version string.
   # without these, the package will not load
@@ -278,7 +278,6 @@ Autoload := false,
 
 ##  *Optional*: Here you can list some keyword related to the topic 
 ##  of the package.
-# Keywords := ["Smith normal form", "p-adic", "rational matrix inversion"]
 Keywords := ["relative difference sets","finite geometries","projective planes"]
 
 ));

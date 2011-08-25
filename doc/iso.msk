@@ -204,7 +204,7 @@ true
 %%%%%%%%%%%%%%%%%%%%
 \Section{Invariants for Projective Planes}
 
-The functions `NrFanoPlanesAtPoints', `pRank', `FingerprintAntiFlag'
+The functions `NrFanoPlanesAtPoints', `PRank@RDS', `FingerprintAntiFlag'
 and `FingerprintProjPlane' calculate invariants for finite projective
 planes. For more details see \cite{RoederDiss} and
 \cite{MoorhouseGraphs}. The values of some of these invariants are
@@ -222,7 +222,7 @@ gap> NrFanoPlanesAtPoints([3],P);
 [ [ 3, 240 ] ]
 \endexample
 \Declaration{IncidenceMatrix}
-\Declaration{pRank}
+\Declaration{PRank}
 \beginexample
 gap> G:=CyclicGroup(2^2+3);
 <pc group of size 7 with 1 generators>
@@ -231,9 +231,9 @@ gap> IncidenceMatrix(P);
 [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
   [ 1, 0, 0, 0, 0, 1, 1 ], [ 0, 0, 1, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 1, 1, 0 ], 
   [ 0, 1, 0, 0, 1, 0, 1 ] ]
-gap> pRank(P,3);
+gap> PRank@RDS(P,3);
 6
-gap> pRank(P,2);
+gap> PRank@RDS(P,2);
 4
 \endexample
 \Declaration{FingerprintProjPlane}
@@ -244,11 +244,11 @@ gap> NrFanoPlanesAtPoints([1,2,3],plane);
 [ [ 1, 240 ], [ 2, 240 ], [ 3, 240 ] ]
 gap> Set(NrFanoPlanesAtPoints([1..plane.v],plane),i->i[2])=[240];
 true
-gap> pRank(plane,2);
+gap> PRank@RDS(plane,2);
 10
-gap> pRank(plane,3);
+gap> PRank@RDS(plane,3);
 21
-gap> pRank(plane,5);
+gap> PRank@RDS(plane,5);
 20
 gap> FingerprintProjPlane(plane);
 [ [ 12, 420 ], [ 16, 21 ] ]

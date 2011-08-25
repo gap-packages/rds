@@ -6,7 +6,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -22,7 +22,7 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("rds/lib/plane_isomorphisms_gi"):=
+Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/plane_isomorphisms_gi"):=
 	"@(#)$Id$";
 ##############################################################################
 ###
@@ -947,7 +947,7 @@ end);
 ##
 #O pRank(<plane>,<p>)
 ##
-InstallMethod(pRank,
+InstallMethod(PRank@,
         "for projective planes",
         [IsRecord,IsInt],
         function(plane,p)

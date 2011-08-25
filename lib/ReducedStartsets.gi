@@ -7,7 +7,7 @@
 ##
 #H @(#)$Id$
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("rds/lib/ReducedStartsets_gi"):=
+Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/ReducedStartsets_gi"):=
 	"@(#)$Id$";
 #############################################################################
 ##
@@ -32,7 +32,7 @@ InstallMethod(ReducedStartsets,
         [IsDenseList,IsDenseList,IsFunction,IsMatrix],
         function(startsets,autlist,func,difftable)	
     local   Translates,  allConjugatesOrbit,  allConjugatesRep,  
-            oneReductionStep,  timetmp,  partition,  maxorbitlength,  
+            oneReductionStep,  timetmp,  partition,  
             partitionpos,  partitionElt,  autgrp,  userep;
     
     ####################    
@@ -110,15 +110,14 @@ InstallMethod(ReducedStartsets,
                    then
                     Add(representatives,set);
                 else
-                    pos:=PositionSet(List(conjugates,i->i.pds),minrep);
+                    pos:=PositionSet(Set(conjugates,i->i.pds),minrep);
                     Add(representatives,conjugates[pos]);
                 fi;
             else
                 Add(representatives,set);
             fi;
         od;
-        Sort(representatives);
-        return representatives;
+        return Set(representatives);
     end;
     
     ##############################
@@ -133,29 +132,26 @@ InstallMethod(ReducedStartsets,
     Info(InfoRDS,1,Size(partition),"/ ",Number(partition,p->Size(p)=1)," @",StringTime(Runtime()-timetmp));
     Apply(partition,SortedList);
     
-   # maxorbitlength:=Binomial(Size(difftable),Maximum(List(startsets,Size)));
     
     for partitionpos in [1..Size(partition)]
       do
         partitionElt:=partition[partitionpos];
-        #this is a set:
         Apply(partitionElt,i->rec(pds:=i,sorted:=AsSet(i),trans:=Translates(i,difftable)));
+        Sort(partitionElt);
         if Size(partitionElt)>1
            then
             for autgrp in autlist
               do
-#                Print(Size(autgrp)," ",Size(partition[partitionpos]),"\n");
-                #                userep:= Minimum(Size(autgrp),maxorbitlength)>maxAutsizeForOrbitCalculation;
-                userep:=Size(autgrp)>maxAutsizeForOrbitCalculation;
-                if not partitionElt=partition[partitionpos]
-                   then
-                    Error("wer nicht programmieren kann, soll's lassen!");
-                fi;
-                partition[partitionpos]:=Set(oneReductionStep(partition[partitionpos],autgrp,userep));
+                userep:=Size(autgrp)>MaxAutsizeForOrbitCalculation@;
+ #               if not partitionElt=partition[partitionpos]
+ #                  then
+ #                   Error("wer nicht programmieren kann, soll's lassen!");
+ #               fi;
+                partition[partitionpos]:=oneReductionStep(partition[partitionpos],autgrp,userep);
             od;
         fi;
     od;
-    return List(Concatenation(partition),i->i.pds);
+   return Set(Concatenation(partition),i->i.pds);
 end);
                 
 #############################################################################
