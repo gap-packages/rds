@@ -8,31 +8,31 @@
 \seccontents {3.1}{First Step: Integers instead of group elements} {8}
 \seccontents {3.2}{Signatures: An important tool} {9}
 \seccontents {3.3}{Change of coset vs. brute force} {10}
-\chapcontents {4}{General concepts}{11}
-\seccontents {4.1}{Introduction} {11}
-\seccontents {4.2}{How partial difference sets are represented} {12}
-\seccontents {4.3}{Basic functions for startset generation} {12}
-\seccontents {4.4}{Brute force methods} {16}
-\chapcontents {5}{Invariants for Difference Sets}{19}
-\seccontents {5.1}{The Coset Signature} {19}
-\seccontents {5.2}{An invariant for large lambda} {25}
-\seccontents {5.3}{Blackbox functions} {25}
-\chapcontents {6}{An Example Program}{28}
-\chapcontents {7}{Ordered Signatures}{31}
-\seccontents {7.1}{Ordered signatures by quotient images} {31}
-\seccontents {7.2}{Ordered signatures using representations} {32}
-\seccontents {7.3}{Definition} {33}
-\seccontents {7.4}{Methods for calculating ordered signatures} {33}
-\chapcontents {8}{Block Designs and Projective Planes}{36}
-\seccontents {8.1}{Isomorphisms and Collineations} {38}
-\seccontents {8.2}{Central Collineations} {39}
-\seccontents {8.3}{Collineations on Baer Subplanes} {40}
-\seccontents {8.4}{Invariants for Projective Planes} {41}
-\chapcontents {9}{Some functions for everyday use}{43}
-\seccontents {9.1}{Groups and actions} {43}
-\seccontents {9.2}{Iterators} {43}
-\seccontents {9.3}{Lists and Matrices} {44}
-\seccontents {9.4}{Cyclotomic numbers} {45}
-\seccontents {9.5}{Filters and Categories} {45}
-\chapcontents {}{Bibliography}{47}
-\chapcontents {}{Index}{48}
+\chapcontents {4}{General concepts}{12}
+\seccontents {4.1}{Introduction} {12}
+\seccontents {4.2}{How partial difference sets are represented} {13}
+\seccontents {4.3}{Basic functions for startset generation} {13}
+\seccontents {4.4}{Brute force methods} {17}
+\chapcontents {5}{Invariants for Difference Sets}{20}
+\seccontents {5.1}{The Coset Signature} {20}
+\seccontents {5.2}{An invariant for large lambda} {26}
+\seccontents {5.3}{Blackbox functions} {26}
+\chapcontents {6}{An Example Program}{29}
+\chapcontents {7}{Ordered Signatures}{32}
+\seccontents {7.1}{Ordered signatures by quotient images} {32}
+\seccontents {7.2}{Ordered signatures using representations} {33}
+\seccontents {7.3}{Definition} {34}
+\seccontents {7.4}{Methods for calculating ordered signatures} {34}
+\chapcontents {8}{Block Designs and Projective Planes}{37}
+\seccontents {8.1}{Isomorphisms and Collineations} {39}
+\seccontents {8.2}{Central Collineations} {40}
+\seccontents {8.3}{Collineations on Baer Subplanes} {41}
+\seccontents {8.4}{Invariants for Projective Planes} {42}
+\chapcontents {9}{Some functions for everyday use}{44}
+\seccontents {9.1}{Groups and actions} {44}
+\seccontents {9.2}{Iterators} {44}
+\seccontents {9.3}{Lists and Matrices} {45}
+\seccontents {9.4}{Cyclotomic numbers} {46}
+\seccontents {9.5}{Filters and Categories} {46}
+\chapcontents {}{Bibliography}{48}
+\chapcontents {}{Index}{49}

@@ -5,7 +5,7 @@
 ##  
 
 ##
-#H @(#)$Id: ReducedStartsets.gi, v 1.1 2008/12/02 18:26:19 gap Exp $
+#H @(#)$Id: ReducedStartsets.gi, v 1.2 2010/06/03 21:00:34 gap Exp $
 ##
 #Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
@@ -24,7 +24,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/ReducedStartsets_gi"):=
-	"@(#)$Id: ReducedStartsets.gi, v 1.1 2008/12/02   18:26:19  gap Exp $";
+	"@(#)$Id: ReducedStartsets.gi, v 1.2 2010/06/03   21:00:34  gap Exp $";
 #############################################################################
 ##
 InstallMethod(ReducedStartsets,
@@ -106,8 +106,13 @@ InstallMethod(ReducedStartsets,
                 od;
                 reduceme:=Compacted(reduceme);
                 minrep:=Reversed(Minimum(List(conjugates,i->Reversed(i.pds))));
-                pos:=PositionSet(List(conjugates,i->i.pds),minrep);
-                Add(representatives,conjugates[pos]);
+                if Reversed(set.pds)<minrep
+                   then
+                    Add(representatives,set);
+                else
+                    pos:=PositionSet(List(conjugates,i->i.pds),minrep);
+                    Add(representatives,conjugates[pos]);
+                fi;
             else
                 Add(representatives,set);
             fi;
@@ -142,6 +147,10 @@ InstallMethod(ReducedStartsets,
 #                Print(Size(autgrp)," ",Size(partition[partitionpos]),"\n");
                 #                userep:= Minimum(Size(autgrp),maxorbitlength)>maxAutsizeForOrbitCalculation;
                 userep:=Size(autgrp)>maxAutsizeForOrbitCalculation;
+                if not partitionElt=partition[partitionpos]
+                   then
+                    Error("wer nicht programmieren kann, soll's lassen!");
+                fi;
                 partition[partitionpos]:=Set(oneReductionStep(partition[partitionpos],autgrp,userep));
             od;
         fi;

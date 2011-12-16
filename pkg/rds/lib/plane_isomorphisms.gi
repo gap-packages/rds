@@ -4,7 +4,7 @@
 ##
 ##  Methods for calculations with projective planes
 ##
-#H @(#)$Id: plane_isomorphisms.gi, v 1.1 2008/12/02 18:26:19 gap Exp $
+#H @(#)$Id: plane_isomorphisms.gi, v 1.2 2010/06/03 21:00:34 gap Exp $
 ##
 #Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/plane_isomorphisms_gi"):=
-	"@(#)$Id: plane_isomorphisms.gi, v 1.1 2008/12/02   18:26:19  gap Exp $";
+	"@(#)$Id: plane_isomorphisms.gi, v 1.2 2010/06/03   21:00:34  gap Exp $";
 ##############################################################################
 ###
 ##O  DualPlane( <plane> )  generate dual plane
