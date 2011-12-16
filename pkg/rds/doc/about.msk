@@ -1,0 +1,50 @@
+\Chapter{About this package}
+
+The {\RDS} package is meant to help with complete searches for
+relative difference sets in non-abelian groups. Of course, it also
+works for abelian groups, but no special features are implemented for
+this case. In particular, there is no support for multipliers.
+
+Furthermore, the focus is on difference sets defining projective
+planes. So {\RDS} contains some methods for analyzing projective
+planes but has no support for other designs. Nonetheless other designs
+may be constructed if they can be described in terms of  difference sets.
+
+{\RDS} has no undocumented functions. While this is generally regarded
+as a feature, it leads to a quite long manual and a lot of
+documentation not needed for everyday work. So each chapter has a
+short introduction helping you to distinguish the ``interesting'' features
+from the ``uninteresting'' ones.
+
+For a quick overview, see chapter "RDS:A quick start".
+
+The package is entirely written in {\GAP}. So it should run on every
+computer that runs {\GAP}.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Installation}
+
+Just copy the archive to the directory where the other packages live .
+For example, {\tt gap/pkg/} in your home directory. Or use the {\tt
+  pkg/} directory in one of the paths from the \GAP variable {\tt
+  GAP_ROOT}.
+
+Then call \GAP and type
+
+\beginexample
+gap> LoadPackage("rds");
+----------------------------------------------------------------
+Loading  RDS 0.9beta5
+by Marc Roeder
+For help, type: ?RDS
+----------------------------------------------------------------
+true
+\endexample
+
+For a test, see the example in chapter "RDS:A quick start".
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%E
+

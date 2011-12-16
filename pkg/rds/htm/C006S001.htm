@@ -1,0 +1,157 @@
+<html><head><title>[RDS] 6.1 Ordered signatures by quotient images</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C006S000.htm">Up</a>] [<a href ="C006S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>6.1 Ordered signatures by quotient images</h1><p>
+<p>
+Let <i>D</i> &#8838; <i>G</i> be a relative difference set with parameters
+(<i>v</i>/<i>n</i>,<i>n</i>,<i>k</i>,&#955;) and forbidden set <i>N</i> &#8838; <i>G</i>. Let <i>U</i> &#8804; <i>G</i> be
+a normal subgroup such that <i>U</i> &#8838; <i>N</i>.
+<p>
+Then the coset signature (<i>v</i><sub>1</sub>,...,<i>v</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub>) of <i>D</i> has only the
+entries 1 (<i>k</i>- times) and 0 (&#124;<i>G</i>:<i>U</i>&#124;&#8722;<i>k</i>- times). And as in chapter
+<a href="../../rds/htm/C004S000.htm">RDS:Invariants for Difference Sets</a> we have
+<p>
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> </td><td nowrap="nowrap" align="center"><small></small><!--sup--><br /><font size="+3">&#8721;<br /></font><small><i>j</i></small>&nbsp;<br /></td><td nowrap="nowrap" align="center"><i>v</i><sub><i>j</i></sub> <i>v</i><sub><i>ij</i></sub> = &#955;(&#124;<i>U</i>&#124;&#8722;&#124;<i>g</i><sub><i>i</i></sub><i>U</i> &#8745;<i>N</i>&#124;)&nbsp;&nbsp;&nbsp;<span class="roman">for</span> &nbsp;<i>g</i><sub><i>i</i></sub> &#8713; <i>U</i> </td></tr></table></td></tr></table>
+<p>
+where <i>v</i><sub><i>ij</i></sub>=&#124;<i>D</i>&#8745;<i>g</i><sub><i>i</i></sub><i>g</i><sub><i>j</i></sub><i>U</i>&#124;.  If the forbidden set <i>N</i> is a
+subgroup of <i>G</i> we have &#124;<i>g</i><sub><i>i</i></sub><i>U</i>&#8745;<i>N</i>&#124; is either 0 or equal to
+&#124;<i>U</i>&#8745;<i>N</i>&#124;=&#124;<i>U</i>&#124;.
+<p>
+Let &#966;:<i>G</i>&#8594; <i>G</i>/<i>U</i> be the canonical epimorphism. Then <i>D</i><sup>&#966;</sup>
+is a relative difference set in <i>G</i>/<i>U</i> with forbidden set <i>N</i><sup>&#966;</sup> and
+parameters (<i>v</i>/<i>n</i>,<i>n</i>/&#124;<i>U</i>&#124;,<i>k</i>,&#124;<i>U</i>&#124;&#955;).
+<p>
+So the ordered signatures with respect to <i>U</i> are equivalent to the
+relative difference sets in <i>G</i>/<i>U</i>. Observe that we may not apply
+reduction in <i>G</i>/<i>U</i> using the full automorphismgroup of <i>G</i>/<i>U</i> but only
+the group induced by the stabiliser of <i>U</i> in the automorphism group
+of <i>G</i>. This is due to the fact that we use an ``induced'' notion of
+equivalence in <i>G</i>/<i>U</i> because we are interested in signatures and not
+primarily in difference sets in <i>G</i>/<i>U</i>.
+<p>
+<a name = "SSEC1"></a>
+<li><code>NormalSgsForQuotientImages( </code><var>forbidden</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+calculates all normal subgroups of <var>Gdata.G</var> which lie in <var>forbidden</var>.
+The returned value is a list of normal subgroups which define pairwise
+non-isomorphic factor groups.
+<p>
+<a name = "SSEC2"></a>
+<li><code>DataForQuotientImage( </code><var>normal</var><code>, </code><var>forbidden</var><code>, </code><var>k</var><code>, </code><var>lambda</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>Gdata</var> be the usual record for a group <i>G</i>. And let <var>k</var> and <var>lambda</var>
+be the parameters of the relative difference set we want to find. 
+Let then <var>forbidden</var> be the forbidden set (as a group or a list of group 
+elements or integers) and <var>normal</var> a normal subgroup of <i>G</i> which is
+contained in <var>forbidden</var>.
+<p>
+Then <code>DataForQuotientImage</code> returns a record containing the record 
+<var>.Gdata</var> of the factor group <i>G</i>/<i>U</i> where the automorphism group is the one
+induced by the stabiliser of <var>normal</var> in the automorphism group of <i>G</i>.
+Furthermore the returned record contains the forbidden set <var>.forbidden</var> in
+<i>G</i>/<i>U</i> and the new parameter <var>.lambda</var> for the difference set in <i>G</i>/<i>U</i>.
+<p>
+The data returned by <code>DataForQuotientImage</code> can be used to calculate
+difference sets in <i>G</i>/<i>U</i> in the way outlined in chapter <a href="../../rds/htm/C002S000.htm">RDS:A quick start</a>. A quotient image of a relative difference set has a larger
+&#955; than the initial difference set. So the following invariant
+can be used for the generation of difference sets:
+<p>
+<a name = "SSEC3"></a>
+<li><code>MultiplicityInvariantLargeLambda( </code><var>set</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>set</var> be a partial relative difference set with &#955; &gt; 1. 
+Set <code></code><var>P</var><code>:=AllPresentables(</code><var>set</var><code>,</code><var>Gdata</var><code>)</code> then the set of multiplicities
+of <var>P</var> is an invariant for partial relative difference sets.
+<p>
+<code>MultiplicityInvariantLargeLambda</code> returns a List in a form as <code>Collected</code>
+does.
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(7);;Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; AllPresentables([2,3],Gdata);
+[ 2, 3, 7, 2, 7, 6 ]
+gap&gt; MultiplicityInvariantLargeLambda([2,3],Gdata);
+[ [ 1, 2 ], [ 2, 2 ] ]
+</pre>
+<p>
+This invariant can be used for <code>ReducedStartSets</code> complementary to the
+signature invariant by defining
+<pre>
+gap&gt; partfunc:=function(list)
+&gt; local sig;                                           
+&gt; if sig=fail
+&gt; then return fail;
+&gt; fi;
+&gt; return [MultiplicityInvariantLargeLambda(list,Gdata),SigInvariant(list,sigdata)];
+&gt; end;
+function( list ) ... end
+</pre>
+<p>
+and then passing <var>partfunc</var> to <code>ReducedStartSets</code>. Of course, sigdata
+has to be the list of records defining the coset signatures (see
+section <a href="../../rds/htm/C004S001.htm">RDS:The Coset Signature</a>)
+<p>
+After all difference sets are known, they must be converted
+into ordered signatures. This is done by the following function:
+<p>
+<a name = "SSEC4"></a>
+<li><code>OrderedSigsFromQuotientImages( </code><var>fGroupData</var><code>, </code><var>qimages</var><code>, </code><var>forbidden</var><code>, </code><var>normal</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>Gdata</var> be the usual record for a group <i>G</i> and <var>normal</var> a normal 
+subgroup of <i>G</i> which lies in the forbidden set <var>forbidden</var>.
+Let then <var>fGroupData</var> be the record <var>.Gdata</var> describing <i>G</i>/<i>normal</i>  as 
+returned by <code>DataForQuotientImage</code> and <var>qimages</var> a set of difference sets 
+in <i>G</i>/<i>normal</i> .
+<p>
+Then <code>OrderedSigsFromQuotientImages</code> returns a record containing a list of 
+ordered signatures <var>.orderedSigs</var> and a list of cosets <var>.cosets</var> as well as
+the factor group <var>.fg</var> defined by <var>fGroupData</var> and its full automorphism
+group <var>fgaut</var> and the image of <var>forbidden</var> in <var>.fg</var> is returned as <var>.Nfg</var>.
+<p>
+<a name = "SSEC5"></a>
+<li><code>MatchingFGDataForOrderedSigs( </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, </code><var>normalsgs</var><code>, </code><var>fgdata</var><code> ) O</code>
+<p>
+Let <var>fgdata</var> be a list of records of the form returned by 
+<code>OrderedSigsFromQuotientImages</code> and <var>normalsgs</var> a list of normal subgroups
+of the group <var>Gdata.G</var>. Furthermore let <var>forbidden</var> be the forbidden set
+as a list of group elements or integers or a subgroup of <var>Gdata.G</var>.
+<p>
+Then <code>MatchingFGDataForOrderedSigs</code> retruns all elements of <var>fgdata</var> which
+match a normal subgroup of <var>normalsgs</var>. The returned value is a record 
+containing the normal subgroup <var>.normal</var> from <var>normalsgs</var>, the record 
+<var>.sigdata</var> from <var>fgdata</var> and a homomorphism <var>.hom</var> which maps <var>Gdata.G</var> 
+onto <var>.sigdata.Gdata.G</var> and takes <var>forbidden</var> to <var>.sigdata.Nfg</var>.
+<p>
+<a name = "SSEC6"></a>
+<li><code>OrderedSigInvariant( </code><var>set</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+does the same as <code>SigInvariant</code>, but for ordered signatures. Here <var>data</var> 
+has to be a list of records containing ordered signatures called 
+<var>.orderedSigs</var> and cosets <var>.cosets</var> just as returned by
+<code>OrderedSigsFromQuotientImages</code>. 
+<p>
+Assume we have calculated ordered signatures and have stored them in a
+record <var>.osigs</var> and a list <var>normalSubgroupsData</var> as returned by
+<code>SignatureData</code> containing the admissible signatures.  A function for
+partitioning partial relative difference sets as required by
+<code>ReducedStartsets</code> can be defined as follows:
+<p>
+<pre>
+partitionfunc:=function(list)
+ local si, osi;
+  si:=SigInvariant(Union(list,[1]),normalSubgroupsData);
+  osi:=OrderedSigInvariant(Union(list,[1]),[osigs]);
+  if osi=fail or si=fail
+   then 
+    return fail;
+  else
+    return si;
+  fi;
+end;
+</pre>
+<p>
+<p>
+[<a href = "C006S000.htm">Up</a>] [<a href ="C006S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

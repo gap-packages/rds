@@ -1,0 +1,42 @@
+<html><head><title>[RDS] 2.1 First Step: Integers instead of group elements</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C002S000.htm">Up</a>] [<a href ="C002S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>2.1 First Step: Integers instead of group elements</h1><p>
+<p>
+Difference sets are represented by lists of integers. Every difference
+set is assumed to contain 1. This is assumed implicitly. So the
+lists representing difference sets <strong>must not</strong> contain 1 (a partial
+difference set of length <i>n</i> is hence represented by a list of length
+<i>n</i>&#8722;1).  If a partial difference set contains 1, many functions will
+produce errors.
+<p>
+To find Difference sets in a group, say <i>G</i>, begin with generating the
+group (and forbidden subgroup) and defining the parameters. Like this:
+<p>
+<pre>
+gap&gt; LoadPackage("rds");
+----------------------------------------------------------------
+Loading  RDS 0.9beta5
+by Marc Roeder
+For help, type: ?RDS
+----------------------------------------------------------------
+true
+gap&gt; k:=9;;lambda:=1;;groupOrder:=81;;
+gap&gt; forbiddenGroupOrder:=9;;
+gap&gt; G:=ElementaryAbelianGroup(groupOrder);
+&lt;pc group of size 81 with 4 generators&gt;
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap&gt; N:=Group(GeneratorsOfGroup(G){[1,2]});
+&lt;pc group with 2 generators&gt;
+gap&gt; Size(N)=forbiddenGroupOrder;   #just a test...
+true
+</pre>
+<p>
+Once we have calculated <var>Gdata</var>, this will be used very often to
+represent the group <var>G</var> as it contains much more information.
+<p>
+<p>
+[<a href = "C002S000.htm">Up</a>] [<a href ="C002S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

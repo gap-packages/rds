@@ -1,0 +1,33 @@
+<html><head><title>[RDS] 8.2 Iterators</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C008S000.htm">Up</a>] [<a href ="C008S001.htm">Previous</a>] [<a href ="C008S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>8.2 Iterators</h1><p>
+<p>
+<a name = "SSEC1"></a>
+<li><code>CartesianIterator( </code><var>tuplelist</var><code> ) O</code>
+<p>
+Returns an iterator for <code>Cartesian(</code><var>tuplelist</var><code>)</code>
+<p>
+<a name = "SSEC2"></a>
+<li><code>ConcatenationOfIterators( </code><var>iterlist</var><code> ) F</code>
+<p>
+<code>ConcatenationOfIterators(</code><var>iterlist</var><code>)</code> returns an iterator which runs 
+through all iterators in <var>iterlist</var>. Note that the returned iterator loops 
+over the iterators in <var>iterlist</var> <strong>sequentially</strong> beginning with the first 
+one.
+<p>
+<pre>
+gap&gt; it:=Iterator([1,2,3]);;
+gap&gt; it2:=CartesianIterator([[9,10],[11]]);;
+gap&gt; cit:=ConcatenationOfIterators([it,it2]);;
+gap&gt; repeat
+&gt; Print(NextIterator(cit),",\c");
+&gt; until IsDoneIterator(cit);
+1,2,3,[ 9, 11 ],[ 10, 11 ],
+</pre>
+<p>
+<p>
+[<a href = "C008S000.htm">Up</a>] [<a href ="C008S001.htm">Previous</a>] [<a href ="C008S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

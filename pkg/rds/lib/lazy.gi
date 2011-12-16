@@ -1,0 +1,182 @@
+#############################################################################
+##
+#W lazy.gi 			 RDS Package		 Marc Roeder
+##
+##  Some black-box functions for quick-and-dirty claculations
+##
+#H @(#)$Id: lazy.gi, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+##
+#Y	 Copyright (C) 2006 Marc Roeder 
+#Y 
+#Y This program is free software; you can redistribute it and/or 
+#Y modify it under the terms of the GNU General Public License 
+#Y as published by the Free Software Foundation; either version 2 
+#Y of the License, or (at your option) any later version. 
+#Y 
+#Y This program is distributed in the hope that it will be useful, 
+#Y but WITHOUT ANY WARRANTY; without even the implied warranty of 
+#Y MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+#Y GNU General Public License for more details. 
+#Y 
+#Y You should have received a copy of the GNU General Public License 
+#Y along with this program; if not, write to the Free Software 
+#Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+##
+Revision.("rds/lib/lazy_gi"):=
+	"@(#)$Id: lazy.gi, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+#############################################################################
+##
+#F StartsetsInCoset(<ssets>,<coset>,<forbiddenSet>,<aim>,<autlist>,<sigdat>,<data>,<lambda>)
+##
+InstallGlobalFunction("StartsetsInCoset",
+        function(ssets,coset,forbiddenSet,aim,autlist,sigdat,Gdata,lambda)
+    local   Np,  cosetP,  localssets,  comps,  timetmp,  partfunc;
+    
+    if IsListOfIntegers(forbiddenSet)
+       then
+        Np:=Set(forbiddenSet);
+    elif IsSubset(Gdata.G,forbiddenSet)
+      then
+        Np:=GroupList2PermList(Set(forbiddenSet),Gdata);
+    else
+        Error("forbidden set has the wrong form!");
+    fi;
+    if IsListOfIntegers(coset)
+      then
+        cosetP:=coset;
+    elif IsSubset(Gdata.G,coset)
+      then
+        cosetP:=GroupList2PermList(Set(coset),Gdata);
+    else
+        Error("normal subgroup has the wrong form!");
+    fi;
+        if not (IsInt(aim) and IsDenseList(autlist) and IsList(sigdat) and ForAll(sigdat,IsRecord))
+       then
+        Error("at least one of aim/autlist/sigdat is o wrong type");
+    fi;
+    if ssets<>[] and Size(ssets[1])>=aim 
+       then 
+        Error("startsets already too large!");
+    elif ssets<>[] and not Size(Set(ssets,Size))=1
+      then
+        Error("startsets are not of the same size");
+    fi;
+       
+    if not ForAll(ssets,IsListOfIntegers) and ForAll(ssets,s->IsSubset(Gdata.Glist,s))
+       then
+        localssets:=List(ssets,s->GroupList2PermList(s,Gdata));
+    elif ForAll(ssets,IsListOfIntegers)    
+      then
+        localssets:=StructuralCopy(ssets);
+    fi;
+    
+    if not (IsInt(lambda) and 1<=lambda)
+       then 
+        Error("lambda must be an integer >=1");
+    fi;
+    
+    if lambda>1 
+       then
+        partfunc:=function(set)
+            local   multiplicities,  siginvar;
+            multiplicities:=List(Collected(AllPresentables(set,Gdata)),i->i[2]);
+            siginvar:=SigInvariant(Union(set,[1]),sigdat);
+            return [Collected(multiplicities),siginvar];
+        end;
+    else
+        partfunc:=function(set)
+            return SigInvariant(Union(set,[1]),sigdat);
+        end;
+    fi;
+    
+    ## and now for the calculations:
+    
+    comps:=Difference(cosetP,Np); #the set of possible completions
+    if localssets=[]              #generate initial startsets
+       then                       # if none are given.
+        localssets:=Set(Difference(cosetP,Np),i->[i]);
+    elif ForAll(localssets,s->not s[Size(s)] in cosetP)
+      then                        #raise startset length by 1, disregarding
+        if lambda=1               # ordering of G.
+           then
+            localssets:=ExtendedStartsetsNoSort(localssets,comps,Np,aim,Gdata);
+        else
+            localssets:=ExtendedStartsetsNoSort(localssets,comps,Np,aim,Gdata,lambda);
+        fi;
+    elif ForAll(localssets,s->s[Size(s)] in cosetP)
+      then                        #the above step seems already to be done.
+    else                          # we do nothing here
+        Error("these startsets look strange!");
+    fi;
+    localssets:=ReducedStartsets(localssets,autlist,partfunc,Gdata.diffTable);
+            
+    #now startsets are completed using the ordering of G
+    # for <lambda>=1 there is a special function.
+    
+    if lambda=1
+       then
+        while localssets<>[] and Size(localssets[1])<aim
+          do
+            timetmp:=Runtime();
+            localssets:=ExtendedStartsets(localssets,comps,Np,aim,Gdata);
+            localssets:=ReducedStartsets(localssets,autlist,partfunc,Gdata.diffTable);
+            Info(InfoRDS,1,"-->",Size(localssets)," @", StringTime(Runtime()-timetmp));
+        od;
+    else
+        while localssets<>[] and Size(localssets[1])<aim
+          do
+            timetmp:=Runtime();
+            localssets:=ExtendedStartsets(localssets,comps,Np,aim,Gdata,lambda);
+            localssets:=ReducedStartsets(localssets,autlist,partfunc,Gdata.diffTable);
+            Info(InfoRDS,1,"-->",Size(localssets)," @", StringTime(Runtime()-timetmp));
+        od;
+    fi;
+    return localssets;
+end);
+        
+
+
+
+#############################################################################
+##
+#F SignatureData(<Gdata>,<globalSigData>,<forbiddenSet>,k,lambda,maxtest)
+##
+InstallGlobalFunction("SignatureData",
+        function(Gdata,forbiddenSet,k,lambda,maxtest)
+    
+    local   moretest,  discardedGlobalData,  normals;
+    if not IsRecord(Gdata) and IsInt(k) and IsInt(lambda) and IsInt(maxtest)
+       then
+        Error("wrong type of parameters");
+    fi;
+    moretest:=true;
+    discardedGlobalData:=[];
+    normals:=Filtered(NormalSubgroups(Gdata.G),g->Size(g) in [RootInt(Size(Gdata.G))..Size(Gdata.G)-1]);
+    return SignatureDataForNormalSubgroups(normals,discardedGlobalData,forbiddenSet,Gdata,[k,lambda,maxtest,moretest]);
+end);
+
+
+#############################################################################
+##
+#F NormalSgsHavingAtMostKSigs(<sigdata>,<n>,<lengthlist>)
+##
+InstallGlobalFunction("NormalSgsHavingAtMostNSigs",
+        function(sigdat,n,lengthlist)
+          
+    return Set(Filtered(sigdat,s->Size(s.sigs)<=n and Size(s.sigs[1]) in lengthlist),i->rec(subgroup:=i.subgroup,sigs:=i.sigs));
+end);
+
+
+#############################################################################
+##
+#F SuitableAutomorphismsForReduction(<Gdata>,<normalsg>)
+##
+##
+InstallGlobalFunction("SuitableAutomorphismsForReduction",
+        function(Gdata,normalsg)
+    local   cosets;
+    
+    cosets:=RightCosets(Gdata.G,normalsg);
+    Apply(cosets,c->GroupList2PermList(Set(c),Gdata));
+    return [Intersection(Set(cosets,c->Stabilizer(Gdata.Ai,c,OnSets)))];
+end);

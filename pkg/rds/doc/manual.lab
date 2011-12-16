@@ -1,0 +1,130 @@
+\makelabel{RDS:About this package}{1}
+\makelabel{RDS:Installation}{1.1}
+\makelabel{RDS:A quick start}{2}
+\makelabel{RDS:First Step: Integers instead of group elements}{2.1}
+\makelabel{RDS:Signatures: An important tool}{2.2}
+\makelabel{RDS:Change of coset vs. brute force}{2.3}
+\makelabel{RDS:General concepts}{3}
+\makelabel{RDS:Introduction}{3.1}
+\makelabel{RDS:How partial difference sets are represented}{3.2}
+\makelabel{RDS:Basic functions for startset generation}{3.3}
+\makelabel{RDS:PermutationRepForDiffsetCalculations}{3.3.1}
+\makelabel{RDS:PermutationRepForDiffsetCalculations}{3.3.1}
+\makelabel{RDS:GroupList2PermList}{3.3.2}
+\makelabel{RDS:PermList2GroupList}{3.3.3}
+\makelabel{RDS:NewPresentables}{3.3.4}
+\makelabel{RDS:NewPresentables}{3.3.4}
+\makelabel{RDS:NewPresentables}{3.3.4}
+\makelabel{RDS:NewPresentables}{3.3.4}
+\makelabel{RDS:AllPresentables}{3.3.5}
+\makelabel{RDS:AllPresentables}{3.3.5}
+\makelabel{RDS:RemainingCompletions}{3.3.6}
+\makelabel{RDS:RemainingCompletionsNoSort}{3.3.6}
+\makelabel{RDS:ExtendedStartsets}{3.3.7}
+\makelabel{RDS:ExtendedStartsetsNoSort}{3.3.7}
+\makelabel{RDS:A brute force method}{3.4}
+\makelabel{RDS:AllDiffsets}{3.4.1}
+\makelabel{RDS:Invariants for Difference Sets}{4}
+\makelabel{RDS:The Coset Signature}{4.1}
+\makelabel{RDS:CosetSignatureOfSet}{4.1.1}
+\makelabel{RDS:CosetSignatures}{4.1.2}
+\makelabel{RDS:CosetSignatures}{4.1.2}
+\makelabel{RDS:TestSignatureLargeIndex}{4.1.3}
+\makelabel{RDS:TestSignatureCyclicFactorGroup}{4.1.4}
+\makelabel{RDS:TestedSignatures}{4.1.5}
+\makelabel{RDS:TestedSignaturesRelative}{4.1.6}
+\makelabel{RDS:SigInvariant}{4.1.7}
+\makelabel{RDS:RDSFactorGroupData}{4.1.8}
+\makelabel{RDS:MatchingFGDataNonGrp}{4.1.9}
+\makelabel{RDS:MatchingFGData}{4.1.10}
+\makelabel{RDS:SignatureDataForNormalSubgroups}{4.1.11}
+\makelabel{RDS:ReducedStartsets}{4.1.12}
+\makelabel{RDS:ReducedStartsets}{4.1.12}
+\makelabel{RDS:maxAutsizeForOrbitCalculation}{4.1.13}
+\makelabel{RDS:Blackbox functions}{4.2}
+\makelabel{RDS:SignatureData}{4.2.1}
+\makelabel{RDS:NormalSgsHavingAtMostNSigs}{4.2.2}
+\makelabel{RDS:SuitableAutomorphismsForReduction}{4.2.3}
+\makelabel{RDS:StartsetsInCoset}{4.2.4}
+\makelabel{RDS:An Example Program}{5}
+\makelabel{RDS:Ordered Signatures}{6}
+\makelabel{RDS:Ordered signatures by quotient images}{6.1}
+\makelabel{RDS:NormalSgsForQuotientImages}{6.1.1}
+\makelabel{RDS:DataForQuotientImage}{6.1.2}
+\makelabel{RDS:MultiplicityInvariantLargeLambda}{6.1.3}
+\makelabel{RDS:OrderedSigsFromQuotientImages}{6.1.4}
+\makelabel{RDS:MatchingFGDataForOrderedSigs}{6.1.5}
+\makelabel{RDS:OrderedSigInvariant}{6.1.6}
+\makelabel{RDS:Ordered signatures using representations}{6.2}
+\makelabel{RDS:Definition}{6.3}
+\makelabel{RDS:Methods for calculating ordered signatures}{6.4}
+\makelabel{RDS:NormalSubgroupsForRep}{6.4.1}
+\makelabel{RDS:OrderedSigs}{6.4.2}
+\makelabel{RDS:OrderedSignatureOfSet}{6.4.3}
+\makelabel{RDS:Determining the Isomorphism Class of Projective Planes}{7}
+\makelabel{RDS:ElationPrecalc}{7}
+\makelabel{RDS:ElationPrecalcSmall}{7}
+\makelabel{RDS:DualPlane}{7}
+\makelabel{RDS:ProjectiveClosureOfPointSet}{7}
+\makelabel{RDS:Isomorphisms and Collineations}{7.1}
+\makelabel{RDS:IsIsomorphismOfProjectivePlanes}{7.1.1}
+\makelabel{RDS:IsCollineationOfProjectivePlane}{7.1.2}
+\makelabel{RDS:IsCollineationOfProjectivePlane}{7.1.2}
+\makelabel{RDS:IsomorphismProjPlanesByGenerators}{7.1.3}
+\makelabel{RDS:IsomorphismProjPlanesByGeneratorsNC}{7.1.3}
+\makelabel{RDS:Central Collineations}{7.2}
+\makelabel{RDS:ElationsByPairs}{7.2.1}
+\makelabel{RDS:ElationsByPairs}{7.2.1}
+\makelabel{RDS:ElationsByPairsSmall}{7.2.1}
+\makelabel{RDS:AllElationsCentAx}{7.2.2}
+\makelabel{RDS:AllElationsCentAx}{7.2.2}
+\makelabel{RDS:AllElationsCentAxSmall}{7.2.2}
+\makelabel{RDS:AllElationsAx}{7.2.3}
+\makelabel{RDS:AllElationsAx}{7.2.3}
+\makelabel{RDS:AllElationsAxSmall}{7.2.3}
+\makelabel{RDS:IsTranslationPlane}{7.2.4}
+\makelabel{RDS:IsTranslationPlaneSmall}{7.2.4}
+\makelabel{RDS:HomologyByPairSmall}{7.2.5}
+\makelabel{RDS:GroupOfHomologiesSmall}{7.2.6}
+\makelabel{RDS:Collineations on Baer Subplanes}{7.3}
+\makelabel{RDS:InducedCollineation}{7.3.1}
+\makelabel{RDS:Invariants for Projective Planes}{7.4}
+\makelabel{RDS:NrFanoPlanesAtPoints}{7.4.1}
+\makelabel{RDS:NrFanoPlanesAtPointsSmall}{7.4.2}
+\makelabel{RDS:IncidenceMatrix}{7.4.3}
+\makelabel{RDS:IncidenceMatrix}{7.4.3}
+\makelabel{RDS:pRank}{7.4.4}
+\makelabel{RDS:pRank}{7.4.4}
+\makelabel{RDS:FingerprintProjPlane}{7.4.5}
+\makelabel{RDS:FingerprintProjPlane}{7.4.5}
+\makelabel{RDS:FingerprintAntiFlag}{7.4.6}
+\makelabel{RDS:Some functions for everyday use}{8}
+\makelabel{RDS:Groups and actions}{8.1}
+\makelabel{RDS:OnSubgroups}{8.1.1}
+\makelabel{RDS:RepsCClassesGivenOrder}{8.1.2}
+\makelabel{RDS:Iterators}{8.2}
+\makelabel{RDS:CartesianIterator}{8.2.1}
+\makelabel{RDS:ConcatenationOfIterators}{8.2.2}
+\makelabel{RDS:Lists and Matrices}{8.3}
+\makelabel{RDS:IsListOfIntegers}{8.3.1}
+\makelabel{RDS:List2Tuples}{8.3.2}
+\makelabel{RDS:MatTimesTransMat}{8.3.3}
+\makelabel{RDS:PartitionByFunctionNF}{8.3.4}
+\makelabel{RDS:PartitionByFunction}{8.3.5}
+\makelabel{RDS:Cyclotomic numbers}{8.4}
+\makelabel{RDS:IsRootOfUnity}{8.4.1}
+\makelabel{RDS:CoeffList2CyclotomicList}{8.4.2}
+\makelabel{RDS:AbssquareInCyclotomics}{8.4.3}
+\makelabel{RDS:CycsGivenCoeffSum}{8.4.4}
+\makelabel{RDS:Filters and Categories}{8.5}
+\makelabel{RDS:IsComputableFilter}{8.5.1}
+\makelabel{RDS:Bibliography}{}
+\setcitlab {BreuersAnswer}{Bre05}
+\setcitlab {Bruck55}{Bru55}
+\setcitlab {Dembowski}{Dem68}
+\setcitlab {DembowskiPiper}{DP67}
+\setcitlab {Moorhouse}{Moo}
+\setcitlab {MoorhouseGraphs}{Moo95}
+\setcitlab {RoederDiss}{R{\accent 127 o}d06}
+\setcitlab {Royle}{Roy}
+\makelabel{RDS:Index}{}

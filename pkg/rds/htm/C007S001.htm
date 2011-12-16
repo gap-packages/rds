@@ -1,0 +1,80 @@
+<html><head><title>[RDS] 7.1 Isomorphisms and Collineations</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C007S000.htm">Up</a>] [<a href ="C007S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>7.1 Isomorphisms and Collineations</h1><p>
+<p>
+Isomorphisms of projective planes are mappings which take points to
+points and blocks to blocks and respect incidence. A <strong>collineation</strong> of
+a projective plane <i>P</i> is a collineation from <i>P</i> to <i>P</i> (an
+automorphism).
+<p>
+As projective planes are assumed to live on the integers, isomorphisms
+of projective planes are represented by permutations. To test if a
+permutation on points is actually an isomorphism of projective planes,
+the following methods can be used.
+<p>
+<a name = "SSEC1"></a>
+<li><code>IsIsomorphismOfProjectivePlanes( </code><var>perm</var><code>, </code><var>blocks1</var><code>, </code><var>blocks2</var><code> ) O</code>
+<p>
+Let <var>blocks1</var>, <var>blocks2</var> be two sets of blocks of projective planes 
+on the same points. 
+<code>IsIsomorphismOfProjectivePlanes( </code><var>perm</var><code>,</code><var>blocks1</var><code>,</code><var>blocks2</var><code> )</code> test if the permutation
+<var>perm</var> on points defines an isomorphism of the projective planes defined
+by <var>blocks1</var> and <var>blocks2</var>.
+<p>
+<a name = "SSEC2"></a>
+<li><code>IsCollineationOfProjectivePlane( </code><var>perm</var><code>, </code><var>blocks</var><code> ) O</code>
+<li><code>IsCollineationOfProjectivePlane( </code><var>perm</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+Let <var>blocks</var> be the blocks of a projective plane and <var>perm</var> a permutation
+on the points of this plane. <code>IsCollineationOfProjectivePlane(</code><var>perm</var><code>,</code><var>blocks</var><code>)</code> returns 
+<code>true</code>, if <var>perm</var> induces a collineation of the projective plane.
+<p>
+If <var>data</var> as returned by <code>ElationPrecalc</code> is given instead of <var>blocks</var>,
+the calculation should be faster.
+<p>
+<a name = "SSEC3"></a>
+<li><code>IsomorphismProjPlanesByGenerators( </code><var>gens1</var><code>, </code><var>data1</var><code>, </code><var>gens2</var><code>, </code><var>data2</var><code> ) O</code>
+<a name = "SSEC3"></a>
+<li><code>IsomorphismProjPlanesByGeneratorsNC( </code><var>gens1</var><code>, </code><var>data1</var><code>, </code><var>gens2</var><code>, </code><var>data2</var><code> ) O</code>
+<p>
+Let <var>gens1</var> be a list of points generating the projective plane defined 
+by <var>data1</var> and <var>gens2</var> a list of generating points for <var>data2</var>. Then a 
+permutation is returned representing a mapping from the <var>data1.points</var> 
+to <var>data2.points</var> and mapping the list <var>gens1</var> to the list <var>gens2</var>.
+If there is no such mapping which defines an isomorphism of projective
+planes, <code>fail</code> is returned.
+Note that this is a ``small'' function, in the sense that <var>data1</var> and 
+<var>data2</var> are as returned by <code>ElationPrecalcSmall</code> rather than by
+<code>ElationPrecalc</code>.
+<p>
+<code>IsomorphismProjPlanesByGeneratorsNC</code> does <strong>not</strong> checked whether <var>gens1</var> 
+and <var>gens2</var> really generate the planes given by <var>data1</var> and <var>data2</var>. 
+<p>
+<pre>
+# Assume that &lt;blocks&gt; contains a list of lines of a projective plane
+# of order 16
+gap&gt; data:=ElationPrecalc(blocks);;
+gap&gt; Size(ProjectiveClosureOfPointSet([1,2,3,5],16,data));
+4
+gap&gt; Size(ProjectiveClosureOfPointSet([1,2,60,268],16,data));time;
+273
+0
+gap&gt; Size(ProjectiveClosureOfPointSet([1,2,60,268],0,data));time;
+273
+184
+gap&gt; IsomorphismProjPlanesByGenerators([1,2,3,5],data,[1,2,60,268],data);
+fail
+gap&gt; IsomorphismProjPlanesByGenerators([1,2,60,268],data,[1,2,60,268],data); 
+()
+gap&gt; IsomorphismProjPlanesByGenerators([1,2,60,268],data,[1,3,146,268],data);
+(2,3)(5,10)(6,12)(7,9)(8,11)(13,16)(17,249)(18,251)(19,250)( [...] )
+gap&gt; Order(last);
+2
+</pre>
+<p>
+<p>
+[<a href = "C007S000.htm">Up</a>] [<a href ="C007S002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

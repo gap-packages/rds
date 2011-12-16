@@ -1,0 +1,142 @@
+\Chapter{Invariants for Difference Sets}
+
+This chapter contains an important tool for the generation of
+difference sets. It is called the ``coset signature'' and is an
+invariant for equivalence of partial relative difference sets.  For
+large $\lambda$, there is an invariant calculated by
+`MultiplicityInvariantLargeLambda'. This invariant can be used
+complementary to the coset signature and is explained in section
+"Ordered signatures by quotient images".
+
+Most of the methods explained here are not commonly used. If you do
+not want to know how coset signatures work in detail, you can safely
+skip a large part of this and go straight to the explanation of
+`SignatureDataForNormalSubgroups' and `ReducedStartsets'.
+
+The last section ("RDS:Blackbox functions") of this chapter has some
+functions which allow the user to use coset signatures with even less
+effort. But be aware that these functions make choices for you that
+you probably do not want if you do very involved calculations. In
+particular, the coset signatures are not stored globally and hence
+cannot be reused. For a demonstration of these easy-to-use functions,
+see chapter "RDS:A quick start"
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{The Coset Signature}
+
+Let $R \subseteq G$ be a (partial) relative difference set (for
+definition see "Introduction") with forbidden set $N\subseteq G$. Let
+$U\leq G$ be a normal subgroup and $C=\{g_1,\dots, g_{|G:U|}\}$ be a
+system of representatives of $G/U$.
+
+The intersection number of $R$ with $Ug_i$ is defined as $v_i=|R\cap
+Ug_i|$. For every normal subgroup $U\leq G$ the multiset $\{|R\cap
+Ug_i| \colon g_i\in C\}$ is called ``coset signature of $R$ (relative
+to $U$)''.
+
+Let $D\subseteq G$ be a relative difference set and
+$\{v_1,\dots,v_{|G:U|}\}$ its coset signature. Then the following
+equations hold (see \cite{Bruck55},\cite{RoederDiss}):
+
+$$
+\matrix{
+\sum v_i=k\cr
+\sum v_i^2=\lambda(|U|-|U\cap N|)+k\cr
+\sum_j v_j v_{ij}=
+	 \lambda(|U|-|g_iU \cap N|)&{\rm for }\   g_i\not\in U}
+$$
+where $v_{ij}=|D\cap g_ig_jU|$.  If the forbidden set $N$ is a
+subgroup of $G$ we have $|g_iU\cap N|$ is either $0$ or equal to
+$|U\cap N|$.
+
+Given a group $G$, the forbidden set $N\subseteq G$ and some normal
+subgroup $U\leq G$, the right sides of this equations are known. So we
+may ask for tuples $(v_1,\dots,v_{|G:U|})$ solving this system of
+equations. Of course, we index the $v_i$ with the elements of $G/U$,
+so the last equation poses conditions to the ordering of the tuple
+$(v_1,\dots,v_{|G:U|})$.
+
+So we call any multiset $\{v_1,\dots,v_{|G:U|}\}$ solving the above
+equations an ``admissible signature'' for $U$.
+
+%In \GAP, admissible signatures are represented by lists as returned by
+%`Collected'
+
+\Declaration{CosetSignatureOfSet}
+\beginexample
+gap> G:=SymmetricGroup(5);;
+gap> A:=AlternatingGroup(5);;
+gap> CosetSignatureOfSet([(1,2),(1,5),(1,2,3)],RightCosets(G,A));
+[ 1, 2 ]
+gap> CosetSignatureOfSet([(1,2),(1,5),(1,2,3)],[A]);              
+[ 1 ]
+gap> CosetSignatureOfSet([(1,2),(1,5),(1,2,3)],[[(1,2),(1,2,3)],[(3,2,1)]]);
+[ 0, 2 ]
+\endexample
+
+
+\Declaration{CosetSignatures}
+\beginexample
+gap> CosetSignatures(256,16,64,[1,4,8,16],17,1);  
+[ [ [ 256, 16, 64, 1, 17, 1 ], [  ] ], 
+  [ [ 256, 16, 64, 4, 17, 1 ], [ [ 3, 4, 4, 6 ] ] ], 
+  [ [ 256, 16, 64, 8, 17, 1 ], [ [ 4, 4, 4, 5 ] ] ], 
+  [ [ 256, 16, 64, 16, 17, 1 ], [  ] ] ]
+#And for an ordinary difference set of order 16.
+gap> CosetSignatures(273,1,39,[1],17,1);  
+[ [ [ 273, 1, 39, 1, 17, 1 ], 
+  [ [ 0, 1, 2, 3, 3, 4, 4 ], [ 0, 2, 2, 2, 3, 3, 5 ], 
+    [ 1, 1, 1, 2, 4, 4, 4 ], [ 1, 1, 1, 3, 3, 3, 5 ], 
+    [ 1, 1, 2, 2, 2, 4, 5 ] ] ] ]
+\endexample
+
+\Declaration{TestSignatureLargeIndex}
+
+\Declaration{TestSignatureCyclicFactorGroup}
+
+\Declaration{TestedSignatures}
+
+\beginexample
+G:=SmallGroup(273,2);
+gap> N:=First(NormalSubgroups(G),g->Order(g)=39);
+Group([ f1, f3 ])
+gap> sigs:=CosetSignatures(273,1,39,[1],17,1);  
+[ [ [ 273, 1, 39, 1, 17, 1 ], 
+  [ [ 0, 1, 2, 3, 3, 4, 4 ], [ 0, 2, 2, 2, 3, 3, 5 ], 
+    [ 1, 1, 1, 2, 4, 4, 4 ], [ 1, 1, 1, 3, 3, 3, 5 ], 
+    [ 1, 1, 2, 2, 2, 4, 5 ] ] ] ]
+gap> TestedSignatures(sigs[1][2],G,N);                              
+[ [ 1, 1, 1, 2, 4, 4, 4 ], [ 1, 1, 1, 3, 3, 3, 5 ] ]
+\endexample
+
+\Declaration{TestedSignaturesRelative}
+
+\Declaration{SigInvariant}
+
+\Declaration{RDSFactorGroupData}
+
+\Declaration{MatchingFGDataNonGrp}
+
+\Declaration{MatchingFGData}
+
+\Declaration{SignatureDataForNormalSubgroups}
+
+\Declaration{ReducedStartsets}
+
+\Declaration{maxAutsizeForOrbitCalculation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\Section{Blackbox functions}
+
+Here are a few functions used in chapter "RDS:A quick start". These
+are meant as black boxes for quick tests. Some of them make choices
+for you which might not be suitable to the chase you consider, so for
+serious studies, consider using the more complicated-looking functions
+above (an example for this comprises chapter "RDS:An Example
+Program").
+
+\Declaration{SignatureData}
+\Declaration{NormalSgsHavingAtMostNSigs}
+\Declaration{SuitableAutomorphismsForReduction}
+\Declaration{StartsetsInCoset}

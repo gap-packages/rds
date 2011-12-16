@@ -1,0 +1,83 @@
+<html><head><title>[RDS] 7.2 Central Collineations</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C007S000.htm">Up</a>] [<a href ="C007S001.htm">Previous</a>] [<a href ="C007S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>7.2 Central Collineations</h1><p>
+<p>
+Let &#966; be a collineation of a projective plane which fixes one
+point block-wise (the so-called <strong>centre</strong>) and one block point-wise
+(the so-called <strong>axis</strong>). If the centre is contained in the axis, &#966;
+is called <strong>elation</strong>. Otherwise, &#966; is called <strong>homology</strong>. The group
+of elations with given axis is called <strong>translation group</strong> of the plane
+(relative to the chosen axis). A projective plane with transitive
+translation group is called <strong>translation plane</strong>. Here transitivity is
+on the points outside the axis.
+<p>
+<a name = "SSEC1"></a>
+<li><code>ElationsByPairs( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pairs</var><code>, </code><var>data</var><code> ) O</code>
+<li><code>ElationsByPairs( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pairs</var><code>, </code><var>blocks</var><code> ) O</code>
+<a name = "SSEC1"></a>
+<li><code>ElationsByPairsSmall( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pairs</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+Let <var>centre</var> be a point and  <var>axis</var> a block of a projective plane defined 
+by <var>blocks</var> (or by <var>data</var> as returned by <code>ElationPrecalc</code>).
+The list <var>pairs</var> must contain pairs of points outside <var>axis</var>. 
+<code>ElationsByPairs</code> returns a collineation fixing <var>axis</var> pointwise and
+<var>centre</var> blockwise (an elation) such that for each pair <var>p</var> of <var>pairs</var> 
+<var>p[1]</var> is mapped on <var>p[2]</var>. If no such elation exists, <code>fail</code> is returned.
+<p>
+<code>ElationsByPairsSmall</code> uses <var>data</var> as returned by <code>ElationPrecalcSmall</code>
+<p>
+<a name = "SSEC2"></a>
+<li><code>AllElationsCentAx( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>data</var><code>[, "generators"] ) O</code>
+<li><code>AllElationsCentAx( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>blocks</var><code>[, "generators"] ) O</code>
+<a name = "SSEC2"></a>
+<li><code>AllElationsCentAxSmall( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>data</var><code>[, "generators"] ) O</code>
+<p>
+Let <var>centre</var> be a point and  <var>axis</var> a block of a projective plane defined 
+by <var>blocks</var> (or by <var>data</var> as returned by <code>ElationPrecalc</code>).
+<code>AllElationsCentAx</code> returns a list of all non-trivial elations with centre
+<var>centre</var> and axis <var>axis</var>.
+If ``generators'' is set, a list of generators of the translation
+group is returned.
+<p>
+<a name = "SSEC3"></a>
+<li><code>AllElationsAx( </code><var>axis</var><code>, </code><var>data</var><code>[, "generators"] ) O</code>
+<li><code>AllElationsAx( </code><var>axis</var><code>, </code><var>blocks</var><code> ) O</code>
+<a name = "SSEC3"></a>
+<li><code>AllElationsAxSmall( </code><var>axis</var><code>, </code><var>data</var><code>[, "generators"] ) O</code>
+<p>
+Let <var>axis</var> be a block of a projective plane defined 
+by <var>blocks</var> (or by <var>data</var> as returned by <code>ElationPrecalc</code>).
+<code>AllElationsAx</code> returns a list of all non-trivial elations with axis 
+<var>axis</var>.
+<p>
+<a name = "SSEC4"></a>
+<li><code>IsTranslationPlane( </code><var>infline</var><code>, </code><var>planedata</var><code> ) O</code>
+<a name = "SSEC4"></a>
+<li><code>IsTranslationPlaneSmall( </code><var>infline</var><code>, </code><var>planedata</var><code> ) O</code>
+<p>
+If the group of elations with axis <var>infline</var> is (sharply) transitive on 
+the affine points (the points outside <var>infline</var>), <code>IsTranslationPlane</code> 
+returns <code>true</code>, otherwise it returns <code>false</code>. This is faster than 
+calculating the full translation group if the projective plane is not a 
+translation plane.
+<p>
+<a name = "SSEC5"></a>
+<li><code>HomologyByPairSmall( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pair</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+<code>HomologyByPairSmall</code> returns the homology defined by the pair
+<var>pair</var> fixing <var>centre</var> blockwise and <var>axis</var> pointwise. 
+The returned permutation fixes <var>axis</var> pointwise and <var>centre</var> linewise and
+takes <var>pair[1]</var> to <var>pair[2]</var>.
+<p>
+<a name = "SSEC6"></a>
+<li><code>GroupOfHomologiesSmall( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+returns the group of homologies with centre <var>centre</var> and axis 
+<var>axis</var>.
+<p>
+<p>
+[<a href = "C007S000.htm">Up</a>] [<a href ="C007S001.htm">Previous</a>] [<a href ="C007S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

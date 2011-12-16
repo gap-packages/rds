@@ -1,0 +1,182 @@
+\Chapter{General concepts}
+
+In this chapter, we first give a definition of relative difference
+sets and outline a part of the theory. Then we have a quick look at
+the way difference sets are represented in {\RDS}.
+
+After that, some basic methods for the generation of difference sets
+are explained. 
+
+If you already read chapter "RDS:A quick start" and want to know what
+`StartsetsInCoset' really does, you may want to read this chapter (and
+the following one, of course). The main high-level function in this
+chapter is `ExtendedStartsets'.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Introduction}
+
+\Input{rds}
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{How partial difference sets are represented}
+
+Let $G$ be a group. We define an enumeration $\{g_1,\dots,g_n\}=G$ and
+represent $D\subseteq G$ as a list of integers (where ,of course, $i$
+represents $g_i$ for all $1\leq i\leq n$).  So the automorphism group
+of $G$ is represented as a permutation group of degree $n$.  One of
+the operations performed most often by methods in {\RDS} is
+the calculation of quotients in $G$. So we calculate a look-up
+table for this.
+
+This pre-calculation is done by the operation
+`PermutationRepForDiffsetCalcuations'. So before you start generating
+difference set, call this function and work with the data structure
+returned by it.
+
+For an exhaustive search, the ordering of $G$ is very important. To
+avoid generating duplicate partial difference sets, we would like to
+represent partial difference sets by *sets*, i.e. ordered lists. But
+in fact, {\RDS} does *not* assume that partial difference
+sets are sets. The operations `ExtendedStartSets' and `AllDiffsets'
+assume that the last element of partial difference set is its
+maximum. But they don't test it. So if you start from scratch, these
+methods generate difference sets which are really sets. Whereas the
+`NoSort' versions disregard the ordering of $G$ and will produce
+duplicates.
+
+The reason for this seemingly strange behaviour is the following:
+Assume that we have a normal subgroup $U\leq G$ and know that every
+difference set $D\subseteq G$ contains exactly $n_i$ elements from the
+$i^{\rm th}$ coset modulo $U$. Then it is natural to generate
+difference sets by first searching all partial difference sets of
+length $n_1$ containing entirely of elements of the first coset modulo
+$U$ and then proceed with the other cosets. 
+
+This method of difference set generation is normally not compatible
+with the ordering of $G$. This is why partial difference sets are not
+required to be *sets*. See chapter "RDS:An Example Program" for an
+example.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Basic functions for startset generation}
+
+Defining an enumeration of the a group $G$, every relative difference
+set may be represented by a list of integers. Indexing $G$ in this way
+has the advantage of the automorphism group of $G$ being a permutation
+group. As relative difference sets are normally calculated in small
+groups, it is possible to store a complete multiplication table of the
+group in terms of the enumeration.  
+
+If not stated otherwise, partial difference sets are always considered
+to be lists of integers. Note that it is not required for a partial
+difference set to be a set.
+
+\Declaration{PermutationRepForDiffsetCalculations}
+
+If 'Set(<group>)[1]' is not equal to `One(<group>)', then
+`PermutationRepForDiffsetCalculations' returns an error message
+stating ``Unable to generate <Glist>''. In this case, calculating a
+representation helps:
+
+\beginexample
+gap> G:=DirectProduct(SL(2,3),CyclicGroup(3));
+<group of size 72 with 3 generators>
+gap> data:=PermutationRepForDiffsetCalculations(G);
+Error, Unable to generate <Glist>
+ called from
+<function>( <arguments> ) called from read-eval-loop
+Entering break read-eval-print loop ...
+you can 'quit;' to quit to outer loop, or
+you can 'return;' to continue
+brk> quit;
+gap> phi:=ActionHomomorphism(G,Set(G),OnRight);
+<action homomorphism>
+gap> Gnew:=ImagesSource(phi);
+<permutation group with 3 generators>
+gap> data:=PermutationRepForDiffsetCalculations(Gnew);
+\endexample
+
+A partial difference set may be converted from a list of group
+elements to a list of integers using 
+\Declaration{GroupList2PermList}
+where <dat> is a record containing <.diffTable> as returned by
+`PermutationRepForDiffsetCalculations'. The inverse operation is
+performed by 
+\Declaration{PermList2GroupList}
+
+\beginexample
+gap>  G:=DihedralGroup(6);
+<pc group of size 6 with 2 generators>
+gap> N:=NormalSubgroups(G)[2];
+Group([ f2 ])
+gap> dat:=PermutationRepForDiffsetCalculations(G);
+rec( G := <pc group of size 6 with 2 generators>, 
+  Glist := [ <identity> of ..., f1, f2, f1*f2, f2^2, f1*f2^2 ], 
+  A := <group of size 6 with 2 generators>, 
+  Aac := Group([ (3,5)(4,6), (2,4,6) ]), 
+  Ahom := <action homomorphism>, 
+  Ai := Group([ (3,5), (3,5)(4,6), (2,4,6) ]), 
+  diffTable := [ [ 1, 2, 5, 4, 3, 6 ], [ 2, 1, 6, 3, 4, 5 ], 
+      [ 3, 6, 1, 2, 5, 4 ], [ 4, 5, 2, 1, 6, 3 ], 
+      [ 5, 4, 3, 6, 1, 2 ], [ 6, 3, 4, 5, 2, 1 ] ] )
+gap> Nperm:=GroupList2PermList(Set(N),dat);
+[ 1, 3, 5 ]
+\endexample
+
+In the following functions the record <dat> has to contain a matrix
+<.diffTable> as returned by `PermutationRepForDiffsetCalculations'.
+
+\Declaration{NewPresentables}
+\Declaration{AllPresentables}
+%
+\beginexample
+gap> G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
+gap> AllPresentables([2,3],dat);
+[ 2, 3, 7, 2, 7, 6 ]
+gap> AllPresentables([1,2,3],dat);
+Error...
+\endexample
+%	
+\Declaration{RemainingCompletions}
+\beginexample
+gap> G:=CyclicGroup(7);
+<pc group of size 7 with 1 generators>
+gap> dat:=PermutationRepForDiffsetCalculations(G);;
+gap> RemainingCompletionsNoSort([4],[1..7],dat);
+[ 2, 3 ]
+gap> RemainingCompletionsNoSort([4],[1..7],dat,2);
+[ 2, 3, 6, 7 ]
+gap> RemainingCompletions([4],[1..7],dat);        
+[  ]
+gap> RemainingCompletions([4],[1..7],dat,2);
+[ 6, 7 ]
+\endexample
+
+\Declaration{ExtendedStartsets}
+
+\beginexample
+gap> G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
+gap> startsets:=[[2],[4],[6]];;
+gap> ExtendedStartsets(startsets,[1..7],dat);
+[ [ 2, 4 ], [ 2, 6 ] ]
+gap> ExtendedStartsets(startsets,[1..7],3,dat);
+[ [ 2, 4 ] ]
+gap> ExtendedStartsets(startsets,[1..7],dat,2);
+[ [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 4, 6 ], [ 4, 7 ], [ 6, 7 ] ]
+gap> ExtendedStartsetsNoSort(startsets,[1..7],dat);
+[ [ 2, 4 ], [ 2, 6 ], [ 4, 2 ], [ 4, 3 ], [ 6, 2 ], [ 6, 5 ] ]
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{A brute force method}
+
+The following method can be used to find (partial) difference sets by
+brute force.
+
+\Declaration{AllDiffsets}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%E END startsets.msk
+%%

@@ -1,0 +1,47 @@
+<html><head><title>[RDS] 3.2 How partial difference sets are represented</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "C003S000.htm">Up</a>] [<a href ="C003S001.htm">Previous</a>] [<a href ="C003S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>3.2 How partial difference sets are represented</h1><p>
+<p>
+Let <i>G</i> be a group. We define an enumeration {<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>n</i></sub>}=<i>G</i> and
+represent <i>D</i> &#8838; <i>G</i> as a list of integers (where ,of course, <i>i</i>
+represents <i>g</i><sub><i>i</i></sub> for all 1 &#8804; <i>i</i> &#8804; <i>n</i>).  So the automorphism group
+of <i>G</i> is represented as a permutation group of degree <i>n</i>.  One of
+the operations performed most often by methods in <font face="Gill Sans,Helvetica,Arial">RDS</font> is
+the calculation of quotients in <i>G</i>. So we calculate a look-up
+table for this.
+<p>
+This pre-calculation is done by the operation
+<code>PermutationRepForDiffsetCalcuations</code>. So before you start generating
+difference set, call this function and work with the data structure
+returned by it.
+<p>
+For an exhaustive search, the ordering of <i>G</i> is very important. To
+avoid generating duplicate partial difference sets, we would like to
+represent partial difference sets by <strong>sets</strong>, i.e. ordered lists. But
+in fact, <font face="Gill Sans,Helvetica,Arial">RDS</font> does <strong>not</strong> assume that partial difference
+sets are sets. The operations <code>ExtendedStartSets</code> and <code>AllDiffsets</code>
+assume that the last element of partial difference set is its
+maximum. But they don't test it. So if you start from scratch, these
+methods generate difference sets which are really sets. Whereas the
+<code>NoSort</code> versions disregard the ordering of <i>G</i> and will produce
+duplicates.
+<p>
+The reason for this seemingly strange behaviour is the following:
+Assume that we have a normal subgroup <i>U</i> &#8804; <i>G</i> and know that every
+difference set <i>D</i> &#8838; <i>G</i> contains exactly <i>n</i><sub><i>i</i></sub> elements from the
+<i>i</i><sup><span class="roman">th</span></sup> coset modulo <i>U</i>. Then it is natural to generate
+difference sets by first searching all partial difference sets of
+length <i>n</i><sub>1</sub> containing entirely of elements of the first coset modulo
+<i>U</i> and then proceed with the other cosets. 
+<p>
+This method of difference set generation is normally not compatible
+with the ordering of <i>G</i>. This is why partial difference sets are not
+required to be <strong>sets</strong>. See chapter <a href="../../rds/htm/C005S000.htm">RDS:An Example Program</a> for an
+example.
+<p>
+<p>
+[<a href = "C003S000.htm">Up</a>] [<a href ="C003S001.htm">Previous</a>] [<a href ="C003S003.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>RDS manual<br>November 2006
+</address></body></html>

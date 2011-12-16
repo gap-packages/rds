@@ -1,0 +1,33 @@
+\chapcontents {1}{About this package}{3}
+\seccontents {1.1}{Installation} {3}
+\chapcontents {2}{A quick start}{4}
+\seccontents {2.1}{First Step: Integers instead of group elements} {4}
+\seccontents {2.2}{Signatures: An important tool} {5}
+\seccontents {2.3}{Change of coset vs. brute force} {6}
+\chapcontents {3}{General concepts}{7}
+\seccontents {3.1}{Introduction} {7}
+\seccontents {3.2}{How partial difference sets are represented} {8}
+\seccontents {3.3}{Basic functions for startset generation} {8}
+\seccontents {3.4}{A brute force method} {11}
+\chapcontents {4}{Invariants for Difference Sets}{12}
+\seccontents {4.1}{The Coset Signature} {12}
+\seccontents {4.2}{Blackbox functions} {16}
+\chapcontents {5}{An Example Program}{18}
+\chapcontents {6}{Ordered Signatures}{21}
+\seccontents {6.1}{Ordered signatures by quotient images} {21}
+\seccontents {6.2}{Ordered signatures using representations} {23}
+\seccontents {6.3}{Definition} {23}
+\seccontents {6.4}{Methods for calculating ordered signatures} {24}
+\chapcontents {7}{Determining the Isomorphism Class of Projective Planes}{26}
+\seccontents {7.1}{Isomorphisms and Collineations} {27}
+\seccontents {7.2}{Central Collineations} {28}
+\seccontents {7.3}{Collineations on Baer Subplanes} {29}
+\seccontents {7.4}{Invariants for Projective Planes} {29}
+\chapcontents {8}{Some functions for everyday use}{31}
+\seccontents {8.1}{Groups and actions} {31}
+\seccontents {8.2}{Iterators} {31}
+\seccontents {8.3}{Lists and Matrices} {32}
+\seccontents {8.4}{Cyclotomic numbers} {33}
+\seccontents {8.5}{Filters and Categories} {33}
+\chapcontents {}{Bibliography}{35}
+\chapcontents {}{Index}{36}

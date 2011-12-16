@@ -1,0 +1,209 @@
+\Chapter{Some functions for everyday use}
+
+This chapter contains a number of functions that did not fit in
+anywhere else. Some of them might be useful for other people, too, so
+they were included here.
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Groups and actions}
+
+\Declaration{OnSubgroups}
+\beginexample
+gap> G:=Group((1,2,3),(2,3));
+Group([ (1,2,3), (2,3) ])
+gap> alpha:=InnerAutomorphism(G,(1,2,3));
+^(1,2,3)
+gap> OnSubgroups(Subgroup(G,[(2,3)]),alpha);
+Group([ (1,3) ])
+\endexample
+
+\Declaration{RepsCClassesGivenOrder}
+\beginexample
+gap> RepsCClassesGivenOrder(SymmetricGroup(5),2);
+[ (4,5), (2,3)(4,5) ]
+\endexample	
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Iterators}
+
+\Declaration{CartesianIterator}
+
+\Declaration{ConcatenationOfIterators}
+
+\beginexample
+gap> it:=Iterator([1,2,3]);;
+gap> it2:=CartesianIterator([[9,10],[11]]);;
+gap> cit:=ConcatenationOfIterators([it,it2]);;
+gap> repeat
+> Print(NextIterator(cit),",\c");
+> until IsDoneIterator(cit);
+1,2,3,[ 9, 11 ],[ 10, 11 ],
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Lists and Matrices}
+
+\Declaration{IsListOfIntegers}
+
+\Declaration{List2Tuples}
+\beginexample
+gap> List2Tuples([1..6],2);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+\endexample
+
+\Declaration{MatTimesTransMat}
+
+\Declaration{PartitionByFunctionNF}
+
+\Declaration{PartitionByFunction}
+\begintt
+
+gap> PartitionByFunctionNF([-1..5],x->x^2);
+[ [ 0 ], [ -1, 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+gap> test:=function(x) 
+> if x>0 then return Sqrt(x);
+>  else return fail;
+> fi;
+> end;
+function( x ) ... end
+gap> PartitionByFunction([-1..5],test);  
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap> SetInfoLevel(InfoRDS,2);
+gap> PartitionByFunction([-1..5],test);  
+#I  -2-
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap> PartitionByFunctionNF([-1..5],test);
+Error, function returned <fail> called from
+...
+brk> return;
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ], [ -1, 0 ] ]
+\endtt
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Cyclotomic numbers}
+
+\Declaration{IsRootOfUnity}
+
+\Declaration{CoeffList2CyclotomicList}
+
+\Declaration{AbssquareInCyclotomics}
+
+\Declaration{CycsGivenCoeffSum}
+\beginexample
+gap> CycsGivenCoeffSum(3,E(3));
+[ [ 0, [ [ 1, 1, 1 ] ] ], 
+  [ 3, [ [ 0, 1, 2 ], [ 0, 2, 1 ], [ 1, 0, 2 ], [ 1, 2, 0 ], [ 2, 0, 1 ], 
+          [ 2, 1, 0 ] ] ], [ 9, [ [ 0, 0, 3 ], [ 0, 3, 0 ], [ 3, 0, 0 ] ] ] ]
+gap> CycsGivenCoeffSum(2,E(2));
+[ [ 0, [ [ 1, 1 ] ] ], [ 4, [ [ 0, 2 ], [ 2, 0 ] ] ] ]
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%
+\Section{Filters and Categories}
+
+The following was originally posted at the \GAP\ forum by Thomas
+Breuer \cite{BreuersAnswer}. 
+
+Each filter in \GAP\ is either a simple filter or a meet of filters.
+For example, `IsInt' and `IsPosRat' are simple filters,
+and `IsPosInt' is defined as their meet `IsInt and IsPosRat'.
+
+Each *simple filter* is of one of the following kinds.
+
+
+1. property:
+   Such a filter is an operation, the filter value can be computed.
+   The (unary) methods of this operation must return `true' or `false',
+   and the return value is stored in the argument,
+   except if the argument is of a basic data type such as cyclotomic
+   (including rationals and integers), finite field element, permutation,
+   or internally represented list --the latter with a few exceptions.
+   Examples of properties are `IsFinite', `IsAbelian', `IsSSortedList'.
+
+2. attribute tester:
+   Such a filter is associated to an operation that has been created
+   via `DeclareAttribute',
+   in the sense that the value is `true' if and only if a return value
+   for (a unary method of) this operation is stored in the argument.
+   Currently, attribute values are stored in objects in the filter
+   `IsAttributeStoringRep'.
+   Examples of attribute testers are `HasSize', `HasCentre',
+   `HasDerivedSubgroup'.
+
+2.' property tester:
+   Such a filter is similar to an attribute tester,
+   but the associated operation is a property.
+   So property testers can return `true' also if the argument is not in
+   the filter `IsAttributeStoringRep'.
+   Examples of property testers are `HasIsFinite', `HasIsAbelian',
+   `HasIsSSortedList'.
+
+3. category or representation:
+   These filters are not associated to operations, their values cannot
+   be computed but are set upon creation of an object and should not be
+   changed later, such that for a filter of this kind, one can rely on
+   the fact that if the value is `true' then it was `true' already when
+   the object in question was created.
+
+   The distinction between representation and category is intended to
+   express dependency on or independence of the way how the object is
+   stored internally.
+   For example, `IsPositionalObjectRep', `IsComponentObjectRep', and
+   `IsInternalRep' are filters of the representation kind;
+   the idea is that such filters are used in low level methods,
+   and that higher level methods can be implemented without referring
+   to these filters.
+
+   Examples of categories are `IsInt', `IsRat', `IsPerm', `IsFFE',
+   and filters expressing algebraic structures,
+   such as `IsMagma', `IsMagmaWithOne', `IsAdditiveMagma'.
+   When one calls such a filter, one can be sure that no computation is
+   triggered.
+   For example, whenever a quotient of two integers is formed, the result
+   is clearly in the filter `IsRat', but the system also stores the value
+   of `IsInt', i.e., \GAP\ does not support ``unevaluated rationals'' for
+   which the `IsInt' value is computed on demand and then stored.
+
+4. other filters:
+   Some filters do not belong to the above kinds,
+   they are not associated to operations but they are intended to be
+   set (or even reset) by the user or by functions also after the creation
+   of objects.
+   Examples are `IsQuickPositionList', `CanEasilyTestMembership',
+   `IsHandledByNiceBasis'.
+
+Each *meet of filters* can involve computable simple filters (properties,
+attribute and property testers) and not computable simple filters
+(categories, representations, other filters).
+When one calls a meet of two filters then the two filters from which
+the meet was formed are evaluated (if necessary).
+So a meet of filters is computable only if at least one computable simple
+filter is involved.
+
+\Declaration{IsComputableFilter} 
+
+'IsComputableFilter(<filter>)' returns <true> if a the filter <filter>
+is computable. Filters for which 'IsComputableFilter' returns <false>
+may be used in 'DeclareOperation'.
+
+\beginexample
+    gap> IsComputableFilter( IsFinite );
+    true
+    gap> IsComputableFilter( HasSize );
+    true
+    gap> IsComputableFilter( HasIsFinite );
+    true
+    gap> IsComputableFilter( IsPositionalObjectRep );
+    false
+    gap> IsComputableFilter( IsInt );
+    false
+    gap> IsComputableFilter( IsQuickPositionList );
+    false
+    gap> IsComputableFilter( IsInt and IsPosRat );
+    false
+    gap> IsComputableFilter( IsMagma );
+    false
+\endexample
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%E  misc.msk       ... end of file.
