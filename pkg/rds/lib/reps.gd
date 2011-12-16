@@ -4,9 +4,9 @@
 ##
 ##  Representation theoretic methods for a special class of groups and difference sets
 ##
-#H @(#)$Id: reps.gd, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+#H @(#)$Id: reps.gd, v 1.0 2008/01/26 14:04:55 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,8 +23,25 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/reps_gd"):=
-	"@(#)$Id: reps.gd, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+	"@(#)$Id: reps.gd, v 1.0 2008/01/26   14:04:55  gap Exp $";
+#############################################################################
+##
+#V InfoRDS  info class of the RDS package
+## 
+##  Some methods of the RDS package print additional information if `InfoRDS'
+##  is set to a level of 1 or higher. At level 0, no information is output. 
+##  The default value is 1.
+##
 DeclareInfoClass("InfoRDS");
+
+#############################################################################
+##
+#V DebugRDS  info class of the RDS package
+## 
+##  Some methods of the RDS package print additional information if `DebugRDS'
+##  is set to a level of 1 or higher. At level 0, no information is output. 
+##  The default level is 0. Expect a lot of output at level 2.
+##
 DeclareInfoClass("DebugRDS");
 
 #############################################################################
@@ -85,7 +102,7 @@ DeclareOperation("List2Tuples",[IsList,IsPosInt]);
 ##  non-negative.
 ##  The returned list has the following form:
 ##  The cyclotomic numbers are represented by coefficients. 
-##  `CoeffList2CyclotomicList' can be used to get the 
+##  "CoeffList2CyclotomicList" can be used to get the 
 ##  algebraic number represented by <list>.
 ##  The list is partitioned into equivalence classes of elements having the 
 ##  same modulus.
@@ -99,9 +116,9 @@ DeclareOperation("CycsGivenCoeffSum",[IsCyc,IsCyc]);
 
 #############################################################################
 ##
-#O  NormalSubgroupsForRep( <groupdata>,<divisor> ) calculates normal subgroups to use with `OrderedSigs'
+#O NormalSubgroupsForRep( <groupdata>,<divisor> ) calculates normal subgroups to use with `OrderedSigs'
 ##
-##  Let <groupdata> be the output of `PermutationRepForDiffsetCalculations' and 
+##  Let <groupdata> be the output of "PermutationRepForDiffsetCalculations" and 
 ##  <divisor> an integer. Then `NormalSubgroupsForRep' calculates all  normal 
 ##  subgroups of <groupdata.G> such that the size of the factor group is divisible 
 ##  by <divisor> and the factor group is a semidirect product of cyclic groups.
@@ -115,13 +132,12 @@ DeclareOperation("CycsGivenCoeffSum",[IsCyc,IsCyc]);
 ##   \item{5.} a galois automorphism <.alpha>
 ##   \item{6.+7.} generators of the factor group <G>/<.Nsg> named <.a> and <.b> 
 ##             such that <.a> is normalized by <.b>.
-##   \item{8}  a list <.int2pairtable> such that the $i^{th}$ entry ist the pair 
+##   \item{8}  a list <.int2pairtable> such that the $i^{th}$ entry is the pair 
 ##             <[m,n]> with that <Glist[i]^epi=a^(m-1)\*b^(n-1)>
 ##  \endlist
 ##
-##  <.alpha> and <.root> may be used as input for `OrderedSigs'
+##  <.alpha> and <.root> may be used as input for "OrderedSigs"
 ##  
-DeclareOperation("NormalSubgroupsForRep",[IsMagmaWithInverses,IsInt]);
 DeclareOperation("NormalSubgroupsForRep",[IsRecord,IsInt]);
 
 #############################################################################
@@ -152,7 +168,7 @@ DeclareOperation("NormalSubgroupsForRep",[IsRecord,IsInt]);
 ##  `List(<tup>,i->CoeffList2CyclotomicList(i,<root>))'
 ##
 ##  Each $|<coeffSums>|$-tuple returned defines an ordered signature. The ordering
-##  of $G/N$ is chosen to fit to the data returned by `NormalSubgroupsForRep':
+##  of $G/N$ is chosen to fit to the data returned by "NormalSubgroupsForRep":
 ##
 ##  $[a^0,a^1,\dots,a^{q-1}],[a^0b,a^1b,\dots,a^{q-1}b],\dots,[a^0b^{s-1},\dots,a^{q-1}b^{s-1}]$
 ##
@@ -163,9 +179,9 @@ DeclareOperation("OrderedSigs",[IsSmallList,IsPosInt,IsGeneralMapping,IsCyc]);
 #O OrderedSignatureOfSet(set,normal_data)
 ##
 ##  takes a set <set> of integers (meant to be a partial difference set) and
-##  a list of records as returned by `NormalSubgroupsForRep'.
+##  a list of records as returned by "NormalSubgroupsForRep".
 ##  The returned value is a list of lists which is the ordered signature of the
-##  partial difference set <set> and can be compared to the output of `OrderedSigs'
+##  partial difference set <set> and can be compared to the output of "OrderedSigs"
 ##
 DeclareOperation("OrderedSignatureOfSet",[IsDenseList,IsRecord]);
   

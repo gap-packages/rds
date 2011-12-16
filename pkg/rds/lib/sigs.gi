@@ -4,9 +4,9 @@
 ##
 ##  Invariants for partial difference sets
 ##
-#H @(#)$Id: sigs.gi, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+#H @(#)$Id: sigs.gi, v 1.0 2008/01/26 14:04:55 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/sigs_gi"):=
-	"@(#)$Id: sigs.gi, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+	"@(#)$Id: sigs.gi, v 1.0 2008/01/26   14:04:55  gap Exp $";
 #############################################################################
 ## 
 #V maxAutsizeForOrbitCalculation 
@@ -654,7 +654,6 @@ InstallMethod(SigInvariant,
     for coset_data in cosets_sigs
       do
         setsig:=CosetSignatureOfSet(lset,coset_data.cosets);
-
         if ForAll(coset_data.sigs,i->(not Pointwiseleq(setsig,i)))
            then
             return fail;
@@ -725,7 +724,7 @@ InstallMethod(ReducedStartsets,
         function(startsets,autlist,func,difftable)	
     local   Translates,  timetmp,  partition,  returnset,  lssets,  
             transset,  auts,  set,  interesting_sets,  orbit,  
-            badsets,  badset;
+            interesting,  transset_pos;
 
     if not IsSet(startsets) then Error("\nThe set of startsets must be a SET\n");fi;
     Info(InfoRDS,1,"Size ",Size(startsets));
@@ -764,18 +763,27 @@ InstallMethod(ReducedStartsets,
                   do		  
                     if Size(set)>1 and Size(auts)>maxAutsizeForOrbitCalculation
                        then
-                        interesting_sets:=AsSet(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)));
+                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)),
+                                                i->i[1]);
                     else       
                         orbit:=AsSortedList(Orbit(auts,AsSet(set),OnSets));;
-                        interesting_sets:=AsSet(Filtered(transset,t->ForAny(t[2],s->s in orbit)));
+                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->s in orbit)),
+                                                i->i[1]);
                     fi;
-                    badsets:=Set(Intersection(List(interesting_sets,l->l[1]),lssets));
-                    RemoveSet(badsets,Reversed(Minimum(List(badsets,b->Reversed(b)))));
-                    #                    RemoveSet(badsets,set);
-                    for badset in badsets
+                    interesting_sets:=Intersection(interesting_sets,lssets);
+                    RemoveSet(interesting_sets,Reversed(Minimum(List(interesting_sets,b->Reversed(b)))));
+                    for interesting in interesting_sets
                       do
-                        Unbind(lssets[Position(lssets,badset)]);
-                        Unbind(transset[Position(transset,First(transset,i->i[1]=badset))]);
+                        Unbind(lssets[Position(lssets,interesting)]);
+                        for transset_pos in [1..Size(transset)]
+                          do
+                            if IsBound(transset[transset_pos])
+                               and transset[transset_pos][1]=interesting
+                               then
+                                Unbind(transset[transset_pos]);
+                                break;
+                            fi;
+                        od;
                     od;
                     #                    if not set in lssets then Error("PANIC! this should not happen!");fi;
                 od;         #<for set in lssets>

@@ -1,0 +1,60 @@
+Let $G$ be a finite group and $N\subseteq G$. The set $R\subseteq G$
+with $|R|=k$ is called a ``relative difference set of order
+$k-\lambda$ relative to the forbidden set $N$'' if the following
+properties hold:
+
+\beginlist%ordered{(a)}
+\item{(a)} The multiset $\{ a.b^{-1}\colon a,b\in R\}$ contains
+  every nontrivial ($\neq 1$) element of $G-N$ exactly $\lambda$
+  times.  
+\item{(b)} $\{ a.b^{-1}\colon a,b\in R\}$ does not contain
+  any non-trivial element of $N$.
+\endlist
+
+Let $D\subseteq G$ be a difference set, then the incidence structure
+with points $G$ and blocks $\{Dg\;|\;g\in G\}$ is called the
+*development* of $D$. In short:  ${\rm dev} D$. Obviously, $G$ acts on
+${\rm dev}D$ by multiplication from the right.
+
+Relative difference sets with $N=1$ are called (ordinary) difference
+sets. The development of a difference set with $N=1$ and $\lambda=1$
+is projective plane of order $k-1$.
+
+In group ring notation a relative difference set satisfies
+$$
+RR^{-1}=k+\lambda(G-N).
+$$
+
+The set $D\subseteq G$ is called *partial relative difference set*
+with forbidden set $N$, if
+$$
+    DD^{-1}=\kappa+\sum_{g\in G-N}v_gg   
+$$ 
+
+holds for some $1\leq\kappa\leq k$ and $0\leq v_g \leq \lambda$ for
+all $g\in G-N$.  If $D$ is a relative difference set then ,obviously,
+$D$ is also a partial relative difference set.
+
+
+*IMPORTANT NOTE*
+
+\package{RDS} implicitly assumes that the *every* partial difference
+set contains the identity element (see the notion of equivalence in
+"RDS:Introduction" for the mathematical reason). However, the identity
+*must not* be contained in the lists representing partial relative
+difference sets.
+
+So in \package{RDS}, the difference set `[ (), (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]' is represented by the list `[ (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]'. And no set of three non-trivial permutations will
+be accepted as an ordinary difference set of `Group((1,2,3,4,5,6,7))'.
+
+For this reason the lists returned by functions like "AllDiffsets" do
+only contain non-trivial elements and look too short.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%E ENDE 
+%%

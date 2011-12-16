@@ -1,301 +1,215 @@
-<html><head><title>[RDS] 3 General concepts</title></head>
+<html><head><title>[RDS] 3 A basic example</title></head>
 <body text="#000000" bgcolor="#ffffff">
 [<a href = "chapters.htm">Up</a>] [<a href ="CHAP002.htm">Previous</a>] [<a href ="CHAP004.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
-<h1>3 General concepts</h1><p>
+<h1>3 A basic example</h1><p>
 <P>
 <H3>Sections</H3>
 <oL>
-<li> <A HREF="CHAP003.htm#SECT001">Introduction</a>
-<li> <A HREF="CHAP003.htm#SECT002">How partial difference sets are represented</a>
-<li> <A HREF="CHAP003.htm#SECT003">Basic functions for startset generation</a>
-<li> <A HREF="CHAP003.htm#SECT004">A brute force method</a>
+<li> <A HREF="CHAP003.htm#SECT001">First Step: Integers instead of group elements</a>
+<li> <A HREF="CHAP003.htm#SECT002">Signatures: An important tool</a>
+<li> <A HREF="CHAP003.htm#SECT003">Change of coset vs. brute force</a>
 </ol><p>
 <p>
-In this chapter, we first give a definition of relative difference
-sets and outline a part of the theory. Then we have a quick look at
-the way difference sets are represented in <font face="Gill Sans,Helvetica,Arial">RDS</font>.
+This chapter shows a basic example of how to use <font face="Gill Sans,Helvetica,Arial">RDS</font>. Some
+of the functions used here make choices which might not be optimal but
+should suffice for most ``everyday'' situations.  If you plan to do
+more involved computations, you should also see the other chapters to
+learn about the concepts behind these high-level functions.
 <p>
-After that, some basic methods for the generation of difference sets
-are explained. 
+Here we will construct relative difference sets of Dembowski-Piper
+type ``b'' and order <var>9</var> as an example. We will take the elementary
+abelian group as an example. The general idea is as follows: Find a
+``nice'' normal subgroup <var>U</var> and generate relative difference sets
+coset by coset. The normal subgroup has to be chosen such that we know
+how many elements to choose from each coset modulo <var>U</var>.
 <p>
-If you already read chapter <a href="../../rds/htm/CHAP002.htm">RDS:A quick start</a> and want to know what
-<code>StartsetsInCoset</code> really does, you may want to read this chapter (and
-the following one, of course). The main high-level function in this
-chapter is <code>ExtendedStartsets</code>.
+The calculations here are very easy, a more demanding example can be found
+in chapter <a href="../../rds/htm/CHAP006.htm">RDS:An Example Program</a>.
 <p>
 <p>
-<h2><a name="SECT001">3.1 Introduction</a></h2>
+<h2><a name="SECT001">3.1 First Step: Integers instead of group elements</a></h2>
 <p><p>
-Inputrds
+Difference sets are represented by lists of integers. Every difference
+set is assumed to contain <var>1</var>. This is assumed implicitly. So the
+lists representing difference sets <strong>must not</strong> contain 1 (a partial
+difference set of length <var>n</var> is hence represented by a list of length
+<var>n-1</var>).  If a partial difference set contains <var>1</var>, many functions will
+produce errors.
+<p>
+To find Difference sets in a group, say <var>G</var>, begin with generating the
+group (and forbidden subgroup) and defining the parameters. Like this:
+<p>
+<pre>
+gap&gt; LoadPackage("rds");
+----------------------------------------------------------------
+Loading  RDS 0.9beta5
+by Marc Roeder
+For help, type: ?RDS
+----------------------------------------------------------------
+true
+gap&gt; k:=9;;lambda:=1;;groupOrder:=81;;
+gap&gt; forbiddenGroupOrder:=9;;
+gap&gt; G:=ElementaryAbelianGroup(groupOrder);
+&lt;pc group of size 81 with 4 generators&gt;
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap&gt; N:=Subgroup(G,GeneratorsOfGroup(G){[1,2]});
+Group([ f1, f2 ])
+gap&gt; Size(N)=forbiddenGroupOrder;   #just a test...
+true
+</pre>
+<p>
+Once we have calculated <var>Gdata</var>, this will be used very often to
+represent the group <var>G</var> as it contains much more information.
 <p>
 <p>
-<h2><a name="SECT002">3.2 How partial difference sets are represented</a></h2>
+<h2><a name="SECT002">3.2 Signatures: An important tool</a></h2>
 <p><p>
-Let <i>G</i> be a group. We define an enumeration {<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>n</i></sub>}=<i>G</i> and
-represent <i>D</i> &#8838; <i>G</i> as a list of integers (where ,of course, <i>i</i>
-represents <i>g</i><sub><i>i</i></sub> for all 1 &#8804; <i>i</i> &#8804; <i>n</i>).  So the automorphism group
-of <i>G</i> is represented as a permutation group of degree <i>n</i>.  One of
-the operations performed most often by methods in <font face="Gill Sans,Helvetica,Arial">RDS</font> is
-the calculation of quotients in <i>G</i>. So we calculate a look-up
-table for this.
+The ``signature'' of a subset <var>SsubseteqG</var> of a group relative to a
+normal subgroup <var>U</var> is the multiset of numbers of elements <var>S</var>
+contains from each coset modulo <var>U</var>. Possible values of these numbers
+can be calculated a priori for relative difference sets. 
 <p>
-This pre-calculation is done by the operation
-<code>PermutationRepForDiffsetCalcuations</code>. So before you start generating
-difference set, call this function and work with the data structure
-returned by it.
+<pre>
+gap&gt; sigdat:=SignatureData(Gdata,N,k,lambda,10^5);;
+</pre>
 <p>
-For an exhaustive search, the ordering of <i>G</i> is very important. To
-avoid generating duplicate partial difference sets, we would like to
-represent partial difference sets by <strong>sets</strong>, i.e. ordered lists. But
-in fact, <font face="Gill Sans,Helvetica,Arial">RDS</font> does <strong>not</strong> assume that partial difference
-sets are sets. The operations <code>ExtendedStartSets</code> and <code>AllDiffsets</code>
-assume that the last element of partial difference set is its
-maximum. But they don't test it. So if you start from scratch, these
-methods generate difference sets which are really sets. Whereas the
-<code>NoSort</code> versions disregard the ordering of <i>G</i> and will produce
-duplicates.
+The argument <var>10<sup>5</sup></var> depends on your degree of impatience. Larger
+numbers take more time in this step, but give better results for later
+reduction steps.
 <p>
-The reason for this seemingly strange behaviour is the following:
-Assume that we have a normal subgroup <i>U</i> &#8804; <i>G</i> and know that every
-difference set <i>D</i> &#8838; <i>G</i> contains exactly <i>n</i><sub><i>i</i></sub> elements from the
-<i>i</i><sup><span class="roman">th</span></sup> coset modulo <i>U</i>. Then it is natural to generate
-difference sets by first searching all partial difference sets of
-length <i>n</i><sub>1</sub> containing entirely of elements of the first coset modulo
-<i>U</i> and then proceed with the other cosets. 
+Now we will look for a ``nice'' normal subgroup. A normal subgroup is
+``nice'', if it has only few signatures and the number of different
+entries in each signature is low. If you have different choices here
+do some experiments, to see what works. Let's see what we have:
 <p>
-This method of difference set generation is normally not compatible
-with the ordering of <i>G</i>. This is why partial difference sets are not
-required to be <strong>sets</strong>. See chapter <a href="../../rds/htm/CHAP005.htm">RDS:An Example Program</a> for an
-example.
+<pre>
+gap&gt; NormalSgsHavingAtMostNSigs(sigdat,1,[1..7]); 
+[ rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f4 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3*f4 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3*f4^2 ]) ) ]
+</pre>
+<p>
+The second parameter of <a href="CHAP005.htm#SSEC003.2">NormalSgsHavingAtMostNSigs</a> is the maximal
+number of signatures the subgroup may have. The third parameter gives
+the desired lengths of the signatures (the index of the normal
+subgroup).
+<p>
+So in this example we have no real choice.  Let's take the first group
+for <var>U</var>. The signature means that we have to get <var>3</var> elements from
+each coset modulo <var>U</var>. So we generate startsets of length <var>2</var> in the
+trivial coset <var>U</var> (representing partial relative difference sets of
+length <var>3</var>). 
+This could be done using <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a>, of course. But here we will
+use another method. The function <a href="CHAP005.htm#SSEC003.4">StartsetsInCoset</a> generates
+startsets in <var>U</var> by generating an initial set of startsets and then
+raising the length of each startset by <var>1</var>.  Then a reduction using
+signatures and automorphism is performed.  This is done until all
+startsets have the desired length or no startset remains (in which
+case there is no relative difference set). For the reduction, a
+suitable set of automorphisms must be chosen. This is done by the
+function <a href="CHAP005.htm#SSEC003.3">SuitableAutomorphismsForReduction</a>:
+<p>
+<pre>
+gap&gt; U:=last[1].subgroup;
+Group([ f1, f2, f3 ])
+gap&gt; auts:=SuitableAutomorphismsForReduction(Gdata,U);
+[ &lt;permutation group of size 303264 with 8 generators&gt; ]
+gap&gt; startsets:=StartsetsInCoset([],U,N,2,auts,sigdat,Gdata,lambda);
+#I  Size 18
+#I  1/ 0 @ 0:00:00.328
+#I  Size 8
+#I  1/ 0 @ 0:00:00.180
+[ [ 4, 22 ] ]
+</pre>
+<p>
+For larger examples, this takes a wile. Taking <var>10<sup>6</sup></var> (or even more)
+for the generation of <var>sigdat</var> can save some time here. A few remarks
+about the parameters of <a href="CHAP005.htm#SSEC003.4">StartsetsInCoset</a>. The first parameter <code>[]</code>
+is the set of startsets which we start with (as we just started, this
+is empty). The second parameter is the coset we use to generate
+startsets and third parameter is the forbidden subgroup. The fourth
+parameter is the length of the startsets we want to generate (remember
+that <var>1</var> is assumed to be in every startset without being listed. So
+we want startsets of size <var>3</var> represented by lists of length <var>2</var>.
+Hence the <var>2</var> in this place).  Instead of <var>auts</var> a suitable list of
+groups of automorphisms of <var>G</var> in permutation representation may be
+inserted. These are used for the reduction of startsets. For large
+groups <var>auts[1]</var> it is a good idea to add some subgroups of <var>auts[1]</var>
+to the list (ascending in order) <var>auts</var>, as the reduction is done
+using the first group in the list and then reducing the already
+reduced list again using the next group.
 <p>
 <p>
-<h2><a name="SECT003">3.3 Basic functions for startset generation</a></h2>
+<h2><a name="SECT003">3.3 Change of coset vs. brute force</a></h2>
 <p><p>
-Defining an enumeration of the a group <i>G</i>, every relative difference
-set may be represented by a list of integers. Indexing <i>G</i> in this way
-has the advantage of the automorphism group of <i>G</i> being a permutation
-group. As relative difference sets are normally calculated in small
-groups, it is possible to store a complete multiplication table of the
-group in terms of the enumeration.  
+Now we have startsets of length <var>2</var> in <var>U</var> and there are two
+possibilities:
 <p>
-If not stated otherwise, partial difference sets are always considered
-to be lists of integers. Note that it is not required for a partial
-difference set to be a set.
-<p>
-<a name = "SSEC003.1"></a>
-<li><code>PermutationRepForDiffsetCalculations( </code><var>group</var><code> ) O</code>
-<li><code>PermutationRepForDiffsetCalculations( </code><var>group</var><code>, </code><var>autgrp</var><code> ) O</code>
-<p>
-For a group <var>group</var>, <code>PermutationRepForDiffsetCalculations(</code><var>group</var><code>)</code>
-returns a record containing:
-<dl compact>
- <dt>1.<dd>the group <var>.G</var>=<var>group</var>.
- <dt>2.<dd>the sorted list <var>.Glist</var>=<code>Set(</code><var>group</var><code>)</code>,
- <dt>3.<dd>the automorphism group <var>.A</var> of <var>group</var>,
- <dt>4.<dd>the group <var>.Aac</var>, which is the permutation action of <var>A</var> on the indices of <var>.Glist</var>,
- <dt>5.<dd><var>.Ahom</var>=<code>ActionHomomorphism(</code><var>.A</var><code>,</code><var>.Glist</var><code>)</code>,
- <dt>6.<dd>the group <var>.Ai</var> of anti-automorphisms of <var>.group</var> acting on the indices of <var>Glist</var>,
- <dt>7.<dd>the multiplication table <var>.diffTable</var> of <var>.group</var> in a special form.
-</dl>
-<p>
-<var>.diffTable</var> is a matrix of integers defined such that 
-<code></code><var>.difftable</var><code>[i][j]</code> is the position of <code></code><var>Glist</var><code>[i](</code><var>Glist</var><code>[j])^-1)</code>
-in <var>Glist</var> with <code></code><var>Glist</var><code>[1]=One(</code><var>group</var><code>)</code>.
-<p>
-<code>PermutationRepForDiffsetCalculations</code> runs into an error if 
-<code>Set(</code><var>group</var><code>)[1]</code> is not equal to <code>One(</code><var>group</var><code>)</code>.
-<p>
-If <var>autgrp</var> is given, <code>PermutationRepForDiffsetCalculations</code> will not calculate the
-automorphism group of <var>group</var> but will take <var>autgrp</var> instead without any test.
-<p>
-If 'Set(<var>group</var>)[1]' is not equal to <code>One(</code><var>group</var><code>)</code>, then
-<code>PermutationRepForDiffsetCalculations</code> returns an error message
-stating ``Unable to generate <var>Glist</var>''. In this case, calculating a
-representation helps:
-<p>
+<hr>(1) Find <var>3</var> more elements from another coset like this:
 <pre>
-gap&gt; G:=DirectProduct(SL(2,3),CyclicGroup(3));
-&lt;group of size 72 with 3 generators&gt;
-gap&gt; data:=PermutationRepForDiffsetCalculations(G);
-Error, Unable to generate &lt;Glist&gt;
- called from
-&lt;function&gt;( &lt;arguments&gt; ) called from read-eval-loop
-Entering break read-eval-print loop ...
-you can 'quit;' to quit to outer loop, or
-you can 'return;' to continue
-brk&gt; quit;
-gap&gt; phi:=ActionHomomorphism(G,Set(G),OnRight);
-&lt;action homomorphism&gt;
-gap&gt; Gnew:=ImagesSource(phi);
-&lt;permutation group with 3 generators&gt;
-gap&gt; data:=PermutationRepForDiffsetCalculations(Gnew);
+gap&gt; cosets:=RightCosets(G,U);
+[ RightCoset(Group( [ f1, f2, f3 ] ),&lt;identity&gt; of ...), 
+  RightCoset(Group( [ f1, f2, f3 ] ),f4), 
+  RightCoset(Group( [ f1, f2, f3 ] ),f4^2) ]
+gap&gt; startsets:=StartsetsInCoset(startsets,cosets[2],N,5,auts,sigdat,Gdata,lambda);
+#I  Size 27
+#I  1/ 0 @ 0:00:00.632
+#I  Size 11
+#I  1/ 0 @ 0:00:00.260
+#I  Size 12
+#I  2/ 0 @ 0:00:00.340
+[ [ 4, 22, 5, 48, 59 ], [ 4, 22, 5, 59, 61 ] ]
+</pre>
+And <var>3</var> more from the last one (of course, we could also change to
+force, but it seems to work this way...).
+<pre>
+gap&gt; startsets:=StartsetsInCoset(startsets,cosets[3],N,8,auts,sigdat,Gdata,lambda);
+#I  Size 9
+#I  1/ 0 @ 0:00:00.300
+#I  Size 1
+#I  1/ 1 @ 0:00:00.024
+#I  Size 1
+#I  1/ 1 @ 0:00:00.028
+[ [ 4, 22, 5, 48, 59, 29, 72, 78 ] ]
 </pre>
 <p>
-A partial difference set may be converted from a list of group
-elements to a list of integers using 
-<a name = "SSEC003.2"></a>
-<li><code>GroupList2PermList( </code><var>list</var><code>, </code><var>dat</var><code> ) O</code>
-<p>
-where <var>dat</var> is a record containing <var>.diffTable</var> as returned by
-<code>PermutationRepForDiffsetCalculations</code>. The inverse operation is
-performed by 
-<a name = "SSEC003.3"></a>
-<li><code>PermList2GroupList( </code><var>list</var><code>, </code><var>dat</var><code> ) O</code>
-<p>
+So we found one difference set of order <var>9</var> in the elementary abelian
+group of order <var>81</var>. To get the difference set containing <var>1</var>
+explicitly and as a subset of <var>G</var>, say
 <pre>
-gap&gt;  G:=DihedralGroup(6);
-&lt;pc group of size 6 with 2 generators&gt;
-gap&gt; N:=NormalSubgroups(G)[2];
-Group([ f2 ])
-gap&gt; dat:=PermutationRepForDiffsetCalculations(G);
-rec( G := &lt;pc group of size 6 with 2 generators&gt;, 
-  Glist := [ &lt;identity&gt; of ..., f1, f2, f1*f2, f2^2, f1*f2^2 ], 
-  A := &lt;group of size 6 with 2 generators&gt;, 
-  Aac := Group([ (3,5)(4,6), (2,4,6) ]), 
-  Ahom := &lt;action homomorphism&gt;, 
-  Ai := Group([ (3,5), (3,5)(4,6), (2,4,6) ]), 
-  diffTable := [ [ 1, 2, 5, 4, 3, 6 ], [ 2, 1, 6, 3, 4, 5 ], 
-      [ 3, 6, 1, 2, 5, 4 ], [ 4, 5, 2, 1, 6, 3 ], 
-      [ 5, 4, 3, 6, 1, 2 ], [ 6, 3, 4, 5, 2, 1 ] ] )
-gap&gt; Nperm:=GroupList2PermList(Set(N),dat);
-[ 1, 3, 5 ]
+gap&gt; PermList2GroupList(Concatenation(startsets[1],[1]),Gdata); 
+[ f3, f1*f3^2, f4, f2*f3^2*f4, f1*f2^2*f3*f4, f2*f4^2, f1^2*f3^2*f4^2,
+f1^2*f2^2*f3*f4^2, &lt;identity&gt; of ... ]
 </pre>
 <p>
-In the following functions the record <var>dat</var> has to contain a matrix
-<var>.diffTable</var> as returned by <code>PermutationRepForDiffsetCalculations</code>.
-<p>
-<a name = "SSEC003.4"></a>
-<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newel</var><code>, </code><var>table</var><code> ) O</code>
-<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newel</var><code>, </code><var>dat</var><code> ) O</code>
-<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newlist</var><code>, </code><var>dat</var><code> ) O</code>
-<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newlist</var><code>, </code><var>table</var><code> ) O</code>
-<p>
-<code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>dat</var><code> )</code> takes a record <var>dat</var> as 
-returned by <code>PermutationRepForDiffsetCalculations(</code><var>group</var><code>)</code>.
-For <code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>table</var><code> )</code>, <var>table</var> has to be the
-multiplication table in the form of  
-<code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>dat.diffTable</var><code>)</code>
-<p>
-The method returns the unordered list of quotients <i>d</i><sub>1</sub><i>newel</i> <sup>&#8722;1</sup> with 
-<i>d</i><sub>1</sub> &#8712; <i>list</i> &#8746;{1} (in permutation representation).
-<p>
-When used with a list <var>newlist</var>, a list of quotients <i>d</i><sub>1</sub><i>d</i><sub>2</sub><sup>&#8722;1</sup> with 
-<i>d</i><sub>1</sub> &#8712; <i>list</i> &#8746;{1} and <i>d</i><sub>2</sub> &#8712; <i>newlist</i>  is returned.
-<p>
-<a name = "SSEC003.5"></a>
-<li><code>AllPresentables( </code><var>list</var><code>, </code><var>table</var><code> ) O</code>
-<li><code>AllPresentables( </code><var>list</var><code>, </code><var>dat</var><code> ) O</code>
-<p>
-Let <var>list</var> be a list of integers representing elements of a group defined 
-by <var>dat</var> (or <var>table</var>).
-<code>AllPresentables( </code><var>list</var><code>,</code><var>table</var><code>)</code> returns an unordered list of 
-quotients <i>ab</i><sup>&#8722;1</sup> for all group elements <i>a</i>,<i>b</i>  represented by integers 
-in <var>list</var>. If 1 &#8712; <i>list</i> , an error is issued.
-The multiplication table <var>table</var> has to be of the form as returned by 
-<code>PermutationRepForDiffsetCalculations</code>. And <var>dat</var> is a record as 
-calculated by <code>PermutationRepForDiffsetCalculations</code>.
+<hr>(2) Do a brute force search. Here we have to convert
+the forbidden group <var>N</var> into a list of integers <var>Np</var>. And we have to
+raise the length of the startsets by one before we can start. This is
+due to the ordering we chose (which is not necessarily compatible with
+the cosets modulo <var>U</var>).
 <p>
 <pre>
-gap&gt; G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
-gap&gt; AllPresentables([2,3],dat);
-[ 2, 3, 7, 2, 7, 6 ]
-gap&gt; AllPresentables([1,2,3],dat);
-Error...
-</pre>
-<a name = "SSEC003.6"></a>
-<li><code>RemainingCompletions( </code><var>diffset</var><code>, </code><var>completions</var><code>[, </code><var>forbidden</var><code>], </code><var>dat</var><code>[, </code><var>lambda</var><code>] ) O</code>
-<a name = "SSEC003.6"></a>
-<li><code>RemainingCompletionsNoSort( </code><var>diffset</var><code>, </code><var>completions</var><code>[, </code><var>forbidden</var><code>], </code><var>table</var><code>[, </code><var>lambda</var><code>] ) O</code>
-<p>
-For a partial difference set <var>diffset</var>, 
-<code>RemainingCompletions(</code><var>diffset</var><code>,</code><var>completions</var><code>,</code><var>dat</var><code>)</code> returns a 
-subset of the <strong>set</strong> <var>completions</var>, such that each of its elements may be 
-added to <var>diffset</var> without it loosing the property to be a partial 
-difference set. 
-Only elements greater than the last element of <var>diffset</var> are returned.
-<p>
-For partial <strong>relative</strong> difference sets, <var>forbidden</var> is the forbidden set.
-<p>
-<code>RemainingCompletionsNoSort</code> does also return elements from <var>completions</var> which
-are smaller than <code></code><var>diffset</var><code>[Size(</code><var>diffset</var><code>)]</code>. 
-<p>
-<pre>
-gap&gt; G:=CyclicGroup(7);
-&lt;pc group of size 7 with 1 generators&gt;
-gap&gt; dat:=PermutationRepForDiffsetCalculations(G);;
-gap&gt; RemainingCompletionsNoSort([4],[1..7],dat);
-[ 2, 3 ]
-gap&gt; RemainingCompletionsNoSort([4],[1..7],dat,2);
-[ 2, 3, 6, 7 ]
-gap&gt; RemainingCompletions([4],[1..7],dat);        
-[  ]
-gap&gt; RemainingCompletions([4],[1..7],dat,2);
-[ 6, 7 ]
+gap&gt; Np:=GroupList2PermList(Set(N),Gdata);
+[ 1, 2, 3, 6, 7, 10, 16, 19, 32 ]
+gap&gt; startsets:=ExtendedStartsetsNoSort(startsets,[1..groupOrder],Np,8,Gdata,lambda);;
+gap&gt; Size(startsets);
+54
+gap&gt; foundsets:=[];;     
+gap&gt; for set in startsets
+&gt;  do
+&gt;   Append(foundsets,AllDiffsets(set,[1..groupOrder],k-1,Np,Gdata,lambda));
+&gt; od;
+gap&gt; Size(foundsets);
+162
 </pre>
 <p>
-<a name = "SSEC003.7"></a>
-<li><code>ExtendedStartsets( </code><var>startsets</var><code>, </code><var>completions</var><code>, [</code><var>forbiddenset</var><code>][, </code><var>aim</var><code>], </code><var>Gdata</var><code>[, </code><var>lambda</var><code>] ) O</code>
-<a name = "SSEC003.7"></a>
-<li><code>ExtendedStartsetsNoSort( </code><var>startsets</var><code>, </code><var>completions</var><code>, [</code><var>forbiddenset</var><code>][, </code><var>aim</var><code>], </code><var>Gdata</var><code>[, </code><var>lambda</var><code>] ) O</code>
-<p>
-For a set of partial (relative) difference sets <var>startsets</var>, the set of 
-all extensions by one element from <var>completions</var> is returned.
-Here an ``extension'' of a partial diffence set <i>S</i> is a list which has 
-one element more than <i>S</i> and contains <i>S</i>.
-<p>
-Here <var>completions</var> is a set of elements wich may be appended to the lists in 
-<var>startsets</var> to generate new partial difference sets. For relative difference
-sets, the forbidden set <var>forbiddenset</var> must be given. 
-And the integer <var>aim</var> gives the desired total length, i.e. the number 
-of elements of <var>completions</var> that have to be added to each startset 
-plus its length. Note that the elements of <var>startset</var> are always extended
-by <strong>one</strong> element (if they can be extended). <var>aim</var> does only tell how 
-many elements from <var>completions</var> you want to add. A partial difference
-set is only be extended, if there are enough admissible elements in 
-<var>completions</var>, so if for some <i>S</i> &#8712; <i>startsets</i> , we have less than 
-<i>aim</i> &#8722;<tt>Size</tt>(<i>S</i>) elements in <var>completions</var> which can be added to <i>S</i>,
-no extension of <i>S</i> is returned. 
-<p>
-If <var>lambda</var> is not passed as a parameter, it is assumed to be 1.
-<p>
-Note that <code>ExtendedStartsets</code> does use <code>RemainingCompletions</code> while 
-<code>ExtendedStartsetsNoSort</code> uses <code>RemainingCompletionsNoSort</code>. 
-Note that the partial difference sets generated with <code>ExtendedStartsetsNoSort</code>
-are <strong>not</strong> sets (i.e. not sorted). This may result in doing work
-twice. But it can also be useful, especially when generating difference sets 
-``coset by coset''.
-<p>
-<pre>
-gap&gt; G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
-gap&gt; startsets:=[[2],[4],[6]];;
-gap&gt; ExtendedStartsets(startsets,[1..7],dat);
-[ [ 2, 4 ], [ 2, 6 ] ]
-gap&gt; ExtendedStartsets(startsets,[1..7],3,dat);
-[ [ 2, 4 ] ]
-gap&gt; ExtendedStartsets(startsets,[1..7],dat,2);
-[ [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 4, 6 ], [ 4, 7 ], [ 6, 7 ] ]
-gap&gt; ExtendedStartsetsNoSort(startsets,[1..7],dat);
-[ [ 2, 4 ], [ 2, 6 ], [ 4, 2 ], [ 4, 3 ], [ 6, 2 ], [ 6, 5 ] ]
-</pre>
-<p>
-<p>
-<h2><a name="SECT004">3.4 A brute force method</a></h2>
-<p><p>
-The following method can be used to find (partial) difference sets by
-brute force.
-<p>
-<a name = "SSEC004.1"></a>
-<li><code>AllDiffsets( </code><var>diffset</var><code>, </code><var>completions</var><code>, </code><var>aim</var><code>, </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, </code><var>lambda</var><code> ) O</code>
-<p>
-Let <var>diffset</var> be partial relative difference set and <var>completions</var> a list
-of possible completions and <var>forbidden</var> the forbidden set. Then
-<code>AllDiffsets</code> returns a list of (partial) difference sets which contain
-diffset. <var>Gdata</var> is the record as always and <var>lambda</var> is the parameter
-of the relative difference set. <var>forbidden</var> and <var>completions</var> have to be
-lists of integers.
+Now <var>foundsets</var> contains <var>162</var> relative <var>(9,9,9,1)</var>-difference sets
+(represented by lists of length <var>8</var>). As we have see above, these are
+all equivalent.  
 <p>
 <p>
 [<a href = "chapters.htm">Up</a>] [<a href ="CHAP002.htm">Previous</a>] [<a href ="CHAP004.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
 <P>
-<address>RDS manual<br>November 2006
+<address>RDS manual<br>January 2008
 </address></body></html>

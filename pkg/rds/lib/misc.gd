@@ -4,9 +4,9 @@
 ##
 ##  Some methods for general use
 ##
-#H @(#)$Id: misc.gd, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+#H @(#)$Id: misc.gd, v 1.0 2008/01/26 14:04:55 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/misc_gd"):=
-	"@(#)$Id: misc.gd, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+	"@(#)$Id: misc.gd, v 1.0 2008/01/26   14:04:55  gap Exp $";
 #############################################################################
 ##
 #F  IsComputableFilter( <filter> )     test if a filter is computable

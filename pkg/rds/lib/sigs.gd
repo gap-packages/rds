@@ -4,9 +4,9 @@
 ##
 ##  Invariants for partial difference sets
 ##
-#H @(#)$Id: sigs.gd, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+#H @(#)$Id: sigs.gd, v 1.0 2008/01/26 14:04:55 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,15 +23,15 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/sigs_gd"):=
-	"@(#)$Id: sigs.gd, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+	"@(#)$Id: sigs.gd, v 1.0 2008/01/26   14:04:55  gap Exp $";
 #############################################################################
 ## 
 #V maxAutsizeForOrbitCalculation 
 ## 
-##  In `ReducedStartsets', a bound is needed to decide if `Orbit' or 
+##  In "ReducedStartsets", a bound is needed to decide if `Orbit' or 
 ##  `RepresentativeAction' should be used. If the group is larger than 
 ##  <maxAutsizeForOrbitCalculation>, `RepresentativeAction' is used.
-##  The default value for `maxAutsizeForOrbitCalculation' is $10^6$.
+##  The default value for `maxAutsizeForOrbitCalculation' is $5*10^6$.
 ##  If you want to change it, you will have to edit the file `sigs.gd'.
 ##
 DeclareSynonym("maxAutsizeForOrbitCalculation",5*10^6);
@@ -64,7 +64,7 @@ DeclareOperation("RDSFactorGroupData",[IsGroup,IsObject,IsInt,IsRecord]);
 #O MatchingFGDataNonGrp(<fgdatalist>,<fgmatchdata>)  
 ##
 ##  Let <fgdatalist> be a list of records and <fgmatchdata> a record with components
-##  <.fg>, <.Nfg> and <.fgintersect>  as returned by `RDSFactorGroupData'.
+##  <.fg>, <.Nfg> and <.fgintersect>  as returned by "RDSFactorGroupData".
 ##  Then `MatchingFGDataNonGrp' returns the entry of <fgdatalist> that defines
 ##  the same admissible signatures as <fgmatchdata>. If no such entry exists,
 ##  `fail' is returned.
@@ -78,7 +78,7 @@ DeclareOperation("MatchingFGDataNonGrp",[IsList,IsRecord]);
 #O MatchingFGData(<fgdatalist>,<fgmatchdata>)  
 ##
 ##  Let <fgdatalist> be a list of records and <fgmatchdata> a record with components
-##  <.fg>, <.Nfg>, <.fgintersect> and <.fgaut> as returned by `RDSFactorGroupData'.
+##  <.fg>, <.Nfg>, <.fgintersect> and <.fgaut> as returned by "RDSFactorGroupData".
 ##  Then `MatchingFGDataNonGrp' returns the entry of <fgdatalist> that defines
 ##  the same admissible signatures as <fgmatchdata>. If no such entry exists,
 ##  `fail' is returned.
@@ -121,17 +121,17 @@ DeclareOperation("CosetSignatures",[IsInt,IsInt,IsInt,IsDenseList,IsInt,IsInt]);
 
 #############################################################################
 ##
-#O  TestedSignatures(<sigs>,<group>,<normalsg>[,<maxtest>][,<moretest>])   returns a subset of <sigs> satisfying necessary conditions for signatures of difference sets.
+#O  TestedSignatures(<sigs>,<group>,<Normalsg>[,<maxtest>][,<moretest>])   returns a subset of <sigs> satisfying necessary conditions for signatures of difference sets.
 ##
 ##  *this does only work for ordinary difference sets, not for 
 ##  relative difference sets in general*
 ##
-##  Let <sigs> be a list of possible signatures as returned from 
-##  `CosetSignatures'. Let <normalsg> be a subgroup of <group>. 
+##  Let <sigs> be a list of possible signatures as returned by 
+##  "CosetSignatures". Let <Normalsg> be a subgroup of <group>. 
 ##  For each signature in <sigs>, the necessary conditions described in 
 ##  "The Coset Signature" are tested to decide
 ##  if the signature can be a signature of a  difference set in <group> for
-##  for the normal subgroup <normalsg>. 
+##  for the normal subgroup <Normalsg>. 
 ##
 ##  As this involves computation for all permutations of the signature, this
 ##  can be very costly. The argument <maxtest> determines how many 
@@ -151,8 +151,8 @@ DeclareOperation("CosetSignatures",[IsInt,IsInt,IsInt,IsDenseList,IsInt,IsInt]);
 ##  exist). Default is <true>.
 ##
 ##
-##  `TestedSignatures' calls `TestSignatureCyclicFactorGroup' or
-##  `TestSignatureLargeIndex' and returns a sublist of <sigs>. 
+##  `TestedSignatures' calls "TestSignatureCyclicFactorGroup" or
+##  "TestSignatureLargeIndex" and returns a sublist of <sigs>. 
 ##
 DeclareOperation("TestedSignatures",[IsList,IsGroup,IsGroup]);
 DeclareOperation("TestedSignatures",[IsList,IsGroup,IsGroup,IsInt]);
@@ -248,20 +248,20 @@ DeclareGlobalFunction("OrderedCosetSignatureOfSet");
 
 #############################################################################
 ##
-#O SigInvariant( < prd >,<data>)      calculates the signature of a partial relative difference set.
+#O SigInvariant( < diffset >,<data>)      calculates the signature of a partial relative difference set.
 ##
-##  Given a partial relative difference set <prd> and a list of 
+##  Given a partial relative difference set <diffset> and a list of 
 ##  records with entries <cosets> and <sigs>.
 ##  Here <cosets> is a full list of cosets and <sigs> is a list of 
 ##  signatures that may occur for relative difference sets.
 ##
 ##  For each record <rec> in <data>, the intersection numbers of 
-##  <prd> with  the cosets of <rec.cosets> are computed stored in 
+##  <diffset> with  the cosets of <rec.cosets> are computed stored in 
 ##  a set <sig>. If none of the signatures in <rec.sigs> is pointwise
-##  greater or equal <sig>, `SigInvariant( <prd>,<data>) returns 'fail'.
+##  greater or equal <sig>, `SigInvariant( <diffset>,<data>) returns `fail'.
 ##  Otherwise <sig> is added to a list of signatures that is returned.
 ##
-##  Note the returned invariant is that of $prd\cup \{1\}$. 
+##  Note the returned invariant is that of $diffset\cup \{1\}$. 
 ##  The output from `SignatureDataForNormalSubgroups' can be used as <data>.
 ##
 DeclareOperation("SigInvariant",[IsDenseList,IsDenseList]);
@@ -281,9 +281,9 @@ DeclareOperation("SigInvariant",[IsDenseList,IsDenseList]);
 ##  if <func> is an invariant for partial relative difference sets. All elements 
 ##  for which <func> returns `fail' are discarded.
 ##
-##  Let <csdata> be a list of records as used for `SigInvariant' (i.e. containing
-##  <.cosets> and <.signatures>). Then `ReducedStartsets(<startsets>,<autlist>,<csdata>,<Gdata>)' 
-##  `SigInvariant' is used for <func>.
+##  If a list <csdata> of records as used for "SigInvariant" (i.e. containing
+##  <.cosets> and <.signatures>) is pased, then `ReducedStartsets'
+##  uses "SigInvariant" for <func>.
 ##
 DeclareOperation("ReducedStartsets",
         [IsDenseList,IsDenseList,IsDenseList,IsMatrix]);
@@ -299,7 +299,7 @@ DeclareSynonym("MoreReduction",ReducedStartsets);
 ##
 #O SignatureDataForNormalSubgroups(<Normals>,<globalSigData>,<forbiddenSet>,<Gdata>,<parameters>)
 ##
-##  Let <Gdata> be a record as returned by `PermutationRepForDiffsetCalculations'.
+##  Let <Gdata> be a record as returned by "PermutationRepForDiffsetCalculations".
 ##  Let <Normals> be a list of normal subgroups of <Gdata.G>, and <forbiddenSet> the forbidden set 
 ##  (as set of group elements or group).
 ##
@@ -320,8 +320,8 @@ DeclareSynonym("MoreReduction",ReducedStartsets);
 ##  that contains all known information about subgroups of order $i$.
 ##  Each of these records has the following components:
 ##  \beginlist
-##   \item{1.} <.cspara> the parameters for `CosetSignatures'
-##   \item{2.} <.sigs> the output of `CosetSignatures' when the input is <.cspara>
+##   \item{1.} <.cspara> the parameters for "CosetSignatures"
+##   \item{2.} <.sigs> the output of "CosetSignatures" when the input is <.cspara>
 ##   \item{3.} <.fgsigs> a list of records containing data about factor groups with parameters <.cspara>:
 ##   \beginlist
 ##    \item{3.1.} <.fg> the factor group
@@ -336,7 +336,7 @@ DeclareSynonym("MoreReduction",ReducedStartsets);
 ##  The list <globalSigData> can be used if different groups are studied. If a group has a normal 
 ##  subgroup with parameters (in the sense of <.cspara>) listed in <globalSigData>, the signatures
 ##  from a previous calculation may be used. Of course, the factor groups have to be checked first.
-##  This check is done with `MatchingFGData' or `MatchingFGDataNonGrp'. 
+##  This check is done with "MatchingFGData" or "MatchingFGDataNonGrp". 
 ##
 ##  So the second run of `SignatureDataForNormalSubgroups' with the same parameters and different 
 ##  <Gdata> and <Normals> will normally be much faster, as the signatures are already stored in 
@@ -356,7 +356,7 @@ DeclareOperation("SignatureDataForNormalSubgroups",
 ##  Set `<P>:=AllPresentables(<set>,<Gdata>)' then the set of multiplicities
 ##  of <P> is an invariant for partial relative difference sets.
 ##
-##  `MultiplicityInvariantLargeLambda' returns a List in a form as `Collected'
+##  `MultiplicityInvariantLargeLambda' returns a list in a form as `Collected'
 ##  does.
 ##
 DeclareOperation("MultiplicityInvariantLargeLambda",[IsDenseList,IsRecord]);
@@ -406,7 +406,7 @@ DeclareOperation("DataForQuotientImage",
 ##  Let <Gdata> be the usual record for a group $G$ and <normal> a normal 
 ##  subgroup of $G$ which lies in the forbidden set <forbidden>.
 ##  Let then <fGroupData> be the record <.Gdata> describing $G/<normal>$ as 
-##  returned by `DataForQuotientImage' and <qimages> a set of difference sets 
+##  returned by "DataForQuotientImage" and <qimages> a set of difference sets 
 ##  in $G/<normal>$.
 ##
 ##  Then `OrderedSigsFromQuotientImages' returns a record containing a list of 
@@ -421,10 +421,10 @@ DeclareOperation("OrderedSigsFromQuotientImages",
 ##
 #O OrderedSigInvariant(<set>,<data>)  calculate ordered signatures
 ## 
-##  does the same as `SigInvariant', but for ordered signatures. Here <data> 
+##  does the same as "SigInvariant", but for ordered signatures. Here <data> 
 ##  has to be a list of records containing ordered signatures called 
 ##  <.orderedSigs> and cosets <.cosets> just as returned by
-##  `OrderedSigsFromQuotientImages'. 
+##  "OrderedSigsFromQuotientImages". 
 ##
 DeclareOperation("OrderedSigInvariant",[IsDenseList,IsDenseList]);
 
@@ -432,16 +432,16 @@ DeclareOperation("OrderedSigInvariant",[IsDenseList,IsDenseList]);
 
 #############################################################################
 ##
-#O MatchingFGDataForOrderedSigs(<forbidden>,<Gdata>,<normalsgs>,<fgdata>)
+#O MatchingFGDataForOrderedSigs(<forbidden>,<Gdata>,<Normalsgs>,<fgdata>)
 ## 
 ##  Let <fgdata> be a list of records of the form returned by 
-##  `OrderedSigsFromQuotientImages' and <normalsgs> a list of normal subgroups
+##  "OrderedSigsFromQuotientImages" and <Normalsgs> a list of normal subgroups
 ##  of the group <Gdata.G>. Furthermore let <forbidden> be the forbidden set
 ##  as a list of group elements or integers or a subgroup of <Gdata.G>.
 ##  
 ##  Then `MatchingFGDataForOrderedSigs' retruns all elements of <fgdata> which
-##  match a normal subgroup of <normalsgs>. The returned value is a record 
-##  containing the normal subgroup <.normal> from <normalsgs>, the record 
+##  match a normal subgroup of <Normalsgs>. The returned value is a record 
+##  containing the normal subgroup <.normal> from <Normalsgs>, the record 
 ##  <.sigdata> from <fgdata> and a homomorphism <.hom> which maps <Gdata.G> 
 ##  onto <.sigdata.Gdata.G> and takes <forbidden> to <.sigdata.Nfg>.
 ##

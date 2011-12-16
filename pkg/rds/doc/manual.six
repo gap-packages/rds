@@ -1,122 +1,138 @@
 C about.tex 1. About this package
-S 1.1. Installation
-C jumpstart.tex 2. A quick start
-S 2.1. First Step: Integers instead of group elements
-S 2.2. Signatures: An important tool
-S 2.3. Change of coset vs. brute force
-C startsets.tex 3. General concepts
-S 3.1. Introduction
-S 3.2. How partial difference sets are represented
-S 3.3. Basic functions for startset generation
-F 3.3. PermutationRepForDiffsetCalculations
-F 3.3. PermutationRepForDiffsetCalculations
-F 3.3. GroupList2PermList
-F 3.3. PermList2GroupList
-F 3.3. NewPresentables
-F 3.3. NewPresentables
-F 3.3. NewPresentables
-F 3.3. NewPresentables
-F 3.3. AllPresentables
-F 3.3. AllPresentables
-F 3.3. RemainingCompletions
-F 3.3. RemainingCompletionsNoSort
-F 3.3. ExtendedStartsets
-F 3.3. ExtendedStartsetsNoSort
-S 3.4. A brute force method
-F 3.4. AllDiffsets
-C sigs.tex 4. Invariants for Difference Sets
-S 4.1. The Coset Signature
-F 4.1. CosetSignatureOfSet
-F 4.1. CosetSignatures
-F 4.1. CosetSignatures
-F 4.1. TestSignatureLargeIndex
-F 4.1. TestSignatureCyclicFactorGroup
-F 4.1. TestedSignatures
-I 4.1. InfoRDS@{\fam \ttfam \tentt InfoRDS}
-F 4.1. TestedSignaturesRelative
-F 4.1. SigInvariant
-F 4.1. RDSFactorGroupData
-F 4.1. MatchingFGDataNonGrp
-F 4.1. MatchingFGData
-F 4.1. SignatureDataForNormalSubgroups
-F 4.1. ReducedStartsets
-F 4.1. ReducedStartsets
-F 4.1. maxAutsizeForOrbitCalculation
-S 4.2. Blackbox functions
-F 4.2. SignatureData
-F 4.2. NormalSgsHavingAtMostNSigs
-F 4.2. SuitableAutomorphismsForReduction
-F 4.2. StartsetsInCoset
-C example.tex 5. An Example Program
-C orderedsigs.tex 6. Ordered Signatures
-S 6.1. Ordered signatures by quotient images
-F 6.1. NormalSgsForQuotientImages
-F 6.1. DataForQuotientImage
-F 6.1. MultiplicityInvariantLargeLambda
-F 6.1. OrderedSigsFromQuotientImages
-F 6.1. MatchingFGDataForOrderedSigs
-F 6.1. OrderedSigInvariant
-S 6.2. Ordered signatures using representations
-S 6.3. Definition
-S 6.4. Methods for calculating ordered signatures
-F 6.4. NormalSubgroupsForRep
-F 6.4. OrderedSigs
-F 6.4. OrderedSignatureOfSet
-C iso.tex 7. Determining the Isomorphism Class of Projective Planes
-F 7.0. ElationPrecalc
-F 7.0. ElationPrecalcSmall
-F 7.0. DualPlane
-F 7.0. ProjectiveClosureOfPointSet
-S 7.1. Isomorphisms and Collineations
-F 7.1. IsIsomorphismOfProjectivePlanes
-F 7.1. IsCollineationOfProjectivePlane
-F 7.1. IsCollineationOfProjectivePlane
-F 7.1. IsomorphismProjPlanesByGenerators
-F 7.1. IsomorphismProjPlanesByGeneratorsNC
-S 7.2. Central Collineations
-F 7.2. ElationsByPairs
-F 7.2. ElationsByPairs
-F 7.2. ElationsByPairsSmall
-F 7.2. AllElationsCentAx
-F 7.2. AllElationsCentAx
-F 7.2. AllElationsCentAxSmall
-F 7.2. AllElationsAx
-F 7.2. AllElationsAx
-F 7.2. AllElationsAxSmall
-F 7.2. IsTranslationPlane
-F 7.2. IsTranslationPlaneSmall
-F 7.2. HomologyByPairSmall
-F 7.2. GroupOfHomologiesSmall
-S 7.3. Collineations on Baer Subplanes
-F 7.3. InducedCollineation
-S 7.4. Invariants for Projective Planes
-F 7.4. NrFanoPlanesAtPoints
-F 7.4. NrFanoPlanesAtPointsSmall
-F 7.4. IncidenceMatrix
-F 7.4. IncidenceMatrix
-F 7.4. pRank
-F 7.4. pRank
-F 7.4. FingerprintProjPlane
-F 7.4. FingerprintProjPlane
-F 7.4. FingerprintAntiFlag
-C misc.tex 8. Some functions for everyday use
-S 8.1. Groups and actions
-F 8.1. OnSubgroups
-F 8.1. RepsCClassesGivenOrder
-S 8.2. Iterators
-F 8.2. CartesianIterator
-F 8.2. ConcatenationOfIterators
-S 8.3. Lists and Matrices
-F 8.3. IsListOfIntegers
-F 8.3. List2Tuples
-F 8.3. MatTimesTransMat
-F 8.3. PartitionByFunctionNF
-F 8.3. PartitionByFunction
-I 8.3. InfoRDS@{\fam \ttfam \tentt InfoRDS}
-S 8.4. Cyclotomic numbers
-F 8.4. IsRootOfUnity
-F 8.4. CoeffList2CyclotomicList
-F 8.4. AbssquareInCyclotomics
-F 8.4. CycsGivenCoeffSum
-S 8.5. Filters and Categories
-F 8.5. IsComputableFilter
+S 1.1. Acknowledgements
+S 1.2. Installation
+S 1.3. Verbosity
+F 1.3. InfoRDS
+F 1.3. DebugRDS
+S 1.4. Definitions and Objects
+C tutorial.tex 2. AllDiffsets and OneDiffset
+C jumpstart.tex 3. A basic example
+S 3.1. First Step: Integers instead of group elements
+S 3.2. Signatures: An important tool
+S 3.3. Change of coset vs. brute force
+C startsets.tex 4. General concepts
+S 4.1. Introduction
+S 4.2. How partial difference sets are represented
+S 4.3. Basic functions for startset generation
+F 4.3. PermutationRepForDiffsetCalculations
+F 4.3. PermutationRepForDiffsetCalculations
+F 4.3. IsDiffset
+F 4.3. IsDiffset
+F 4.3. IsPartialDiffset
+F 4.3. IsPartialDiffset
+F 4.3. GroupList2PermList
+F 4.3. PermList2GroupList
+F 4.3. NewPresentables
+F 4.3. NewPresentables
+F 4.3. NewPresentables
+F 4.3. NewPresentables
+F 4.3. AllPresentables
+F 4.3. AllPresentables
+F 4.3. RemainingCompletions
+F 4.3. RemainingCompletionsNoSort
+F 4.3. ExtendedStartsets
+F 4.3. ExtendedStartsetsNoSort
+S 4.4. Brute force methods
+F 4.4. AllDiffsets
+F 4.4. AllDiffsets
+F 4.4. AllDiffsets
+F 4.4. AllDiffsets
+F 4.4. AllDiffsets
+F 4.4. AllDiffsetsNoSort
+F 4.4. AllDiffsetsNoSort
+F 4.4. AllDiffsetsNoSort
+F 4.4. AllDiffsetsNoSort
+F 4.4. OneDiffset
+F 4.4. OneDiffset
+F 4.4. OneDiffset
+F 4.4. OneDiffset
+F 4.4. OneDiffset
+F 4.4. OneDiffsetNoSort
+F 4.4. OneDiffsetNoSort
+F 4.4. OneDiffsetNoSort
+F 4.4. OneDiffsetNoSort
+C sigs.tex 5. Invariants for Difference Sets
+S 5.1. The Coset Signature
+F 5.1. CosetSignatureOfSet
+F 5.1. CosetSignatures
+F 5.1. CosetSignatures
+F 5.1. TestSignatureLargeIndex
+F 5.1. TestSignatureCyclicFactorGroup
+F 5.1. TestedSignatures
+I 5.1. InfoRDS@{\fam \ttfam \tentt InfoRDS}
+F 5.1. TestedSignaturesRelative
+F 5.1. SigInvariant
+F 5.1. SignatureDataForNormalSubgroups
+F 5.1. RDSFactorGroupData
+F 5.1. MatchingFGDataNonGrp
+F 5.1. MatchingFGData
+F 5.1. ReducedStartsets
+F 5.1. ReducedStartsets
+F 5.1. maxAutsizeForOrbitCalculation
+S 5.2. An invariant for large lambda
+F 5.2. MultiplicityInvariantLargeLambda
+S 5.3. Blackbox functions
+F 5.3. SignatureData
+F 5.3. NormalSgsHavingAtMostNSigs
+F 5.3. SuitableAutomorphismsForReduction
+F 5.3. StartsetsInCoset
+C example.tex 6. An Example Program
+C orderedsigs.tex 7. Ordered Signatures
+S 7.1. Ordered signatures by quotient images
+F 7.1. NormalSgsForQuotientImages
+F 7.1. DataForQuotientImage
+F 7.1. OrderedSigsFromQuotientImages
+F 7.1. MatchingFGDataForOrderedSigs
+F 7.1. OrderedSigInvariant
+S 7.2. Ordered signatures using representations
+S 7.3. Definition
+S 7.4. Methods for calculating ordered signatures
+F 7.4. NormalSubgroupsForRep
+F 7.4. OrderedSigs
+F 7.4. OrderedSignatureOfSet
+C iso.tex 8. Block Designs and Projective Planes
+F 8.0. ProjectivePlane
+F 8.0. PointJoiningLinesProjectivePlane
+F 8.0. DevelopmentOfRDS
+F 8.0. ProjectiveClosureOfPointSet
+S 8.1. Isomorphisms and Collineations
+F 8.1. IsIsomorphismOfProjectivePlanes
+F 8.1. IsCollineationOfProjectivePlane
+F 8.1. IsomorphismProjPlanesByGenerators
+F 8.1. IsomorphismProjPlanesByGeneratorsNC
+S 8.2. Central Collineations
+F 8.2. ElationByPair
+F 8.2. AllElationsCentAx
+F 8.2. AllElationsAx
+F 8.2. IsTranslationPlane
+F 8.2. HomologyByPair
+F 8.2. GroupOfHomologies
+S 8.3. Collineations on Baer Subplanes
+F 8.3. InducedCollineation
+S 8.4. Invariants for Projective Planes
+F 8.4. NrFanoPlanesAtPoints
+F 8.4. IncidenceMatrix
+F 8.4. pRank
+F 8.4. FingerprintProjPlane
+F 8.4. FingerprintAntiFlag
+C misc.tex 9. Some functions for everyday use
+S 9.1. Groups and actions
+F 9.1. OnSubgroups
+F 9.1. RepsCClassesGivenOrder
+S 9.2. Iterators
+F 9.2. CartesianIterator
+F 9.2. ConcatenationOfIterators
+S 9.3. Lists and Matrices
+F 9.3. IsListOfIntegers
+F 9.3. List2Tuples
+F 9.3. MatTimesTransMat
+F 9.3. PartitionByFunctionNF
+F 9.3. PartitionByFunction
+I 9.3. InfoRDS@{\fam \ttfam \tentt InfoRDS}
+S 9.4. Cyclotomic numbers
+F 9.4. IsRootOfUnity
+F 9.4. CoeffList2CyclotomicList
+F 9.4. AbssquareInCyclotomics
+F 9.4. CycsGivenCoeffSum
+S 9.5. Filters and Categories
+F 9.5. IsComputableFilter

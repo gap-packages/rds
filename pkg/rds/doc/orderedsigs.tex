@@ -66,48 +66,14 @@ $G/U$ and the new parameter <.lambda> for the difference set in $G/U$.
 
 
 
-The data returned by `DataForQuotientImage' can be used to calculate
-difference sets in $G/U$ in the way outlined in chapter "RDS:A quick
-start". A quotient image of a relative difference set has a larger
-$\lambda$ than the initial difference set. So the following invariant
-can be used for the generation of difference sets:
-
-\>MultiplicityInvariantLargeLambda( <set>, <Gdata> ) O
-
-Let <set> be a partial relative difference set with $\lambda>1$. 
-Set `<P>:=AllPresentables(<set>,<Gdata>)' then the set of multiplicities
-of <P> is an invariant for partial relative difference sets.
-
-`MultiplicityInvariantLargeLambda' returns a List in a form as `Collected'
-does.
+The data returned by "DataForQuotientImage" can be used to calculate
+difference sets in $G/U$ in the way outlined in chapter "RDS:A basic
+example". A quotient image of a relative difference set has a larger
+$\lambda$ than the initial difference set. So
+"MultiplicityInvariantLargeLambda" can be used as in invariant here
+(see "RDS:An invariant for large lambda")
 
 
-%
-\beginexample
-gap> G:=CyclicGroup(7);;Gdata:=PermutationRepForDiffsetCalculations(G);;
-gap> AllPresentables([2,3],Gdata);
-[ 2, 3, 7, 2, 7, 6 ]
-gap> MultiplicityInvariantLargeLambda([2,3],Gdata);
-[ [ 1, 2 ], [ 2, 2 ] ]
-\endexample
-
-This invariant can be used for `ReducedStartSets' complementary to the
-signature invariant by defining
-\begintt
-gap> partfunc:=function(list)
-> local sig;                                           
-> if sig=fail
-> then return fail;
-> fi;
-> return [MultiplicityInvariantLargeLambda(list,Gdata),SigInvariant(list,sigdata)];
-> end;
-function( list ) ... end
-\endtt
-%
-
-and then passing <partfunc> to `ReducedStartSets'. Of course, sigdata
-has to be the list of records defining the coset signatures (see
-section "RDS:The Coset Signature")
 
 After all difference sets are known, they must be converted
 into ordered signatures. This is done by the following function:
@@ -117,7 +83,7 @@ into ordered signatures. This is done by the following function:
 Let <Gdata> be the usual record for a group $G$ and <normal> a normal 
 subgroup of $G$ which lies in the forbidden set <forbidden>.
 Let then <fGroupData> be the record <.Gdata> describing $G/<normal>$ as 
-returned by `DataForQuotientImage' and <qimages> a set of difference sets 
+returned by "DataForQuotientImage" and <qimages> a set of difference sets 
 in $G/<normal>$.
 
 Then `OrderedSigsFromQuotientImages' returns a record containing a list of 
@@ -127,16 +93,16 @@ group <fgaut> and the image of <forbidden> in <.fg> is returned as <.Nfg>.
 
 
 
-\>MatchingFGDataForOrderedSigs( <forbidden>, <Gdata>, <normalsgs>, <fgdata> ) O
+\>MatchingFGDataForOrderedSigs( <forbidden>, <Gdata>, <Normalsgs>, <fgdata> ) O
 
 Let <fgdata> be a list of records of the form returned by 
-`OrderedSigsFromQuotientImages' and <normalsgs> a list of normal subgroups
+"OrderedSigsFromQuotientImages" and <Normalsgs> a list of normal subgroups
 of the group <Gdata.G>. Furthermore let <forbidden> be the forbidden set
 as a list of group elements or integers or a subgroup of <Gdata.G>.
 
 Then `MatchingFGDataForOrderedSigs' retruns all elements of <fgdata> which
-match a normal subgroup of <normalsgs>. The returned value is a record 
-containing the normal subgroup <.normal> from <normalsgs>, the record 
+match a normal subgroup of <Normalsgs>. The returned value is a record 
+containing the normal subgroup <.normal> from <Normalsgs>, the record 
 <.sigdata> from <fgdata> and a homomorphism <.hom> which maps <Gdata.G> 
 onto <.sigdata.Gdata.G> and takes <forbidden> to <.sigdata.Nfg>.
 
@@ -144,18 +110,18 @@ onto <.sigdata.Gdata.G> and takes <forbidden> to <.sigdata.Nfg>.
 
 \>OrderedSigInvariant( <set>, <data> ) O
 
-does the same as `SigInvariant', but for ordered signatures. Here <data> 
+does the same as "SigInvariant", but for ordered signatures. Here <data> 
 has to be a list of records containing ordered signatures called 
 <.orderedSigs> and cosets <.cosets> just as returned by
-`OrderedSigsFromQuotientImages'. 
+"OrderedSigsFromQuotientImages". 
 
 
 
 Assume we have calculated ordered signatures and have stored them in a
 record <.osigs> and a list <normalSubgroupsData> as returned by
-`SignatureData' containing the admissible signatures.  A function for
+"SignatureData" containing the admissible signatures.  A function for
 partitioning partial relative difference sets as required by
-`ReducedStartsets' can be defined as follows:
+"ReducedStartsets" can be defined as follows:
 
 \begintt
 partitionfunc:=function(list)
@@ -227,7 +193,7 @@ cyclic groups, ordered signatures may be calculated a lot easier (see
 
 \>NormalSubgroupsForRep( <groupdata>, <divisor> ) O
 
-Let <groupdata> be the output of `PermutationRepForDiffsetCalculations' and 
+Let <groupdata> be the output of "PermutationRepForDiffsetCalculations" and 
 <divisor> an integer. Then `NormalSubgroupsForRep' calculates all  normal 
 subgroups of <groupdata.G> such that the size of the factor group is divisible 
 by <divisor> and the factor group is a semidirect product of cyclic groups.
@@ -241,11 +207,11 @@ The output is a record consisting of
  \item{5.} a galois automorphism <.alpha>
  \item{6.+7.} generators of the factor group <G>/<.Nsg> named <.a> and <.b> 
            such that <.a> is normalized by <.b>.
- \item{8}  a list <.int2pairtable> such that the $i^{th}$ entry ist the pair 
+ \item{8}  a list <.int2pairtable> such that the $i^{th}$ entry is the pair 
            <[m,n]> with that <Glist[i]^epi=a^(m-1)\*b^(n-1)>
 \endlist
 
-<.alpha> and <.root> may be used as input for `OrderedSigs'
+<.alpha> and <.root> may be used as input for "OrderedSigs"
 
 
 
@@ -275,7 +241,7 @@ To gain the algebraic numbers from the $s$-tuple <tup>, use
 `List(<tup>,i->CoeffList2CyclotomicList(i,<root>))'
 
 Each $|<coeffSums>|$-tuple returned defines an ordered signature. The ordering
-of $G/N$ is chosen to fit to the data returned by `NormalSubgroupsForRep':
+of $G/N$ is chosen to fit to the data returned by "NormalSubgroupsForRep":
 
 $[a^0,a^1,\dots,a^{q-1}],[a^0b,a^1b,\dots,a^{q-1}b],\dots,[a^0b^{s-1},\dots,a^{q-1}b^{s-1}]$
 
@@ -322,16 +288,16 @@ Note that the signature `[3, 7, 7]' can be assumed to be ordered (by
 passing to a suitable translate). So even if we are not interested in
 *ordered* signatures, we have found out that there is only one admissible
 unordered signature for this normal subgroup. To get this result using
-`TestedSignatures' would have taken a *very* long time.
+"TestedSignatures" would have taken a *very* long time.
 
 Of course, ordered signatures can also be used directly.
 
 \>OrderedSignatureOfSet( set, normal_data ) O
 
 takes a set <set> of integers (meant to be a partial difference set) and
-a list of records as returned by `NormalSubgroupsForRep'.
+a list of records as returned by "NormalSubgroupsForRep".
 The returned value is a list of lists which is the ordered signature of the
-partial difference set <set> and can be compared to the output of `OrderedSigs'
+partial difference set <set> and can be compared to the output of "OrderedSigs"
 
 
 

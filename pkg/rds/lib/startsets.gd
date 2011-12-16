@@ -4,9 +4,9 @@
 ##
 ##  Basic methods for startset generation
 ##
-#H @(#)$Id: startsets.gd, v 0.9beta21 15/11/2006 19:33:30 gap Exp $
+#H @(#)$Id: startsets.gd, v 1.0 2008/01/26 14:04:55 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2008 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/startsets_gd"):=
-	"@(#)$Id: startsets.gd, v 0.9beta21 15/11/2006   19:33:30  gap Exp $";
+	"@(#)$Id: startsets.gd, v 1.0 2008/01/26   14:04:55  gap Exp $";
 #############################################################################
 ##
 #O  PermutationRepForDiffsetCalculations(<group>) generate some initial objects for the RDS package
@@ -56,7 +56,12 @@ DeclareOperation("PermutationRepForDiffsetCalculations",[IsGroup,IsGroup]);
 
 #############################################################################
 ##
-#O  PermList2GroupList(<list>,<dat>) converts a list of integers into group elements according to the enumeration given in dat.Glist.
+#O PermList2GroupList(<list>,<Gdata>) 
+##
+##  converts a list of integers into group elements according to the 
+##  enumeration given in Gdata.Glist.
+##  Here <Gdata> is a record containing .diffTable as returned by 
+##  "PermutationRepForDiffsetCalculations".
 ##
 ##
 DeclareOperation("PermList2GroupList",[IsDenseList,IsRecord]);
@@ -64,7 +69,12 @@ DeclareOperation("PermList2GroupList",[IsDenseList,IsRecord]);
 
 #############################################################################
 ##
-#O  GroupList2PermList(<list>,<dat>) converts a list of group elements to integers according to the enumeration given in dat.Glist.
+#O GroupList2PermList(<list>,<Gdata>) 
+##
+##  converts a list of group elements to integers according to the 
+##  enumeration given in Gdata.Glist.
+##  Here <Gdata> is a record containing .diffTable as returned by 
+##  "PermutationRepForDiffsetCalculations".
 ##
 ##
 DeclareOperation("GroupList2PermList",[IsDenseList,IsRecord]);
@@ -72,15 +82,15 @@ DeclareOperation("GroupList2PermList",[IsDenseList,IsRecord]);
 #############################################################################
 ##
 #O  NewPresentables( <list>,<newel>,<table> ) calculates quotients of a list and a given element.
-#O  NewPresentables( <list>,<newel>,<dat> ) calculates quotients of a list and a given element.
-#O  NewPresentables( <list>,<newlist>,<dat> ) calculates quotients of two lists
+#O  NewPresentables( <list>,<newel>,<Gdata> ) calculates quotients of a list and a given element.
+#O  NewPresentables( <list>,<newlist>,<Gdata> ) calculates quotients of two lists
 #O  NewPresentables( <list>,<newlist>,<table> ) calculates quotients of two lists
 ##
-##  `NewPresentables( <list>,<newel>,<dat> )' takes a record <dat> as 
+##  `NewPresentables( <list>,<newel>,<Gdata> )' takes a record <Gdata> as 
 ##  returned by `PermutationRepForDiffsetCalculations(<group>)'.
 ##  For `NewPresentables( <list>,<newel>,<table> )', <table> has to be the
 ##  multiplication table in the form of  
-##  `NewPresentables( <list>,<newel>,<dat.diffTable>)'
+##  `NewPresentables( <list>,<newel>,<Gdata.diffTable>)'
 ##
 ##  The method returns the unordered list of quotients $d_1<newel>^{-1}$ with 
 ##  $d_1\in <list>\cup\{1\}$ (in permutation representation).
@@ -98,27 +108,27 @@ DeclareOperation("NewPresentables",[IsDenseList,IsDenseList,IsRecord]);
 #############################################################################
 ##
 #O  AllPresentables( <list>,<table> ) calculates quotients of elements in <list>.
-#O  AllPresentables( <list>,<dat> ) calculates quotients of elements in <list>.
+#O  AllPresentables( <list>,<Gdata> ) calculates quotients of elements in <list>.
 ##
 ##  Let <list> be a list of integers representing elements of a group defined 
-##  by <dat> (or <table>).
+##  by <Gdata> (or <table>).
 ##  `AllPresentables( <list>,<table>)' returns an unordered list of 
 ##  quotients $ab^{-1}$ for all group elements $a,b$  represented by integers 
 ##  in <list>. If $1\in <list>$, an error is issued.
 ##  The multiplication table <table> has to be of the form as returned by 
-##  `PermutationRepForDiffsetCalculations'. And <dat> is a record as 
-##  calculated by `PermutationRepForDiffsetCalculations'.
+##  "PermutationRepForDiffsetCalculations". And <Gdata> is a record as 
+##  calculated by "PermutationRepForDiffsetCalculations".
 ##
 DeclareOperation("AllPresentables",[IsDenseList,IsMatrix]);
 DeclareOperation("AllPresentables",[IsDenseList,IsRecord]);
 
 #############################################################################
 ##
-#O  RemainingCompletions( <diffset>,<completions>[,<forbidden>],<dat>[,<lambda>] ) calculates all elements of <completions> which may be added to the partial difference set <diffset>.
+#O  RemainingCompletions( <diffset>,<completions>[,<forbidden>],<Gdata>[,<lambda>] ) calculates all elements of <completions> which may be added to the partial difference set <diffset>.
 #O  RemainingCompletionsNoSort( <diffset>,<completions>[,<forbidden>],<table>[,<lambda>] ) calculates all elements of <completions> which may be added to the partial difference set <diffset>.
 ##
 ##  For a partial difference set <diffset>, 
-##  `RemainingCompletions(<diffset>,<completions>,<dat>)' returns a 
+##  `RemainingCompletions(<diffset>,<completions>,<Gdata>)' returns a 
 ##  subset of the *set* <completions>, such that each of its elements may be 
 ##  added to <diffset> without it loosing the property to be a partial 
 ##  difference set. 
@@ -173,8 +183,8 @@ DeclareOperation("RemainingCompletions",[IsDenseList,IsDenseList,IsDenseList,IsR
 ##
 ##  If <lambda> is not passed as a parameter, it is assumed to be $1$.
 ##
-##  Note that `ExtendedStartsets' does use `RemainingCompletions' while 
-##  `ExtendedStartsetsNoSort' uses `RemainingCompletionsNoSort'. 
+##  Note that `ExtendedStartsets' does use "RemainingCompletions" while 
+##  `ExtendedStartsetsNoSort' uses "RemainingCompletionsNoSort". 
 ##  Note that the partial difference sets generated with `ExtendedStartsetsNoSort'
 ##  are *not* sets (i.e. not sorted). This may result in doing work
 ##  twice. But it can also be useful, especially when generating difference sets 

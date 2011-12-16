@@ -1,114 +1,129 @@
-\indexentry {Installation@Installation|indexit}{3}
-\indexentry {First Step: Integers instead of group elements@First Step: Integers instead of group elements|indexit}{4}
-\indexentry {Signatures: An important tool@Signatures: An important tool|indexit}{5}
-\indexentry {Change of coset vs. brute force@Change of coset vs. brute force|indexit}{6}
-\indexentry {Introduction@Introduction|indexit}{7}
-\indexentry {How partial difference sets are represented@How partial difference sets are represented|indexit}{8}
-\indexentry {Basic functions for startset generation@Basic functions for startset generation|indexit}{8}
-\indexentry {PermutationRepForDiffsetCalculations@`PermutationRepForDiffsetCalculations'}{8}
-\indexentry {PermutationRepForDiffsetCalculations@`PermutationRepForDiffsetCalculations'}{8}
-\indexentry {GroupList2PermList@`GroupList2PermList'}{9}
-\indexentry {PermList2GroupList@`PermList2GroupList'}{9}
-\indexentry {NewPresentables@`NewPresentables'}{9}
-\indexentry {NewPresentables@`NewPresentables'}{9}
-\indexentry {NewPresentables@`NewPresentables'}{9}
-\indexentry {NewPresentables@`NewPresentables'}{9}
-\indexentry {AllPresentables@`AllPresentables'}{10}
-\indexentry {AllPresentables@`AllPresentables'}{10}
-\indexentry {RemainingCompletions@`RemainingCompletions'}{10}
-\indexentry {RemainingCompletionsNoSort@`RemainingCompletionsNoSort'}{10}
-\indexentry {ExtendedStartsets@`ExtendedStartsets'}{10}
-\indexentry {ExtendedStartsetsNoSort@`ExtendedStartsetsNoSort'}{10}
-\indexentry {A brute force method@A brute force method|indexit}{11}
-\indexentry {AllDiffsets@`AllDiffsets'}{11}
-\indexentry {The Coset Signature@The Coset Signature|indexit}{12}
-\indexentry {CosetSignatureOfSet@`CosetSignatureOfSet'}{12}
-\indexentry {CosetSignatures@`CosetSignatures'}{13}
-\indexentry {CosetSignatures@`CosetSignatures'}{13}
-\indexentry {TestSignatureLargeIndex@`TestSignatureLargeIndex'}{13}
-\indexentry {TestSignatureCyclicFactorGroup@`TestSignatureCyclicFactorGroup'}{13}
-\indexentry {TestedSignatures@`TestedSignatures'}{13}
-\indexentry {InfoRDS@{\fam \ttfam \tentt InfoRDS}}{14}
-\indexentry {TestedSignaturesRelative@`TestedSignaturesRelative'}{14}
-\indexentry {SigInvariant@`SigInvariant'}{14}
-\indexentry {RDSFactorGroupData@`RDSFactorGroupData'}{14}
-\indexentry {MatchingFGDataNonGrp@`MatchingFGDataNonGrp'}{15}
-\indexentry {MatchingFGData@`MatchingFGData'}{15}
-\indexentry {SignatureDataForNormalSubgroups@`SignatureDataForNormalSubgroups'}{15}
-\indexentry {ReducedStartsets@`ReducedStartsets'}{16}
-\indexentry {ReducedStartsets@`ReducedStartsets'}{16}
-\indexentry {maxAutsizeForOrbitCalculation@`maxAutsizeForOrbitCalculation'}{16}
-\indexentry {Blackbox functions@Blackbox functions|indexit}{16}
-\indexentry {SignatureData@`SignatureData'}{16}
-\indexentry {NormalSgsHavingAtMostNSigs@`NormalSgsHavingAtMostNSigs'}{16}
-\indexentry {SuitableAutomorphismsForReduction@`SuitableAutomorphismsForReduction'}{16}
-\indexentry {StartsetsInCoset@`StartsetsInCoset'}{17}
-\indexentry {Ordered signatures by quotient images@Ordered signatures by quotient images|indexit}{21}
-\indexentry {NormalSgsForQuotientImages@`NormalSgsForQuotientImages'}{21}
-\indexentry {DataForQuotientImage@`DataForQuotientImage'}{21}
-\indexentry {MultiplicityInvariantLargeLambda@`MultiplicityInvariantLargeLambda'}{22}
-\indexentry {OrderedSigsFromQuotientImages@`OrderedSigsFromQuotientImages'}{22}
-\indexentry {MatchingFGDataForOrderedSigs@`MatchingFGDataForOrderedSigs'}{22}
-\indexentry {OrderedSigInvariant@`OrderedSigInvariant'}{22}
-\indexentry {Ordered signatures using representations@Ordered signatures using representations|indexit}{23}
-\indexentry {Definition@Definition|indexit}{23}
-\indexentry {Methods for calculating ordered signatures@Methods for calculating ordered signatures|indexit}{24}
-\indexentry {NormalSubgroupsForRep@`NormalSubgroupsForRep'}{24}
-\indexentry {OrderedSigs@`OrderedSigs'}{24}
-\indexentry {OrderedSignatureOfSet@`OrderedSignatureOfSet'}{25}
-\indexentry {ElationPrecalc@`ElationPrecalc'}{26}
-\indexentry {ElationPrecalcSmall@`ElationPrecalcSmall'}{26}
-\indexentry {DualPlane@`DualPlane'}{26}
-\indexentry {ProjectiveClosureOfPointSet@`ProjectiveClosureOfPointSet'}{26}
-\indexentry {Isomorphisms and Collineations@Isomorphisms and Collineations|indexit}{27}
-\indexentry {IsIsomorphismOfProjectivePlanes@`IsIsomorphismOfProjectivePlanes'}{27}
-\indexentry {IsCollineationOfProjectivePlane@`IsCollineationOfProjectivePlane'}{27}
-\indexentry {IsCollineationOfProjectivePlane@`IsCollineationOfProjectivePlane'}{27}
-\indexentry {IsomorphismProjPlanesByGenerators@`IsomorphismProjPlanesByGenerators'}{27}
-\indexentry {IsomorphismProjPlanesByGeneratorsNC@`IsomorphismProjPlanesByGeneratorsNC'}{27}
-\indexentry {Central Collineations@Central Collineations|indexit}{28}
-\indexentry {ElationsByPairs@`ElationsByPairs'}{28}
-\indexentry {ElationsByPairs@`ElationsByPairs'}{28}
-\indexentry {ElationsByPairsSmall@`ElationsByPairsSmall'}{28}
-\indexentry {AllElationsCentAx@`AllElationsCentAx'}{28}
-\indexentry {AllElationsCentAx@`AllElationsCentAx'}{28}
-\indexentry {AllElationsCentAxSmall@`AllElationsCentAxSmall'}{28}
-\indexentry {AllElationsAx@`AllElationsAx'}{28}
-\indexentry {AllElationsAx@`AllElationsAx'}{28}
-\indexentry {AllElationsAxSmall@`AllElationsAxSmall'}{28}
-\indexentry {IsTranslationPlane@`IsTranslationPlane'}{28}
-\indexentry {IsTranslationPlaneSmall@`IsTranslationPlaneSmall'}{28}
-\indexentry {HomologyByPairSmall@`HomologyByPairSmall'}{28}
-\indexentry {GroupOfHomologiesSmall@`GroupOfHomologiesSmall'}{28}
-\indexentry {Collineations on Baer Subplanes@Collineations on Baer Subplanes|indexit}{29}
-\indexentry {InducedCollineation@`InducedCollineation'}{29}
-\indexentry {Invariants for Projective Planes@Invariants for Projective Planes|indexit}{29}
-\indexentry {NrFanoPlanesAtPoints@`NrFanoPlanesAtPoints'}{29}
-\indexentry {NrFanoPlanesAtPointsSmall@`NrFanoPlanesAtPointsSmall'}{29}
-\indexentry {IncidenceMatrix@`IncidenceMatrix'}{29}
-\indexentry {IncidenceMatrix@`IncidenceMatrix'}{29}
-\indexentry {pRank@`pRank'}{29}
-\indexentry {pRank@`pRank'}{29}
-\indexentry {FingerprintProjPlane@`FingerprintProjPlane'}{30}
-\indexentry {FingerprintProjPlane@`FingerprintProjPlane'}{30}
-\indexentry {FingerprintAntiFlag@`FingerprintAntiFlag'}{30}
-\indexentry {Groups and actions@Groups and actions|indexit}{31}
-\indexentry {OnSubgroups@`OnSubgroups'}{31}
-\indexentry {RepsCClassesGivenOrder@`RepsCClassesGivenOrder'}{31}
-\indexentry {Iterators@Iterators|indexit}{31}
-\indexentry {CartesianIterator@`CartesianIterator'}{31}
-\indexentry {ConcatenationOfIterators@`ConcatenationOfIterators'}{31}
-\indexentry {Lists and Matrices@Lists and Matrices|indexit}{32}
-\indexentry {IsListOfIntegers@`IsListOfIntegers'}{32}
-\indexentry {List2Tuples@`List2Tuples'}{32}
-\indexentry {MatTimesTransMat@`MatTimesTransMat'}{32}
-\indexentry {PartitionByFunctionNF@`PartitionByFunctionNF'}{32}
-\indexentry {PartitionByFunction@`PartitionByFunction'}{32}
-\indexentry {InfoRDS@{\fam \ttfam \tentt InfoRDS}}{32}
-\indexentry {Cyclotomic numbers@Cyclotomic numbers|indexit}{33}
-\indexentry {IsRootOfUnity@`IsRootOfUnity'}{33}
-\indexentry {CoeffList2CyclotomicList@`CoeffList2CyclotomicList'}{33}
-\indexentry {AbssquareInCyclotomics@`AbssquareInCyclotomics'}{33}
-\indexentry {CycsGivenCoeffSum@`CycsGivenCoeffSum'}{33}
-\indexentry {Filters and Categories@Filters and Categories|indexit}{33}
-\indexentry {IsComputableFilter@`IsComputableFilter'}{34}
+\indexentry {Acknowledgements@Acknowledgements|indexit}{3}
+\indexentry {Installation@Installation|indexit}{4}
+\indexentry {Verbosity@Verbosity|indexit}{4}
+\indexentry {InfoRDS@`InfoRDS'}{4}
+\indexentry {DebugRDS@`DebugRDS'}{4}
+\indexentry {Definitions and Objects@Definitions and Objects|indexit}{4}
+\indexentry {First Step: Integers instead of group elements@First Step: Integers instead of group elements|indexit}{8}
+\indexentry {Signatures: An important tool@Signatures: An important tool|indexit}{9}
+\indexentry {Change of coset vs. brute force@Change of coset vs. brute force|indexit}{10}
+\indexentry {Introduction@Introduction|indexit}{11}
+\indexentry {How partial difference sets are represented@How partial difference sets are represented|indexit}{12}
+\indexentry {Basic functions for startset generation@Basic functions for startset generation|indexit}{12}
+\indexentry {PermutationRepForDiffsetCalculations@`PermutationRepForDiffsetCalculations'}{12}
+\indexentry {PermutationRepForDiffsetCalculations@`PermutationRepForDiffsetCalculations'}{12}
+\indexentry {IsDiffset@`IsDiffset'}{13}
+\indexentry {IsDiffset@`IsDiffset'}{13}
+\indexentry {IsPartialDiffset@`IsPartialDiffset'}{13}
+\indexentry {IsPartialDiffset@`IsPartialDiffset'}{13}
+\indexentry {GroupList2PermList@`GroupList2PermList'}{14}
+\indexentry {PermList2GroupList@`PermList2GroupList'}{14}
+\indexentry {NewPresentables@`NewPresentables'}{14}
+\indexentry {NewPresentables@`NewPresentables'}{14}
+\indexentry {NewPresentables@`NewPresentables'}{14}
+\indexentry {NewPresentables@`NewPresentables'}{14}
+\indexentry {AllPresentables@`AllPresentables'}{15}
+\indexentry {AllPresentables@`AllPresentables'}{15}
+\indexentry {RemainingCompletions@`RemainingCompletions'}{15}
+\indexentry {RemainingCompletionsNoSort@`RemainingCompletionsNoSort'}{15}
+\indexentry {ExtendedStartsets@`ExtendedStartsets'}{15}
+\indexentry {ExtendedStartsetsNoSort@`ExtendedStartsetsNoSort'}{15}
+\indexentry {Brute force methods@Brute force methods|indexit}{16}
+\indexentry {AllDiffsets@`AllDiffsets'}{16}
+\indexentry {AllDiffsets@`AllDiffsets'}{16}
+\indexentry {AllDiffsets@`AllDiffsets'}{16}
+\indexentry {AllDiffsets@`AllDiffsets'}{16}
+\indexentry {AllDiffsets@`AllDiffsets'}{16}
+\indexentry {AllDiffsetsNoSort@`AllDiffsetsNoSort'}{16}
+\indexentry {AllDiffsetsNoSort@`AllDiffsetsNoSort'}{16}
+\indexentry {AllDiffsetsNoSort@`AllDiffsetsNoSort'}{16}
+\indexentry {AllDiffsetsNoSort@`AllDiffsetsNoSort'}{16}
+\indexentry {OneDiffset@`OneDiffset'}{17}
+\indexentry {OneDiffset@`OneDiffset'}{17}
+\indexentry {OneDiffset@`OneDiffset'}{17}
+\indexentry {OneDiffset@`OneDiffset'}{17}
+\indexentry {OneDiffset@`OneDiffset'}{17}
+\indexentry {OneDiffsetNoSort@`OneDiffsetNoSort'}{18}
+\indexentry {OneDiffsetNoSort@`OneDiffsetNoSort'}{18}
+\indexentry {OneDiffsetNoSort@`OneDiffsetNoSort'}{18}
+\indexentry {OneDiffsetNoSort@`OneDiffsetNoSort'}{18}
+\indexentry {The Coset Signature@The Coset Signature|indexit}{19}
+\indexentry {CosetSignatureOfSet@`CosetSignatureOfSet'}{19}
+\indexentry {CosetSignatures@`CosetSignatures'}{20}
+\indexentry {CosetSignatures@`CosetSignatures'}{20}
+\indexentry {TestSignatureLargeIndex@`TestSignatureLargeIndex'}{20}
+\indexentry {TestSignatureCyclicFactorGroup@`TestSignatureCyclicFactorGroup'}{20}
+\indexentry {TestedSignatures@`TestedSignatures'}{21}
+\indexentry {InfoRDS@{\fam \ttfam \tentt InfoRDS}}{21}
+\indexentry {TestedSignaturesRelative@`TestedSignaturesRelative'}{21}
+\indexentry {SigInvariant@`SigInvariant'}{21}
+\indexentry {SignatureDataForNormalSubgroups@`SignatureDataForNormalSubgroups'}{22}
+\indexentry {RDSFactorGroupData@`RDSFactorGroupData'}{23}
+\indexentry {MatchingFGDataNonGrp@`MatchingFGDataNonGrp'}{24}
+\indexentry {MatchingFGData@`MatchingFGData'}{24}
+\indexentry {ReducedStartsets@`ReducedStartsets'}{24}
+\indexentry {ReducedStartsets@`ReducedStartsets'}{24}
+\indexentry {maxAutsizeForOrbitCalculation@`maxAutsizeForOrbitCalculation'}{24}
+\indexentry {An invariant for large lambda@An invariant for large lambda|indexit}{25}
+\indexentry {MultiplicityInvariantLargeLambda@`MultiplicityInvariantLargeLambda'}{25}
+\indexentry {Blackbox functions@Blackbox functions|indexit}{25}
+\indexentry {SignatureData@`SignatureData'}{25}
+\indexentry {NormalSgsHavingAtMostNSigs@`NormalSgsHavingAtMostNSigs'}{26}
+\indexentry {SuitableAutomorphismsForReduction@`SuitableAutomorphismsForReduction'}{26}
+\indexentry {StartsetsInCoset@`StartsetsInCoset'}{26}
+\indexentry {Ordered signatures by quotient images@Ordered signatures by quotient images|indexit}{31}
+\indexentry {NormalSgsForQuotientImages@`NormalSgsForQuotientImages'}{31}
+\indexentry {DataForQuotientImage@`DataForQuotientImage'}{31}
+\indexentry {OrderedSigsFromQuotientImages@`OrderedSigsFromQuotientImages'}{32}
+\indexentry {MatchingFGDataForOrderedSigs@`MatchingFGDataForOrderedSigs'}{32}
+\indexentry {OrderedSigInvariant@`OrderedSigInvariant'}{32}
+\indexentry {Ordered signatures using representations@Ordered signatures using representations|indexit}{32}
+\indexentry {Definition@Definition|indexit}{33}
+\indexentry {Methods for calculating ordered signatures@Methods for calculating ordered signatures|indexit}{33}
+\indexentry {NormalSubgroupsForRep@`NormalSubgroupsForRep'}{33}
+\indexentry {OrderedSigs@`OrderedSigs'}{33}
+\indexentry {OrderedSignatureOfSet@`OrderedSignatureOfSet'}{34}
+\indexentry {ProjectivePlane@`ProjectivePlane'}{36}
+\indexentry {PointJoiningLinesProjectivePlane@`PointJoiningLinesProjectivePlane'}{36}
+\indexentry {DevelopmentOfRDS@`DevelopmentOfRDS'}{36}
+\indexentry {ProjectiveClosureOfPointSet@`ProjectiveClosureOfPointSet'}{37}
+\indexentry {Isomorphisms and Collineations@Isomorphisms and Collineations|indexit}{38}
+\indexentry {IsIsomorphismOfProjectivePlanes@`IsIsomorphismOfProjectivePlanes'}{38}
+\indexentry {IsCollineationOfProjectivePlane@`IsCollineationOfProjectivePlane'}{38}
+\indexentry {IsomorphismProjPlanesByGenerators@`IsomorphismProjPlanesByGenerators'}{38}
+\indexentry {IsomorphismProjPlanesByGeneratorsNC@`IsomorphismProjPlanesByGeneratorsNC'}{38}
+\indexentry {Central Collineations@Central Collineations|indexit}{39}
+\indexentry {ElationByPair@`ElationByPair'}{39}
+\indexentry {AllElationsCentAx@`AllElationsCentAx'}{39}
+\indexentry {AllElationsAx@`AllElationsAx'}{39}
+\indexentry {IsTranslationPlane@`IsTranslationPlane'}{40}
+\indexentry {HomologyByPair@`HomologyByPair'}{40}
+\indexentry {GroupOfHomologies@`GroupOfHomologies'}{40}
+\indexentry {Collineations on Baer Subplanes@Collineations on Baer Subplanes|indexit}{40}
+\indexentry {InducedCollineation@`InducedCollineation'}{40}
+\indexentry {Invariants for Projective Planes@Invariants for Projective Planes|indexit}{41}
+\indexentry {NrFanoPlanesAtPoints@`NrFanoPlanesAtPoints'}{41}
+\indexentry {IncidenceMatrix@`IncidenceMatrix'}{41}
+\indexentry {pRank@`pRank'}{41}
+\indexentry {FingerprintProjPlane@`FingerprintProjPlane'}{42}
+\indexentry {FingerprintAntiFlag@`FingerprintAntiFlag'}{42}
+\indexentry {Groups and actions@Groups and actions|indexit}{43}
+\indexentry {OnSubgroups@`OnSubgroups'}{43}
+\indexentry {RepsCClassesGivenOrder@`RepsCClassesGivenOrder'}{43}
+\indexentry {Iterators@Iterators|indexit}{43}
+\indexentry {CartesianIterator@`CartesianIterator'}{43}
+\indexentry {ConcatenationOfIterators@`ConcatenationOfIterators'}{43}
+\indexentry {Lists and Matrices@Lists and Matrices|indexit}{44}
+\indexentry {IsListOfIntegers@`IsListOfIntegers'}{44}
+\indexentry {List2Tuples@`List2Tuples'}{44}
+\indexentry {MatTimesTransMat@`MatTimesTransMat'}{44}
+\indexentry {PartitionByFunctionNF@`PartitionByFunctionNF'}{44}
+\indexentry {PartitionByFunction@`PartitionByFunction'}{44}
+\indexentry {InfoRDS@{\fam \ttfam \tentt InfoRDS}}{44}
+\indexentry {Cyclotomic numbers@Cyclotomic numbers|indexit}{45}
+\indexentry {IsRootOfUnity@`IsRootOfUnity'}{45}
+\indexentry {CoeffList2CyclotomicList@`CoeffList2CyclotomicList'}{45}
+\indexentry {AbssquareInCyclotomics@`AbssquareInCyclotomics'}{45}
+\indexentry {CycsGivenCoeffSum@`CycsGivenCoeffSum'}{45}
+\indexentry {Filters and Categories@Filters and Categories|indexit}{45}
+\indexentry {IsComputableFilter@`IsComputableFilter'}{46}

@@ -44,39 +44,14 @@ primarily in difference sets in $G/U$.
 
 \Declaration{DataForQuotientImage}
 
-The data returned by `DataForQuotientImage' can be used to calculate
-difference sets in $G/U$ in the way outlined in chapter "RDS:A quick
-start". A quotient image of a relative difference set has a larger
-$\lambda$ than the initial difference set. So the following invariant
-can be used for the generation of difference sets:
+The data returned by "DataForQuotientImage" can be used to calculate
+difference sets in $G/U$ in the way outlined in chapter "RDS:A basic
+example". A quotient image of a relative difference set has a larger
+$\lambda$ than the initial difference set. So
+"MultiplicityInvariantLargeLambda" can be used as in invariant here
+(see "RDS:An invariant for large lambda")
 
-\Declaration{MultiplicityInvariantLargeLambda}
-%
-\beginexample
-gap> G:=CyclicGroup(7);;Gdata:=PermutationRepForDiffsetCalculations(G);;
-gap> AllPresentables([2,3],Gdata);
-[ 2, 3, 7, 2, 7, 6 ]
-gap> MultiplicityInvariantLargeLambda([2,3],Gdata);
-[ [ 1, 2 ], [ 2, 2 ] ]
-\endexample
 
-This invariant can be used for `ReducedStartSets' complementary to the
-signature invariant by defining
-\begintt
-gap> partfunc:=function(list)
-> local sig;                                           
-> if sig=fail
-> then return fail;
-> fi;
-> return [MultiplicityInvariantLargeLambda(list,Gdata),SigInvariant(list,sigdata)];
-> end;
-function( list ) ... end
-\endtt
-%
-
-and then passing <partfunc> to `ReducedStartSets'. Of course, sigdata
-has to be the list of records defining the coset signatures (see
-section "RDS:The Coset Signature")
 
 After all difference sets are known, they must be converted
 into ordered signatures. This is done by the following function:
@@ -89,9 +64,9 @@ into ordered signatures. This is done by the following function:
 
 Assume we have calculated ordered signatures and have stored them in a
 record <.osigs> and a list <normalSubgroupsData> as returned by
-`SignatureData' containing the admissible signatures.  A function for
+"SignatureData" containing the admissible signatures.  A function for
 partitioning partial relative difference sets as required by
-`ReducedStartsets' can be defined as follows:
+"ReducedStartsets" can be defined as follows:
 
 \begintt
 partitionfunc:=function(list)
@@ -206,7 +181,7 @@ Note that the signature `[3, 7, 7]' can be assumed to be ordered (by
 passing to a suitable translate). So even if we are not interested in
 *ordered* signatures, we have found out that there is only one admissible
 unordered signature for this normal subgroup. To get this result using
-`TestedSignatures' would have taken a *very* long time.
+"TestedSignatures" would have taken a *very* long time.
 
 Of course, ordered signatures can also be used directly.
 

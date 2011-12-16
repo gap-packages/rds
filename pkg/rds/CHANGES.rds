@@ -1,3 +1,69 @@
+1.0:
+- changed years in the copyright notice (from 2006 to 2006-2008).
+------------------
+
+0.9beta28:
+- marginal improvement in speed in the brute force methods for <lambda>=1
+- slight change in ReducedStartsets (probably better performance in large cases)
+- in RemainingCompletions[NoSort]: replaced "Intersection(diffset,forbidden)<>[]"
+     with "ForAny(diffest,i->i in forbidden)".
+- OneDiffset and AllDiffsets do now check if the given partial difference set really is 
+      a partial difference set. If it isn't, the empty set is returned.
+- Replaced all "Sqrt" calls with "RootInt" calls in AllDiffsets and OneDiffset.
+     This greatly reduces the method-selection overhead.
+- DevelopmentOfRDS is more flexible now. I.e. it takes all sensible kinds of input.
+- fixed the "blockSizes" bug in DevelopmentOfRDS (thanks to Leonard Soicher)
+- the file rds.tex vanished from the doc/ directory. The text has been inserted in 
+      .msk file and  does now also appear in the .html and online documentation.
+- method names in text paragraphs are now surrounded by double quotes.
+      This generates links in the html documentation.
+- Consequently, references in the .pdf documentation are also not given by numbers 
+       anymore. This doesn't look too god for sections and chapters, but refering to a 
+       function as 4.1.2 doesn't make much sense...
+       For this, the definition of \printref has been changed in the file gapmacro.tex
+- some more changes in the manual (thanks to Leonard Soicher)
+- Set state to "accepted" 
+
+------------------
+
+0.9beta27:
+- Fixed a few errors in the documentation
+- cleaned up directories
+- fixed permissions for htm directory.
+- fixed a bug in `AllDiffsets' and `OneDiffset'------------------
+
+0.9beta26:
+- Added AllDiffsetsNoSort
+- Added OneDiffset and OneDiffsetNoSort
+- Added IsDiffset
+- More changes to the documentation. Chapter about AllDiffsets and OneDiffset
+  added.
+
+------------------
+
+0.9beta25:
+- Introduced function DevelopmentOfRDS
+- Changed all functions for projective planes to new data structures.
+- Projective planes are now BlockDesigns as in DESIGN
+- RDS does now depend on DESIGN
+- AllDiffsets can now be called in *many* new and simple ways. 
+
+- Rewrote documentation and added many examples.
+------------------
+
+
+0.9beta22:
+Important changes:
+- fixed a bug in OrderedSignatureOfSet (this could lead to crashes and
+  wrong results)
+
+Minor changes:
+- changed date format in library files to yyyy/mm/dd
+- removed NormalSubgroupsForRep taking a group as first argument (this
+  function was undocumented incompatible with the rest of the
+  functions anyway).
+------------------
+
 0.9beta21:
 - started changelog (this file)
 - added license notice to README.rds
