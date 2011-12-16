@@ -387,7 +387,7 @@ true
 <p>
 <h2><a name="SECT004">8.4 Invariants for Projective Planes</a></h2>
 <p><p>
-The functions <code>NrFanoPlanesAtPoints</code>, <code>pRank</code>, <code>FingerprintAntiFlag</code>
+The functions <code>NrFanoPlanesAtPoints</code>, <code>PRank@RDS</code>, <code>FingerprintAntiFlag</code>
 and <code>FingerprintProjPlane</code> calculate invariants for finite projective
 planes. For more details see <a href="biblio.htm#RoederDiss"><cite>RoederDiss</cite></a> and
 <a href="biblio.htm#MoorhouseGraphs"><cite>MoorhouseGraphs</cite></a>. The values of some of these invariants are
@@ -425,13 +425,14 @@ the rows are numbered by points. And <var>I[i][j]=1</var> if and only if
 <var>points[i]</var> is incident (contained in) <var>blocks[j]</var> (an 0 else). 
 <p>
 <a name = "SSEC004.3"></a>
-<li><code>pRank( </code><var>plane</var><code>, </code><var>p</var><code> ) O</code>
+<li><code>PRank( </code><var>plane</var><code>, </code><var>p</var><code> ) O</code>
 <p>
 Let <var>I</var> be the incidence matrix of the projective plane <var>plane</var> and <var>p</var> a 
 prime power.
 The rank of <var>I.I<sup>t</sup></var> as a matrix over
 <var>GF(p)</var> is called  <var>p</var>-rank of the projective plane. Here <var>I<sup>t</sup></var> denotes
-the transposed matrix.
+the transposed matrix. Note that this is a method within the RDS workspace,
+so it has to be called as PRank@RDS
 <p>
 <pre>
 gap&gt; G:=CyclicGroup(2^2+3);
@@ -441,9 +442,9 @@ gap&gt; IncidenceMatrix(P);
 [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
   [ 1, 0, 0, 0, 0, 1, 1 ], [ 0, 0, 1, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 1, 1, 0 ], 
   [ 0, 1, 0, 0, 1, 0, 1 ] ]
-gap&gt; pRank(P,3);
+gap&gt; PRank@RDS(P,3);
 6
-gap&gt; pRank(P,2);
+gap&gt; PRank@RDS(P,2);
 4
 </pre>
 <a name = "SSEC004.4"></a>
@@ -484,11 +485,11 @@ gap&gt; NrFanoPlanesAtPoints([1,2,3],plane);
 [ [ 1, 240 ], [ 2, 240 ], [ 3, 240 ] ]
 gap&gt; Set(NrFanoPlanesAtPoints([1..plane.v],plane),i-&gt;i[2])=[240];
 true
-gap&gt; pRank(plane,2);
+gap&gt; PRank@RDS(plane,2);
 10
-gap&gt; pRank(plane,3);
+gap&gt; PRank@RDS(plane,3);
 21
-gap&gt; pRank(plane,5);
+gap&gt; PRank@RDS(plane,5);
 20
 gap&gt; FingerprintProjPlane(plane);
 [ [ 12, 420 ], [ 16, 21 ] ]
@@ -499,5 +500,5 @@ gap&gt; FingerprintAntiFlag(1,6,plane);
 <p>
 [<a href = "chapters.htm">Up</a>] [<a href ="CHAP007.htm">Previous</a>] [<a href ="CHAP009.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
 <P>
-<address>RDS manual<br>June 2010
+<address>RDS manual<br>August 2011
 </address></body></html>

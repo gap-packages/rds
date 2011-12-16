@@ -4,9 +4,9 @@
 ##
 ##  Invariants for partial difference sets
 ##
-#H @(#)$Id: sigs.gi, v 1.2 2010/06/03 21:00:34 gap Exp $
+#H @(#)$Id: sigs.gi, v 1.4 2011/08/25 20:42:59 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -22,19 +22,19 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("rds/lib/sigs_gi"):=
-	"@(#)$Id: sigs.gi, v 1.2 2010/06/03   21:00:34  gap Exp $";
+Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/sigs_gi"):=
+	"@(#)$Id: sigs.gi, v 1.4 2011/08/25   20:42:59  gap Exp $";
 #############################################################################
 ## 
-#V maxAutsizeForOrbitCalculation 
+#V MaxAutsizeForOrbitCalculation@
 ## 
 ##  In `ReducedStartsets', a bound is needed to decide if `Orbit' or 
 ##  `RepresentativeAction' should be used. If the group is larger than 
-##  <maxAutsizeForOrbitCalculation>, `RepresentativeAction' is used.
+##  <MaxAutsizeForOrbitCalculation@RDS>, `RepresentativeAction' is used.
 ##
-#BindGlobal("maxAutsizeForOrbitCalculation",5*10^6);
-#InstallValue(maxAutsizeForOrbitCalculation,5*10^6);
-#maxAutsizeForOrbitCalculation:=5*10^6;
+#BindGlobal("MaxAutsizeForOrbitCalculation@",5*10^6);
+#InstallValue(MaxAutsizeForOrbitCalculation@,5*10^6);
+#MaxAutsizeForOrbitCalculation@:=5*10^6;
 
 #############################################################################
 ##
@@ -63,7 +63,6 @@ InstallMethod(RDSFactorGroupData,
                fglist:=fglist,
                lambda:=lambda,
                cosets:=cosetsperm,
-#               cosetsgroup:=cosets,
                cosetsreps:=csreps,
                Usize:=Size(U),
                fgaut:=AutomorphismGroup(fg),
@@ -71,11 +70,6 @@ InstallMethod(RDSFactorGroupData,
                fgintersect:=intersectlist,
                intersectshort:=returnlist);
 end);
-#InstallMethod(RDSFactorGroupData,
-#        [IsGroup,IsMagmaWithInverses,IsInt,IsRecord],
-#        function(U,N,lambda,Gdata)
-#    return RDSFactorGroupData(U,Set(N),lambda,Gdata);
-#end);
            
 
 
@@ -216,27 +210,6 @@ InstallMethod(CosetSignatures,[IsInt,IsInt,IsInt],
 end);
 
 
-#############################################################################
-##
-#O  CosetSignatures( <Gsize>,<Nsize>,<Usize>,<Intersectsize>,<k>,<lambda>)    calculates possible signatures for relative difference sets.
-##
-#InstallMethod(CosetSignatures,[IsInt,IsInt,IsInt,IsInt,IsInt,IsInt],
-#       CosetSignaturesOld:= function(Gsize,Nsize,Usize,Intersectsize,k,lambda) #order n=k-lambda
-#    local   siglist,  rightside,  sig;
-#
-#    if Gsize<=Nsize then Error("Stupid parameters!");fi;
-#    siglist:=[];
-#    rightside:=k+lambda*(Usize-Intersectsize);
-#    for sig in RestrictedPartitions(k+Gsize/Usize,[1..k-lambda+1],Gsize/Usize)      do        
-#        Apply(sig,i->i-1);
-#        if Sum(List(sig,i->i^2))=rightside
-#           then 
-#            AddSet(siglist,SortedList(sig));
-#        fi;
-#    od;
-#    return siglist;
-#end);
-#
 
 #############################################################################
 ##
@@ -765,7 +738,7 @@ end);
 #              do
 #                for set in lssets    
 #                  do		  
-#                    if Size(set)>1 and Size(auts)>maxAutsizeForOrbitCalculation
+#                    if Size(set)>1 and Size(auts)>MaxAutsizeForOrbitCalculation
 #                       then
 #                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)),
 #                                                i->i[1]);

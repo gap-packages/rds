@@ -385,7 +385,7 @@ true
 %%%%%%%%%%%%%%%%%%%%
 \Section{Invariants for Projective Planes}
 
-The functions `NrFanoPlanesAtPoints', `pRank', `FingerprintAntiFlag'
+The functions `NrFanoPlanesAtPoints', `PRank@RDS', `FingerprintAntiFlag'
 and `FingerprintProjPlane' calculate invariants for finite projective
 planes. For more details see \cite{RoederDiss} and
 \cite{MoorhouseGraphs}. The values of some of these invariants are
@@ -422,13 +422,14 @@ the rows are numbered by points. And <I[i][j]=1> if and only if
 <points[i]> is incident (contained in) <blocks[j]> (an 0 else). 
 
 
-\>pRank( <plane>, <p> ) O
+\>PRank( <plane>, <p> ) O
 
 Let $I$ be the incidence matrix of the projective plane <plane> and <p> a 
 prime power.
 The rank of $I.I^t$ as a matrix over
 $GF(p)$ is called  <p>-rank of the projective plane. Here $I^t$ denotes
-the transposed matrix.
+the transposed matrix. Note that this is a method within the RDS workspace,
+so it has to be called as PRank@RDS
 
 
 \beginexample
@@ -439,9 +440,9 @@ gap> IncidenceMatrix(P);
 [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
   [ 1, 0, 0, 0, 0, 1, 1 ], [ 0, 0, 1, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 1, 1, 0 ], 
   [ 0, 1, 0, 0, 1, 0, 1 ] ]
-gap> pRank(P,3);
+gap> PRank@RDS(P,3);
 6
-gap> pRank(P,2);
+gap> PRank@RDS(P,2);
 4
 \endexample
 \>FingerprintProjPlane( <plane> ) O
@@ -483,11 +484,11 @@ gap> NrFanoPlanesAtPoints([1,2,3],plane);
 [ [ 1, 240 ], [ 2, 240 ], [ 3, 240 ] ]
 gap> Set(NrFanoPlanesAtPoints([1..plane.v],plane),i->i[2])=[240];
 true
-gap> pRank(plane,2);
+gap> PRank@RDS(plane,2);
 10
-gap> pRank(plane,3);
+gap> PRank@RDS(plane,3);
 21
-gap> pRank(plane,5);
+gap> PRank@RDS(plane,5);
 20
 gap> FingerprintProjPlane(plane);
 [ [ 12, 420 ], [ 16, 21 ] ]

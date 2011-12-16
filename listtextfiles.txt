@@ -30,6 +30,7 @@ rds/doc/orderedsigs.tex
 rds/doc/iso.old.tex
 rds/doc/iso.tex
 rds/doc/jumpstart.msk
+rds/doc/tthmacros.tex
 rds/doc/version.tex
 rds/doc/jumpstart.tex
 rds/doc/ordered_sigs.tex

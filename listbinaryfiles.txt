@@ -4,3 +4,4 @@ rds/doc/manual.toc
 rds/doc/manual.mst
 rds/doc/manual.lab
 rds/doc/manual.idx
+rds/htm/.DS_Store

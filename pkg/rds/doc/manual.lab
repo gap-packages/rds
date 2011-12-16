@@ -67,7 +67,7 @@
 \makelabel{RDS:MatchingFGData}{5.1.11}
 \makelabel{RDS:ReducedStartsets}{5.1.12}
 \makelabel{RDS:ReducedStartsets}{5.1.12}
-\makelabel{RDS:maxAutsizeForOrbitCalculation}{5.1.13}
+\makelabel{RDS:MaxAutsizeForOrbitCalculation}{5.1.13}
 \makelabel{RDS:An invariant for large lambda}{5.2}
 \makelabel{RDS:MultiplicityInvariantLargeLambda}{5.2.1}
 \makelabel{RDS:Blackbox functions}{5.3}
@@ -111,7 +111,7 @@
 \makelabel{RDS:Invariants for Projective Planes}{8.4}
 \makelabel{RDS:NrFanoPlanesAtPoints}{8.4.1}
 \makelabel{RDS:IncidenceMatrix}{8.4.2}
-\makelabel{RDS:pRank}{8.4.3}
+\makelabel{RDS:PRank}{8.4.3}
 \makelabel{RDS:FingerprintProjPlane}{8.4.4}
 \makelabel{RDS:FingerprintAntiFlag}{8.4.5}
 \makelabel{RDS:Some functions for everyday use}{9}

@@ -63,7 +63,7 @@
 \indexentry {MatchingFGData@`MatchingFGData'}{25}
 \indexentry {ReducedStartsets@`ReducedStartsets'}{25}
 \indexentry {ReducedStartsets@`ReducedStartsets'}{25}
-\indexentry {maxAutsizeForOrbitCalculation@`maxAutsizeForOrbitCalculation'}{25}
+\indexentry {MaxAutsizeForOrbitCalculation@`MaxAutsizeForOrbitCalculation'}{25}
 \indexentry {An invariant for large lambda@An invariant for large lambda|indexit}{26}
 \indexentry {MultiplicityInvariantLargeLambda@`MultiplicityInvariantLargeLambda'}{26}
 \indexentry {Blackbox functions@Blackbox functions|indexit}{26}
@@ -104,7 +104,7 @@
 \indexentry {Invariants for Projective Planes@Invariants for Projective Planes|indexit}{42}
 \indexentry {NrFanoPlanesAtPoints@`NrFanoPlanesAtPoints'}{42}
 \indexentry {IncidenceMatrix@`IncidenceMatrix'}{42}
-\indexentry {pRank@`pRank'}{42}
+\indexentry {PRank@`PRank'}{42}
 \indexentry {FingerprintProjPlane@`FingerprintProjPlane'}{43}
 \indexentry {FingerprintAntiFlag@`FingerprintAntiFlag'}{43}
 \indexentry {Groups and actions@Groups and actions|indexit}{44}

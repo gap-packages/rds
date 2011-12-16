@@ -68,7 +68,7 @@ F 5.1. MatchingFGDataNonGrp
 F 5.1. MatchingFGData
 F 5.1. ReducedStartsets
 F 5.1. ReducedStartsets
-F 5.1. maxAutsizeForOrbitCalculation
+F 5.1. MaxAutsizeForOrbitCalculation
 S 5.2. An invariant for large lambda
 F 5.2. MultiplicityInvariantLargeLambda
 S 5.3. Blackbox functions
@@ -112,7 +112,7 @@ F 8.3. InducedCollineation
 S 8.4. Invariants for Projective Planes
 F 8.4. NrFanoPlanesAtPoints
 F 8.4. IncidenceMatrix
-F 8.4. pRank
+F 8.4. PRank
 F 8.4. FingerprintProjPlane
 F 8.4. FingerprintAntiFlag
 C misc.tex 9. Some functions for everyday use

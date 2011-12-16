@@ -426,11 +426,11 @@ gap&gt; Size(ReducedStartsets(ssets,[Gdata.Ai],cosetsigs,Gdata));
 17
 </pre>
 <a name = "SSEC001.13"></a>
-<li><code>maxAutsizeForOrbitCalculation V</code>
+<li><code>MaxAutsizeForOrbitCalculation V</code>
 <p>
 In <a href="CHAP005.htm#SSEC001.12">ReducedStartsets</a>, a bound is needed to decide if <code>Orbit</code> or 
 <code>RepresentativeAction</code> should be used. If the group is larger than 
-<var>maxAutsizeForOrbitCalculation</var>, <code>RepresentativeAction</code> is used.
+<var>MaxAutsizeForOrbitCalculation@RDS</var>, <code>RepresentativeAction</code> is used.
 The default value for <code>maxAutsizeForOrbitCalculation</code> is <var>5*10<sup>6</sup></var>.
 If you want to change it, you will have to edit the file <code>sigs.gd</code>.
 <p>
@@ -564,37 +564,40 @@ gap&gt; sigdat:=SignatureData(Gdata,[One(Gdata.G)],8,1,10^5);;
 gap&gt; N:=First(NormalSubgroups(G),n-&gt;Size(n)=19);
 gap&gt; auts:=SuitableAutomorphismsForReduction(Gdata,N);
 [ &lt;permutation group of size 18 with 3 generators&gt; ]
-gap&gt; coset:=GroupList2PermList(Set(RightCoset(N,Random(G))),Gdata);
-[ 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 57 ]
+gap&gt; g:=One(G);;while g in N do
+&gt;  g:=Random(G);
+&gt; od;  
+gap&gt; coset:=GroupList2PermList(Set(RightCoset(N,g)),Gdata);
+[ 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56 ]
 gap&gt; Size(StartsetsInCoset([],coset,[],4,auts,sigdat,Gdata,1));
 #I  Size 19
+#I  1/ 0 @ 0:00:00.003
+#I  Size 26
 #I  1/ 0 @ 0:00:00.001
-#I  Size 20
-#I  1/ 0 @ 0:00:00.001
-#I  --&gt;9 @ 0:00:00.004
-#I  Size 85
-#I  1/ 0 @ 0:00:00.007
-#I  --&gt;44 @ 0:00:00.033
-#I  Size 144
+#I  --&gt;10 @ 0:00:00.004
+#I  Size 88
+#I  1/ 0 @ 0:00:00.003
+#I  --&gt;45 @ 0:00:00.018
+#I  Size 125
 #I  1/ 0 @ 0:00:00.006
-#I  --&gt;64 @ 0:00:00.083
+#I  --&gt;64 @ 0:00:00.031
 64
 gap&gt; Size(StartsetsInCoset([],coset,[],4,[Group(())],sigdat,Gdata,1));
 #I  Size 19
-#I  1/ 0 @ 0:00:00.001
+#I  1/ 0 @ 0:00:00.000
 #I  Size 136
-#I  1/ 0 @ 0:00:00.005
-#I  --&gt;136 @ 0:00:00.075
+#I  1/ 0 @ 0:00:00.004
+#I  --&gt;136 @ 0:00:00.024
 #I  Size 648
-#I  1/ 0 @ 0:00:00.024
-#I  --&gt;648 @ 0:00:01.597
+#I  1/ 0 @ 0:00:00.021
+#I  --&gt;648 @ 0:00:00.310
 #I  Size 1140
-#I  1/ 0 @ 0:00:00.044
-#I  --&gt;1140 @ 0:00:05.648
+#I  1/ 0 @ 0:00:00.036
+#I  --&gt;1140 @ 0:00:00.980
 1140
 </pre>
 <p>
 [<a href = "chapters.htm">Up</a>] [<a href ="CHAP004.htm">Previous</a>] [<a href ="CHAP006.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
 <P>
-<address>RDS manual<br>June 2010
+<address>RDS manual<br>August 2011
 </address></body></html>

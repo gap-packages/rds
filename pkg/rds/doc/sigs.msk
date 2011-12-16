@@ -207,7 +207,7 @@ gap> Size(ReducedStartsets(ssets,[Gdata.Ai],cosetsigs,Gdata));
 #I  5/ 0 @ 0:00:00.123
 17
 \endexample
-\Declaration{maxAutsizeForOrbitCalculation}
+\Declaration{MaxAutsizeForOrbitCalculation}
 
 
 
@@ -271,32 +271,35 @@ gap> sigdat:=SignatureData(Gdata,[One(Gdata.G)],8,1,10^5);;
 gap> N:=First(NormalSubgroups(G),n->Size(n)=19);
 gap> auts:=SuitableAutomorphismsForReduction(Gdata,N);
 [ <permutation group of size 18 with 3 generators> ]
-gap> coset:=GroupList2PermList(Set(RightCoset(N,Random(G))),Gdata);
-[ 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 57 ]
+gap> g:=One(G);;while g in N do
+>  g:=Random(G);
+> od;  
+gap> coset:=GroupList2PermList(Set(RightCoset(N,g)),Gdata);
+[ 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56 ]
 gap> Size(StartsetsInCoset([],coset,[],4,auts,sigdat,Gdata,1));
 #I  Size 19
+#I  1/ 0 @ 0:00:00.003
+#I  Size 26
 #I  1/ 0 @ 0:00:00.001
-#I  Size 20
-#I  1/ 0 @ 0:00:00.001
-#I  -->9 @ 0:00:00.004
-#I  Size 85
-#I  1/ 0 @ 0:00:00.007
-#I  -->44 @ 0:00:00.033
-#I  Size 144
+#I  -->10 @ 0:00:00.004
+#I  Size 88
+#I  1/ 0 @ 0:00:00.003
+#I  -->45 @ 0:00:00.018
+#I  Size 125
 #I  1/ 0 @ 0:00:00.006
-#I  -->64 @ 0:00:00.083
+#I  -->64 @ 0:00:00.031
 64
 gap> Size(StartsetsInCoset([],coset,[],4,[Group(())],sigdat,Gdata,1));
 #I  Size 19
-#I  1/ 0 @ 0:00:00.001
+#I  1/ 0 @ 0:00:00.000
 #I  Size 136
-#I  1/ 0 @ 0:00:00.005
-#I  -->136 @ 0:00:00.075
+#I  1/ 0 @ 0:00:00.004
+#I  -->136 @ 0:00:00.024
 #I  Size 648
-#I  1/ 0 @ 0:00:00.024
-#I  -->648 @ 0:00:01.597
+#I  1/ 0 @ 0:00:00.021
+#I  -->648 @ 0:00:00.310
 #I  Size 1140
-#I  1/ 0 @ 0:00:00.044
-#I  -->1140 @ 0:00:05.648
+#I  1/ 0 @ 0:00:00.036
+#I  -->1140 @ 0:00:00.980
 1140
 \endexample

@@ -4,9 +4,9 @@
 ##
 ##  Invariants for partial difference sets
 ##
-#H @(#)$Id: sigs.gd, v 1.2 2010/06/03 21:00:34 gap Exp $
+#H @(#)$Id: sigs.gd, v 1.4 2011/08/25 20:42:59 gap Exp $
 ##
-#Y	 Copyright (C) 2006 Marc Roeder 
+#Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -22,19 +22,19 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("rds/lib/sigs_gd"):=
-	"@(#)$Id: sigs.gd, v 1.2 2010/06/03   21:00:34  gap Exp $";
+Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/sigs_gd"):=
+	"@(#)$Id: sigs.gd, v 1.4 2011/08/25   20:42:59  gap Exp $";
 #############################################################################
 ## 
-#V maxAutsizeForOrbitCalculation 
+#V MaxAutsizeForOrbitCalculation
 ## 
 ##  In "ReducedStartsets", a bound is needed to decide if `Orbit' or 
 ##  `RepresentativeAction' should be used. If the group is larger than 
-##  <maxAutsizeForOrbitCalculation>, `RepresentativeAction' is used.
+##  <MaxAutsizeForOrbitCalculation@RDS>, `RepresentativeAction' is used.
 ##  The default value for `maxAutsizeForOrbitCalculation' is $5*10^6$.
 ##  If you want to change it, you will have to edit the file `sigs.gd'.
 ##
-DeclareSynonym("maxAutsizeForOrbitCalculation",5*10^6);
+DeclareSynonym("MaxAutsizeForOrbitCalculation@",5*10^6);
 
 #############################################################################
 ##
