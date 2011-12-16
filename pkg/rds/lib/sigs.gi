@@ -4,9 +4,9 @@
 ##
 ##  Invariants for partial difference sets
 ##
-#H @(#)$Id: sigs.gi, v 1.0 2008/01/26 14:04:55 gap Exp $
+#H @(#)$Id: sigs.gi, v 1.1 2008/12/02 18:26:19 gap Exp $
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/sigs_gi"):=
-	"@(#)$Id: sigs.gi, v 1.0 2008/01/26   14:04:55  gap Exp $";
+	"@(#)$Id: sigs.gi, v 1.1 2008/12/02   18:26:19  gap Exp $";
 #############################################################################
 ## 
 #V maxAutsizeForOrbitCalculation 
@@ -714,100 +714,104 @@ InstallMethod(ReducedStartsets,
     return ReducedStartsets(startsets,autlist,s->SigInvariant(Union(s,[1]),csdata),difftable);
 end);
 
-#############################################################################
-##
-#O ReducedStartsets(<startsets>,<autlist>,<func>,<difftable>) returns a reduced set of startsets
-##
-InstallMethod(ReducedStartsets,
-        "for partial relative difference sets",
-        [IsDenseList,IsDenseList,IsFunction,IsMatrix],
-        function(startsets,autlist,func,difftable)	
-    local   Translates,  timetmp,  partition,  returnset,  lssets,  
-            transset,  auts,  set,  interesting_sets,  orbit,  
-            interesting,  transset_pos;
 
-    if not IsSet(startsets) then Error("\nThe set of startsets must be a SET\n");fi;
-    Info(InfoRDS,1,"Size ",Size(startsets));
-    if startsets=[] then return [];fi;
-
-    Translates:=function(set)
-        local   returnlist,  g,  trans;
-
-        returnlist:=[];
-        for g in set
-          do
-            trans:=difftable{set}[g];                 
-            Add(trans,difftable[1][g]); 
-            Sort(trans);
-            RemoveSet(trans,1);
-            Add(returnlist,trans);
-        od;
-        Add(returnlist,AsSet(set));
-        return returnlist;
-    end;
-    timetmp:=Runtime();
-    partition:=PartitionByFunction(startsets,func);
-    Info(InfoRDS,1,Size(partition),"/ ",Number(partition,p->Size(p)=1)," @",StringTime(Runtime()-timetmp));
-    Apply(partition,SortedList);
-
-    returnset:=[];
-    for lssets in partition
-      do
-        Info(DebugRDS,2,Size(lssets));
-        if Size(lssets)>1
-           then
-            transset:=Set(lssets,l->[l,Translates(l)]);#Translatmengen
-            for auts in autlist 
-              do
-                for set in lssets    
-                  do		  
-                    if Size(set)>1 and Size(auts)>maxAutsizeForOrbitCalculation
-                       then
-                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)),
-                                                i->i[1]);
-                    else       
-                        orbit:=AsSortedList(Orbit(auts,AsSet(set),OnSets));;
-                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->s in orbit)),
-                                                i->i[1]);
-                    fi;
-                    interesting_sets:=Intersection(interesting_sets,lssets);
-                    RemoveSet(interesting_sets,Reversed(Minimum(List(interesting_sets,b->Reversed(b)))));
-                    for interesting in interesting_sets
-                      do
-                        Unbind(lssets[Position(lssets,interesting)]);
-                        for transset_pos in [1..Size(transset)]
-                          do
-                            if IsBound(transset[transset_pos])
-                               and transset[transset_pos][1]=interesting
-                               then
-                                Unbind(transset[transset_pos]);
-                                break;
-                            fi;
-                        od;
-                    od;
-                    #                    if not set in lssets then Error("PANIC! this should not happen!");fi;
-                od;         #<for set in lssets>
-                Info(DebugRDS,2,"->",Size(Compacted(lssets)));    
-            od;
-        fi;         #<\if Size(lssets)>1>#
-    od;         #<\for lssets in partition>#
-    returnset:=Compacted(Concatenation(partition));
-    return SortedList(returnset);
-end); 
-
-InstallMethod(ReducedStartsets,
-        "for partial relative difference sets",
-        [IsDenseList,IsDenseList,IsDenseList,IsRecord],
-        function(startsets,autlist,csdata,data)
-    return ReducedStartsets(startsets,autlist,csdata,data.diffTable);
-end);
-
-InstallMethod(ReducedStartsets,
-        "for partial relative difference sets",
-        [IsDenseList,IsDenseList,IsFunction,IsRecord],
-        function(startsets,autlist,func,data)
-    return ReducedStartsets(startsets,autlist,func,data.diffTable);
-end);
+#
+# rewritten (just after version 1.0) and moved to separate file:
+#
+##############################################################################
+###
+##O ReducedStartsets(<startsets>,<autlist>,<func>,<difftable>) returns a reduced set of startsets
+###
+#InstallMethod(ReducedStartsets,
+#        "for partial relative difference sets",
+#        [IsDenseList,IsDenseList,IsFunction,IsMatrix],
+#        function(startsets,autlist,func,difftable)	
+#    local   Translates,  timetmp,  partition,  returnset,  lssets,  
+#            transset,  auts,  set,  interesting_sets,  orbit,  
+#            interesting,  transset_pos;
+#
+#    if not IsSet(startsets) then Error("\nThe set of startsets must be a SET\n");fi;
+#    Info(InfoRDS,1,"Size ",Size(startsets));
+#    if startsets=[] then return [];fi;
+#
+#    Translates:=function(set)
+#        local   returnlist,  g,  trans;
+#
+#        returnlist:=[];
+#        for g in set
+#          do
+#            trans:=difftable{set}[g];                 
+#            Add(trans,difftable[1][g]); 
+#            Sort(trans);
+#            RemoveSet(trans,1);
+#            Add(returnlist,trans);
+#        od;
+#        Add(returnlist,AsSet(set));
+#        return returnlist;
+#    end;
+#    timetmp:=Runtime();
+#    partition:=PartitionByFunction(startsets,func);
+#    Info(InfoRDS,1,Size(partition),"/ ",Number(partition,p->Size(p)=1)," @",StringTime(Runtime()-timetmp));
+#    Apply(partition,SortedList);
+#
+#    returnset:=[];
+#    for lssets in partition
+#      do
+#        Info(DebugRDS,2,Size(lssets));
+#        if Size(lssets)>1
+#           then
+#            transset:=Set(lssets,l->[l,Translates(l)]);#Translatmengen
+#            for auts in autlist 
+#              do
+#                for set in lssets    
+#                  do		  
+#                    if Size(set)>1 and Size(auts)>maxAutsizeForOrbitCalculation
+#                       then
+#                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)),
+#                                                i->i[1]);
+#                    else       
+#                        orbit:=AsSortedList(Orbit(auts,AsSet(set),OnSets));;
+#                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->s in orbit)),
+#                                                i->i[1]);
+#                    fi;
+#                    interesting_sets:=Intersection(interesting_sets,lssets);
+#                    RemoveSet(interesting_sets,Reversed(Minimum(List(interesting_sets,b->Reversed(b)))));
+#                    for interesting in interesting_sets
+#                      do
+#                        Unbind(lssets[Position(lssets,interesting)]);
+#                        for transset_pos in [1..Size(transset)]
+#                          do
+#                            if IsBound(transset[transset_pos])
+#                               and transset[transset_pos][1]=interesting
+#                               then
+#                                Unbind(transset[transset_pos]);
+#                                break;
+#                            fi;
+#                        od;
+#                    od;
+#                    #                    if not set in lssets then Error("PANIC! this should not happen!");fi;
+#                od;         #<for set in lssets>
+#                Info(DebugRDS,2,"->",Size(Compacted(lssets)));    
+#            od;
+#        fi;         #<\if Size(lssets)>1>#
+#    od;         #<\for lssets in partition>#
+#    returnset:=Compacted(Concatenation(partition));
+#    return SortedList(returnset);
+#end); 
+#
+#InstallMethod(ReducedStartsets,
+#        "for partial relative difference sets",
+#        [IsDenseList,IsDenseList,IsDenseList,IsRecord],
+#        function(startsets,autlist,csdata,data)
+#    return ReducedStartsets(startsets,autlist,csdata,data.diffTable);
+#end);
+#
+#InstallMethod(ReducedStartsets,
+#        "for partial relative difference sets",
+#        [IsDenseList,IsDenseList,IsFunction,IsRecord],
+#        function(startsets,autlist,func,data)
+#    return ReducedStartsets(startsets,autlist,func,data.diffTable);
+#end);
 
 
 
@@ -889,7 +893,7 @@ InstallMethod(SignatureDataForNormalSubgroups,
 
             if newglobaldata.fgsigs[1].sigs=[]
                then 
-                Info(InfoRDS,1,"Forbidden set is BAD.");
+                Info(InfoRDS,1,"Signature equations have no solution.");
                 isbadforbiddenset:=true;#this forbidden group does not occur
                 return fail;   # nothing to to here...
             fi;			
@@ -914,7 +918,7 @@ InstallMethod(SignatureDataForNormalSubgroups,
                 newdata.sigs:=newglobaldata.fgsigs[1].sigs;	#for this run
                 if newglobaldata.fgsigs[1].sigs=[]
                    then 
-                    Info(InfoRDS,1,"Forbidden set is bad.");
+                    Info(InfoRDS,1,"Signature equations have no solution.");
                     isbadforbiddenset:=true;
                 fi;
                 if oldfgsigs<>[]

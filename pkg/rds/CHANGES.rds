@@ -1,3 +1,11 @@
+1.1:
+- minor fixes in the ShallowCopy part of ConcatenationOfIterators and 
+   CartesianIterator
+- ReducedStartsets rewritten.
+- package moved from Galway  back to Kaiserslautern
+
+------------------
+
 1.0:
 - changed years in the copyright notice (from 2006 to 2006-2008).
 ------------------
@@ -18,7 +26,7 @@
 - method names in text paragraphs are now surrounded by double quotes.
       This generates links in the html documentation.
 - Consequently, references in the .pdf documentation are also not given by numbers 
-       anymore. This doesn't look too god for sections and chapters, but refering to a 
+       anymore. This doesn't look too go0d for sections and chapters, but refering to a 
        function as 4.1.2 doesn't make much sense...
        For this, the definition of \printref has been changed in the file gapmacro.tex
 - some more changes in the manual (thanks to Leonard Soicher)
@@ -30,7 +38,9 @@
 - Fixed a few errors in the documentation
 - cleaned up directories
 - fixed permissions for htm directory.
-- fixed a bug in `AllDiffsets' and `OneDiffset'------------------
+- fixed a bug in `AllDiffsets' and `OneDiffset'
+
+------------------
 
 0.9beta26:
 - Added AllDiffsetsNoSort

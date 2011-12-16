@@ -5,9 +5,9 @@
 ##  
 
 ##
-#H @(#)$Id: AllDiffsets.gd, v 1.0 2008/01/26 14:04:55 gap Exp $
+#H @(#)$Id: AllDiffsets.gd, v 1.1 2008/12/02 18:26:19 gap Exp $
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -24,7 +24,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/AllDiffsets_gd"):=
-	"@(#)$Id: AllDiffsets.gd, v 1.0 2008/01/26   14:04:55  gap Exp $";
+	"@(#)$Id: AllDiffsets.gd, v 1.1 2008/12/02   18:26:19  gap Exp $";
 #############################################################################
 ##
 #O AllDiffsets([<partial>],<group>,[<lambda>])

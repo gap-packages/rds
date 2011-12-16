@@ -4,9 +4,9 @@
 ##
 ##  Representation theoretic methods for a special class of groups and difference sets
 ##
-#H @(#)$Id: reps.gi, v 1.0 2008/01/26 14:04:55 gap Exp $
+#H @(#)$Id: reps.gi, v 1.1 2008/12/02 18:26:19 gap Exp $
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/reps_gi"):=
-	"@(#)$Id: reps.gi, v 1.0 2008/01/26   14:04:55  gap Exp $";
+	"@(#)$Id: reps.gi, v 1.1 2008/12/02   18:26:19  gap Exp $";
 SetInfoLevel(InfoRDS,1);
 SetInfoLevel(DebugRDS,0);
 
@@ -374,3 +374,7 @@ InstallMethod(OrderedSignatureOfSet,
     return returnlist;
 end);
 
+#############################################################################
+##
+#E  END
+##

@@ -4,9 +4,9 @@
 ##
 ##  Some methods for general use
 ##
-#H @(#)$Id: misc.gi, v 1.0 2008/01/26 14:04:55 gap Exp $
+#H @(#)$Id: misc.gi, v 1.1 2008/12/02 18:26:19 gap Exp $
 ##
-#Y	 Copyright (C) 2006-2008 Marc Roeder 
+#Y	 Copyright (C) 2006 Marc Roeder 
 #Y 
 #Y This program is free software; you can redistribute it and/or 
 #Y modify it under the terms of the GNU General Public License 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("rds/lib/misc_gi"):=
-	"@(#)$Id: misc.gi, v 1.0 2008/01/26   14:04:55  gap Exp $";
+	"@(#)$Id: misc.gi, v 1.1 2008/12/02   18:26:19  gap Exp $";
 #############################################################################
 ##
 #F  IsComputableFilter( <filter> )     test if a filter is computable
@@ -69,7 +69,9 @@ end);
 InstallMethod(CartesianIterator,
         [IsList],
         function(tuplelists)
-    local tuple_iterator,position,nextIterator,isDoneIterator,shallowCopy;
+    local   position,  nextIterator,  isDoneIterator,  shallowCopy,  
+            tuple_iterator;
+    
     if Size(tuplelists)=0 or ForAny(tuplelists,i->Size(i)=0)
        then
         return Iterator([]);
@@ -112,9 +114,16 @@ InstallMethod(CartesianIterator,
         idata:=ShallowCopy(iter!.data);
         position:=ShallowCopy(iter!.position);
         position[Size(position)]:=0;
-        return rec(data:=idata,position:=position,ShallowCopy:=shallowCopy,IsDoneIterator:=isDoneIterator,NextIterator:=nextIterator);
+        return rec(data:=idata,
+                   position:=position,
+                   ShallowCopy:=iter!.ShallowCopy,
+                   IsDoneIterator:=iter!.IsDoneIterator,
+                   NextIterator:=iter.NextIterator);
     end;
-    tuple_iterator:=rec(data:=tuplelists,position:=position,NextIterator:=nextIterator,IsDoneIterator:=isDoneIterator,ShallowCopy:=shallowCopy);
+    tuple_iterator:=rec(data:=tuplelists,position:=position,
+                        NextIterator:=nextIterator,
+                        IsDoneIterator:=isDoneIterator,
+                        ShallowCopy:=shallowCopy);
     return IteratorByFunctions(tuple_iterator);
 end);
 
@@ -161,7 +170,11 @@ InstallGlobalFunction("ConcatenationOfIterators",
            then
             return Iterator([]);
         else
-            return rec(iters:=List(iter!.iters,i->ShallowCopy(i)),position:=iter!.position,IsDoneIterator:=isDoneIterator,NextIterator:=nextIterator,ShallowCopy:=shallowCopy);
+            return rec(iters:=List(iter!.iters,i->ShallowCopy(i)),
+                       position:=iter!.position,
+                       IsDoneIterator:=iter!.IsDoneIterator,
+                       NextIterator:=iter!.NextIterator,
+                       ShallowCopy:=iter!.ShallowCopy);
         fi;
     end;
     ##
@@ -349,6 +362,7 @@ InstallMethod(MatTimesTransMat,
         function(mat)
     local   matdims,  rownumber,  colnumber,  returnmat,  row,  i,  
             mati,  j;
+
     matdims:=DimensionsMat(mat);
     rownumber:=matdims[1];
     colnumber:=matdims[2];
@@ -368,3 +382,9 @@ InstallMethod(MatTimesTransMat,
     returnmat[rownumber][rownumber]:=mat[rownumber]^2;
     return returnmat;
 end);
+
+
+#############################################################################
+##
+#E  END
+##

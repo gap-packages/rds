@@ -1,4 +1,3 @@
-rds/.DS_Store
 rds/doc/manual.pdf
 rds/doc/manual.toc
 rds/doc/manual.mst
