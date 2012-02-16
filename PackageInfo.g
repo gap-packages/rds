@@ -15,10 +15,10 @@ Subtitle := "A package for searching relative difference sets",
 ##  See '?Extending: Version Numbers' in GAP help for an explanation
 ##  of valid version numbers. For an automatic package distribution update
 ##  you must provide a new version number even after small changes.
-Version := "1.4",
-Date := "25/08/2011",
+Version := "1.6",
+Date := "16/02/2012",
 
-ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_4",
+ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_6",
 
 
 ##  All provided formats as list of file extensions, separated by white
@@ -186,9 +186,9 @@ PackageWWWHome := "http://csserver.evansville.edu/~mroeder",
            PackageDoc := rec(
   # use same as in GAP
   BookName  := "RDS",
-  ArchiveURLSubset := ["gap4_5/doc", "gap4_5/htm"],
-  HTMLStart := "gap4_5/htm/chapters.htm",
-  PDFFile   := "gap4_5/doc/manual.pdf",
+  ArchiveURLSubset := ["doc", "htm"],
+  HTMLStart := "htm/chapters.htm",
+  PDFFile   := "doc/manual.pdf",
   # the path to the .six file used by GAP's help system
   SixFile   := "doc/manual.six",
   # a longer title of the book, this together with the book name should

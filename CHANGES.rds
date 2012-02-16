@@ -1,3 +1,11 @@
+1.6:
+
+------------------
+
+1.5:
+ - path fixed in PackageInfo.g
+------------------
+
 1.4:
 - directory for PackageInfo.g and archives changed
 
