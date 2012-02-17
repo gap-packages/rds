@@ -4,7 +4,7 @@
 ##
 ##  Some black-box functions for quick-and-dirty claculations
 ##
-#H @(#)$Id: lazy.gd, v 1.4 2011/08/25 20:42:59 gap Exp $
+#H @(#)$Id: lazy.gd, v 1.6 2012/02/16 18:07:49 gap Exp $
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/lazy_gd"):=
-	"@(#)$Id: lazy.gd, v 1.4 2011/08/25   20:42:59  gap Exp $";
+	"@(#)$Id: lazy.gd, v 1.6 2012/02/16   18:07:49  gap Exp $";
 #############################################################################
 ##
 #O IsDiffset(<diffset>,[<forbidden>],<Gdata>,[<lambda>])

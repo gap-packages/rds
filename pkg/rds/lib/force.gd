@@ -4,7 +4,7 @@
 ##
 ##  Brute force methods for finding relative differnece sets
 ##
-#H @(#)$Id: force.gd, v 1.4 2011/08/25 20:42:59 gap Exp $
+#H @(#)$Id: force.gd, v 1.6 2012/02/16 18:07:49 gap Exp $
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -23,7 +23,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/force_gd"):=
-	"@(#)$Id: force.gd, v 1.4 2011/08/25   20:42:59  gap Exp $";
+	"@(#)$Id: force.gd, v 1.6 2012/02/16   18:07:49  gap Exp $";
 #############################################################################
 ##
 #O AllDiffsets(<partial>,<completions>,<aim>,<forbidden>,<Gdata>,<lambda>)

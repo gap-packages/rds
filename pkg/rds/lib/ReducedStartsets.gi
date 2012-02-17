@@ -5,7 +5,7 @@
 ##  
 
 ##
-#H @(#)$Id: ReducedStartsets.gi, v 1.4 2011/08/25 20:42:59 gap Exp $
+#H @(#)$Id: ReducedStartsets.gi, v 1.6 2012/02/16 18:07:49 gap Exp $
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -24,7 +24,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/ReducedStartsets_gi"):=
-	"@(#)$Id: ReducedStartsets.gi, v 1.4 2011/08/25   20:42:59  gap Exp $";
+	"@(#)$Id: ReducedStartsets.gi, v 1.6 2012/02/16   18:07:49  gap Exp $";
 #############################################################################
 ##
 InstallMethod(ReducedStartsets,

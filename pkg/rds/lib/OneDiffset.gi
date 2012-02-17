@@ -5,7 +5,7 @@
 ##  
 
 ##
-#H @(#)$Id: OneDiffset.gi, v 1.4 2011/08/25 20:42:59 gap Exp $
+#H @(#)$Id: OneDiffset.gi, v 1.6 2012/02/16 18:07:49 gap Exp $
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -24,7 +24,7 @@
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/OneDiffset_gi"):=
-	"@(#)$Id: OneDiffset.gi, v 1.4 2011/08/25   20:42:59  gap Exp $";
+	"@(#)$Id: OneDiffset.gi, v 1.6 2012/02/16   18:07:49  gap Exp $";
 #############################################################################
 ##
 #O  OneDiffset(<partial>,<completions>,<aim>,<forbidden>,<Gdata>,<lambda>)  calculates ordinary difference sets containing the partial difference set <partial>.
