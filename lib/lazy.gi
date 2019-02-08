@@ -4,7 +4,6 @@
 ##
 ##  Some black-box functions for quick-and-dirty claculations
 ##
-#H @(#)$Id$
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -22,8 +21,6 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/lazy_gi"):=
-	"@(#)$Id$";
 #############################################################################
 ##
 #O IsDiffset(<diffset>,[<forbidden>],<Gdata>,[<lambda>])

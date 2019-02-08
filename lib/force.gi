@@ -4,7 +4,6 @@
 ##
 ##  Brute force methods for finding relative differnece sets
 ##
-#H @(#)$Id$
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
 #Y 
@@ -22,8 +21,6 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-Revision.("sers/roeder/gap/pkg/rdsraw/rds/lib/force_gi"):=
-	"@(#)$Id$";
 #############################################################################
 ##
 #O  AllDiffsets(<partial>,<completions>,<aim>,<forbidden>,<Gdata>,<lambda>)  calculates ordinary difference sets containing the partial difference set <partial>.
