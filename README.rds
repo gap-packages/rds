@@ -10,7 +10,7 @@ rds/doc/ as .pdf and .html.
 
 You may distribute this package under the terms of the GNU General
 Public License version 2 or (at your option) any later version. See
-the file LICENSE.txt or http://www.gnu.org/copyleft/gpl.html.
+the file LICENSE or http://www.gnu.org/copyleft/gpl.html.
 
 The RDS package is completely written in GAP.
 
