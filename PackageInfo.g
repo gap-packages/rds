@@ -3,7 +3,8 @@ SetPackageInfo( rec(
 PackageName := "RDS",
 Subtitle := "A package for searching relative difference sets",
 Version := "1.6",
-Date := "16/02/2012",
+Date := "16/02/2012", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_6",
 ArchiveFormats := ".tar.gz,.tar.bz2,-win.zip", # the others are generated automatically
