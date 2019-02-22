@@ -1,0 +1,307 @@
+<html><head><title>[rds] 9 Some functions for everyday use</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP008.htm">Previous</a>] [<a href = "theindex.htm">Index</a>]
+<h1>9 Some functions for everyday use</h1><p>
+<P>
+<H3>Sections</H3>
+<oL>
+<li> <A HREF="CHAP009.htm#SECT001">Groups and actions</a>
+<li> <A HREF="CHAP009.htm#SECT002">Iterators</a>
+<li> <A HREF="CHAP009.htm#SECT003">Lists and Matrices</a>
+<li> <A HREF="CHAP009.htm#SECT004">Cyclotomic numbers</a>
+<li> <A HREF="CHAP009.htm#SECT005">Filters and Categories</a>
+</ol><p>
+<p>
+This chapter contains a number of functions that did not fit in
+anywhere else. Some of them might be useful for other people, too, so
+they were included here.
+<p>
+<p>
+<h2><a name="SECT001">9.1 Groups and actions</a></h2>
+<p><p>
+<a name = "SSEC001.1"></a>
+<li><code>OnSubgroups( </code><var>subgroup</var><code>, </code><var>aut</var><code> ) F</code>
+<p>
+For a group <i>G</i> and an automorphism <var>aut</var> of <i>G</i>, 
+<code>OnSubgroups(</code><var>subgroup</var><code>,</code><var>aut</var><code>)</code> is the image of <var>subgroup</var> under <var>aut</var>
+<p>
+<pre>
+gap&gt; G:=Group((1,2,3),(2,3));
+Group([ (1,2,3), (2,3) ])
+gap&gt; alpha:=InnerAutomorphism(G,(1,2,3));
+^(1,2,3)
+gap&gt; OnSubgroups(Subgroup(G,[(2,3)]),alpha);
+Group([ (1,3) ])
+</pre>
+<p>
+<a name = "SSEC001.2"></a>
+<li><code>RepsCClassesGivenOrder( </code><var>group</var><code>, </code><var>order</var><code> ) O</code>
+<p>
+<code>RepsCClassesGivenOrder( </code><var>group</var><code>, </code><var>order</var><code> )</code> returns all elements of 
+order <var>order</var> up to conjugacy. Note that the representatives are <strong>not</strong>
+always the smallest elements of each conjugacy class.
+<p>
+<pre>
+gap&gt; RepsCClassesGivenOrder(SymmetricGroup(5),2);
+[ (4,5), (2,3)(4,5) ]
+</pre>
+<p>
+<p>
+<h2><a name="SECT002">9.2 Iterators</a></h2>
+<p><p>
+<a name = "SSEC002.1"></a>
+<li><code>CartesianIterator( </code><var>tuplelist</var><code> ) O</code>
+<p>
+Returns an iterator for <code>Cartesian(</code><var>tuplelist</var><code>)</code>
+<p>
+<a name = "SSEC002.2"></a>
+<li><code>ConcatenationOfIterators( </code><var>iterlist</var><code> ) F</code>
+<p>
+<code>ConcatenationOfIterators(</code><var>iterlist</var><code>)</code> returns an iterator which runs 
+through all iterators in <var>iterlist</var>. Note that the returned iterator loops 
+over the iterators in <var>iterlist</var> <strong>sequentially</strong> beginning with the first 
+one.
+<p>
+<pre>
+gap&gt; it:=Iterator([1,2,3]);;
+gap&gt; it2:=CartesianIterator([[9,10],[11]]);;
+gap&gt; cit:=ConcatenationOfIterators([it,it2]);;
+gap&gt; repeat
+&gt; Print(NextIterator(cit),",\c");
+&gt; until IsDoneIterator(cit);
+1,2,3,[ 9, 11 ],[ 10, 11 ],
+</pre>
+<p>
+<p>
+<h2><a name="SECT003">9.3 Lists and Matrices</a></h2>
+<p><p>
+<a name = "SSEC003.1"></a>
+<li><code>IsListOfIntegers( </code><var>list</var><code> ) P</code>
+<p>
+<code>IsListOfIntegers( </code><var>list</var><code> )</code> returns <code>IsSubset(Integers, </code><var>list</var><code> )</code> if <var>list</var>
+is a dense list and <code>false</code> otherwise.
+<p>
+<a name = "SSEC003.2"></a>
+<li><code>List2Tuples( </code><var>list</var><code>, </code><var>int</var><code> ) O</code>
+<p>
+If <code>Size( </code><var>list</var><code> )</code> is divisible by <var>int</var>, <code>List2Tuples( </code><var>list</var><code>,</code><var>int</var><code>)</code>
+returns a list <var>list2</var> of size <var>int</var> such that 
+<code>Concatenation( </code><var>list2</var><code> )= </code><var>list</var><code></code> and every element of <var>list2</var> has the 
+same size.
+<p>
+<pre>
+gap&gt; List2Tuples([1..6],2);
+[ [ 1, 2, 3 ], [ 4, 5, 6 ] ]
+</pre>
+<p>
+<a name = "SSEC003.3"></a>
+<li><code>MatTimesTransMat( </code><var>mat</var><code> ) O</code>
+<p>
+does the same as <code></code><var>mat</var><code>*TransposedMat( </code><var>mat</var><code> )</code> but uses slightly less 
+space and time for large matrices.
+<p>
+<a name = "SSEC003.4"></a>
+<li><code>PartitionByFunctionNF( </code><var>list</var><code>, </code><var>f</var><code> ) O</code>
+<p>
+<code>PartitionByFunctionNF( </code><var>list</var><code>, </code><var>f</var><code> )</code> partitions the list <var>list</var> 
+according to the values of the function <var>f</var> defined on <var>list</var>. 
+If <var>f</var> returns <code>fail</code> for some element of <var>list</var>, 
+<code>PartitionByFunctionNF( </code><var>list</var><code>, </code><var>f</var><code> )</code> enters a break loop. 
+Leaving the break loop with 'return;' is safe because 
+<code>PartitionByFunctionNF</code> treats <code>fail</code> as all other results of <var>f</var>.
+<p>
+<a name = "SSEC003.5"></a>
+<li><code>PartitionByFunction( </code><var>list</var><code>, </code><var>f</var><code> ) O</code>
+<p>
+<code>PartitionByFunction( </code><var>list</var><code>, </code><var>f</var><code> )</code> partitions the list <var>list</var> 
+according to the values of the function <var>f</var> defined on <var>list</var>. 
+All elements, for which <var>f</var> returns <code>fail</code> are omitted, so 
+<code>PartitionByFunction</code> does not necessarily return a partition.
+If <code>InfoLevel(InfoRDS)</code>indexInfoRDS@ttInfoRDS is at least 2, the number of 
+elements for which <var>f</var> returns <code>fail</code> is shown 
+(if <code>fail</code> is returned at all).
+<p>
+<pre>
+
+gap&gt; PartitionByFunctionNF([-1..5],x-&gt;x^2);
+[ [ 0 ], [ -1, 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
+gap&gt; test:=function(x) 
+&gt; if x&gt;0 then return Sqrt(x);
+&gt;  else return fail;
+&gt; fi;
+&gt; end;
+function( x ) ... end
+gap&gt; PartitionByFunction([-1..5],test);  
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap&gt; SetInfoLevel(InfoRDS,2);
+gap&gt; PartitionByFunction([-1..5],test);  
+#I  -2-
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ] ]
+gap&gt; PartitionByFunctionNF([-1..5],test);
+Error, function returned &lt;fail&gt; called from
+...
+brk&gt; return;
+[ [ 1 ], [ 4 ], [ 5 ], [ 2 ], [ 3 ], [ -1, 0 ] ]
+</pre>
+<p>
+<p>
+<h2><a name="SECT004">9.4 Cyclotomic numbers</a></h2>
+<p><p>
+<a name = "SSEC004.1"></a>
+<li><code>IsRootOfUnity( </code><var>cyc</var><code> ) P</code>
+<p>
+<code>IsRootOfUnity</code> tests if a given cyclotomic is actually a root of unity.
+<p>
+<a name = "SSEC004.2"></a>
+<li><code>CoeffList2CyclotomicList( </code><var>list</var><code>, </code><var>root</var><code> ) O</code>
+<p>
+<code>CoeffList2CyclogomicList( </code><var>list</var><code>, </code><var>root</var><code> )</code> takes a list of integers 
+<var>list</var> and a root of unity <var>root</var> and returns a list <var>list2</var>, where 
+<var>list2[i]=list[i]* root^(i-1)</var>.
+<p>
+<a name = "SSEC004.3"></a>
+<li><code>AbssquareInCyclotomics( </code><var>list</var><code>, </code><var>root</var><code> ) O</code>
+<p>
+For a list of integers and a root of unity, 
+<code>AbssquareInCyclotomics( </code><var>list</var><code>, </code><var>root</var><code> )</code> returns 
+the modulus of <code>Sum(CoeffList2CyclotomicList( </code><var>list</var><code>, </code><var>root</var><code> ))</code>.
+<p>
+<a name = "SSEC004.4"></a>
+<li><code>CycsGivenCoeffSum( </code><var>sum</var><code>, </code><var>root</var><code> ) O</code>
+<p>
+<code>CycsGivenCoeffSum( </code><var>sum</var><code>, </code><var>root</var><code> )</code> returns all elements of <b>Z</b>[ <i>root</i> ]
+such that the coefficient sum is <var>sum</var> and all coefficients are 
+non-negative.
+The returned list has the following form:
+The cyclotomic numbers are represented by coefficients. 
+<a href="CHAP009.htm#SSEC004.2">CoeffList2CyclotomicList</a> can be used to get the 
+algebraic number represented by <var>list</var>.
+The list is partitioned into equivalence classes of elements having the 
+same modulus.
+For each class the modulus is returned.
+This means that <code>CycsGivenCoeffSum</code> returns a list of pairs where the first
+entry of each pair is the square of the modulus of an element of the 
+second entry. And the second entry is a list of coefficient lists of 
+cyclotomics in <b>Z</b>[ <i>root</i>  ] having the coefficient sum <var>sum</var>. 
+<p>
+<pre>
+gap&gt; CycsGivenCoeffSum(3,E(3));
+[ [ 0, [ [ 1, 1, 1 ] ] ], 
+  [ 3, [ [ 0, 1, 2 ], [ 0, 2, 1 ], [ 1, 0, 2 ], [ 1, 2, 0 ], [ 2, 0, 1 ], 
+          [ 2, 1, 0 ] ] ], [ 9, [ [ 0, 0, 3 ], [ 0, 3, 0 ], [ 3, 0, 0 ] ] ] ]
+gap&gt; CycsGivenCoeffSum(2,E(2));
+[ [ 0, [ [ 1, 1 ] ] ], [ 4, [ [ 0, 2 ], [ 2, 0 ] ] ] ]
+</pre>
+<p>
+<p>
+<h2><a name="SECT005">9.5 Filters and Categories</a></h2>
+<p><p>
+The following was originally posted at the <font face="Gill Sans,Helvetica,Arial">GAP</font> forum by Thomas
+Breuer <a href="biblio.htm#BreuersAnswer"><cite>BreuersAnswer</cite></a>. 
+<p>
+Each filter in <font face="Gill Sans,Helvetica,Arial">GAP</font> is either a simple filter or a meet of filters.
+For example, <code>IsInt</code> and <code>IsPosRat</code> are simple filters,
+and <code>IsPosInt</code> is defined as their meet <code>IsInt and IsPosRat</code>.
+<p>
+Each <strong>simple filter</strong> is of one of the following kinds.
+<p>
+1. property:
+   Such a filter is an operation, the filter value can be computed.
+   The (unary) methods of this operation must return <code>true</code> or <code>false</code>,
+   and the return value is stored in the argument,
+   except if the argument is of a basic data type such as cyclotomic
+   (including rationals and integers), finite field element, permutation,
+   or internally represented list --the latter with a few exceptions.
+   Examples of properties are <code>IsFinite</code>, <code>IsAbelian</code>, <code>IsSSortedList</code>.
+<p>
+2. attribute tester:
+   Such a filter is associated to an operation that has been created
+   via <code>DeclareAttribute</code>,
+   in the sense that the value is <code>true</code> if and only if a return value
+   for (a unary method of) this operation is stored in the argument.
+   Currently, attribute values are stored in objects in the filter
+   <code>IsAttributeStoringRep</code>.
+   Examples of attribute testers are <code>HasSize</code>, <code>HasCentre</code>,
+   <code>HasDerivedSubgroup</code>.
+<p>
+2.' property tester:
+   Such a filter is similar to an attribute tester,
+   but the associated operation is a property.
+   So property testers can return <code>true</code> also if the argument is not in
+   the filter <code>IsAttributeStoringRep</code>.
+   Examples of property testers are <code>HasIsFinite</code>, <code>HasIsAbelian</code>,
+   <code>HasIsSSortedList</code>.
+<p>
+3. category or representation:
+   These filters are not associated to operations, their values cannot
+   be computed but are set upon creation of an object and should not be
+   changed later, such that for a filter of this kind, one can rely on
+   the fact that if the value is <code>true</code> then it was <code>true</code> already when
+   the object in question was created.
+<p>
+   The distinction between representation and category is intended to
+   express dependency on or independence of the way how the object is
+   stored internally.
+   For example, <code>IsPositionalObjectRep</code>, <code>IsComponentObjectRep</code>, and
+   <code>IsInternalRep</code> are filters of the representation kind;
+   the idea is that such filters are used in low level methods,
+   and that higher level methods can be implemented without referring
+   to these filters.
+<p>
+   Examples of categories are <code>IsInt</code>, <code>IsRat</code>, <code>IsPerm</code>, <code>IsFFE</code>,
+   and filters expressing algebraic structures,
+   such as <code>IsMagma</code>, <code>IsMagmaWithOne</code>, <code>IsAdditiveMagma</code>.
+   When one calls such a filter, one can be sure that no computation is
+   triggered.
+   For example, whenever a quotient of two integers is formed, the result
+   is clearly in the filter <code>IsRat</code>, but the system also stores the value
+   of <code>IsInt</code>, i.e., <font face="Gill Sans,Helvetica,Arial">GAP</font> does not support ``unevaluated rationals'' for
+   which the <code>IsInt</code> value is computed on demand and then stored.
+<p>
+4. other filters:
+   Some filters do not belong to the above kinds,
+   they are not associated to operations but they are intended to be
+   set (or even reset) by the user or by functions also after the creation
+   of objects.
+   Examples are <code>IsQuickPositionList</code>, <code>CanEasilyTestMembership</code>,
+   <code>IsHandledByNiceBasis</code>.
+<p>
+Each <strong>meet of filters</strong> can involve computable simple filters (properties,
+attribute and property testers) and not computable simple filters
+(categories, representations, other filters).
+When one calls a meet of two filters then the two filters from which
+the meet was formed are evaluated (if necessary).
+So a meet of filters is computable only if at least one computable simple
+filter is involved.
+<p>
+<a name = "SSEC005.1"></a>
+<li><code>IsComputableFilter( </code><var>filter</var><code> ) F</code>
+<p>
+'IsComputableFilter(<var>filter</var>)' returns <var>true</var> if a the filter <var>filter</var>
+is computable. Filters for which 'IsComputableFilter' returns <var>false</var>
+may be used in 'DeclareOperation'.
+<p>
+<pre>
+    gap&gt; IsComputableFilter( IsFinite );
+    true
+    gap&gt; IsComputableFilter( HasSize );
+    true
+    gap&gt; IsComputableFilter( HasIsFinite );
+    true
+    gap&gt; IsComputableFilter( IsPositionalObjectRep );
+    false
+    gap&gt; IsComputableFilter( IsInt );
+    false
+    gap&gt; IsComputableFilter( IsQuickPositionList );
+    false
+    gap&gt; IsComputableFilter( IsInt and IsPosRat );
+    false
+    gap&gt; IsComputableFilter( IsMagma );
+    false
+</pre>
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP008.htm">Previous</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>

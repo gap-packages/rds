@@ -1,0 +1,534 @@
+<html><head><title>[rds] 4 General concepts</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP003.htm">Previous</a>] [<a href ="CHAP005.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>4 General concepts</h1><p>
+<P>
+<H3>Sections</H3>
+<oL>
+<li> <A HREF="CHAP004.htm#SECT001">Introduction</a>
+<li> <A HREF="CHAP004.htm#SECT002">How partial difference sets are represented</a>
+<li> <A HREF="CHAP004.htm#SECT003">Basic functions for startset generation</a>
+<li> <A HREF="CHAP004.htm#SECT004">Brute force methods</a>
+</ol><p>
+<p>
+In this chapter, we first give a definition of relative difference
+sets and outline a part of the theory. Then we have a quick look at
+the way difference sets are represented in <font face="Gill Sans,Helvetica,Arial">RDS</font>.
+<p>
+After that, some basic methods for the generation of difference sets
+are explained. 
+<p>
+If you already read chapter <a href="../../rds/htm/CHAP003.htm">RDS:A basic example</a> and want to know
+what <a href="CHAP005.htm#SSEC003.4">StartsetsInCoset</a> really does, you may want to read this
+chapter.  
+The most important method here is 
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a> as this is the function all
+searches start with. The main high-level function for difference set
+generation in this chapter is <a href="CHAP004.htm#SSEC003.9">ExtendedStartsets</a>.
+<p>
+<p>
+<h2><a name="SECT001">4.1 Introduction</a></h2>
+<p><p>
+Let <i>G</i> be a finite group and <i>N</i> &#8838; <i>G</i>. The set <i>R</i> &#8838; <i>G</i>
+with &#124;<i>R</i>&#124;=<i>k</i> is called a ``relative difference set of order
+<i>k</i>&#8722;&#955; relative to the forbidden set <i>N</i>'' if the following
+properties hold:
+<p>
+<ol>
+<li> The multiset { <i>a</i>&#183;<i>b</i><sup>&#8722;1</sup>:<i>a</i>,<i>b</i> &#8712; <i>R</i>} contains
+  every nontrivial ( &#8800; 1) element of <i>G</i>&#8722;<i>N</i> exactly &#955;
+  times.  
+<li> { <i>a</i>&#183;<i>b</i><sup>&#8722;1</sup>:<i>a</i>,<i>b</i> &#8712; <i>R</i>} does not contain
+  any non-trivial element of <i>N</i>.
+</ol>
+<p>
+Relative difference sets with <i>N</i>=1 are called (ordinary) difference
+sets. As a special case, difference sets with <i>N</i>=1 and &#955; = 1
+correspond to projective planes of order <i>k</i>&#8722;1.  Here the blocks are
+the translates of <i>R</i> and the points are the elements of <i>G</i>.
+<p>
+In group ring notation a relative difference set satisfies
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> <i>RR</i><sup>&#8722;1</sup>=<i>k</i>+&#955;(<i>G</i>&#8722;<i>N</i>)&#183;</td></tr></table></td></tr></table>
+<p>
+The set <i>D</i> &#8838; <i>G</i> is called <strong>partial relative difference set</strong>
+with forbidden set <i>N</i>, if
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> <i>DD</i><sup>&#8722;1</sup>=&#954;+</td><td nowrap="nowrap" align="center"><small></small><!--sup--><br /><span class="largerstill">&#8721;<br /></span><small><i>g</i> &#8712; <i>G</i>&#8722;<i>N</i></small>&nbsp;<br /></td><td nowrap="nowrap" align="center"><i>v</i><sub><i>g</i></sub><i>g</i> </td></tr></table></td></tr></table> 
+<p>
+holds for some 1 &#8804; &#954; &#8804; <i>k</i> and 0 &#8804; <i>v</i><sub><i>g</i></sub>  &#8804; &#955; for
+all <i>g</i> &#8712; <i>G</i>&#8722;<i>N</i>.  If <i>D</i> is a relative difference set then ,obviously,
+<i>D</i> is also a partial relative difference set.
+<p>
+Two relative difference sets <i>D</i>,<i>D</i>&#8242; &#8838; <i>G</i> are called <strong>strongly
+equivalent</strong> if they have the same forbidden set <i>N</i> &#8838; <i>G</i> and if
+there is <i>g</i> &#8712; <i>G</i> and an automorphism &#945; of <i>G</i> such that
+<i>D</i>&#8242;<i>g</i><sup>&#8722;1</sup>=<i>D</i><sup>&#945;</sup>. The same term is applied to partial relative
+difference sets.
+<p>
+Let <i>D</i> &#8838; <i>G</i> be a difference set, then the incidence structure
+with points <i>G</i> and blocks {<i>Dg</i>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<i>g</i> &#8712; <i>G</i>} is called the
+<strong>development</strong> of <i>D</i>. In short:  <span class="roman">dev</span> <i>D</i>. Obviously, <i>G</i> acts on
+<span class="roman">dev</span><i>D</i> by multiplication from the right.
+<p>
+If <i>D</i> is a difference set, then <i>D</i><sup>&#8722;1</sup> is also a difference set.
+And <span class="roman">dev</span> <i>D</i><sup>&#8722;1</sup> is the dual of <span class="roman">dev</span> <i>D</i>. So a group
+admitting an operation some structure defined by a difference set does
+also admit an operation on the dual structure. We may therefore change
+the notion of equivalence and take &#981; to be an automorphism or an
+anti-automorphism. Forbidden sets are closed under inversion, so this
+gives a ``weak'' sort of strong equivalence.
+<p>
+<p>
+<h2><a name="SECT002">4.2 How partial difference sets are represented</a></h2>
+<p><p>
+Let <i>G</i> be a group. We define an enumeration {<i>g</i><sub>1</sub>,...,<i>g</i><sub><i>n</i></sub>}=<i>G</i> and
+represent <i>D</i> &#8838; <i>G</i> as a list of integers (where, of course, <i>i</i>
+represents <i>g</i><sub><i>i</i></sub> for all 1 &#8804; <i>i</i> &#8804; <i>n</i>).  So the automorphism group
+of <i>G</i> is represented as a permutation group of degree <i>n</i>.  One of
+the operations performed most often by methods in <font face="Gill Sans,Helvetica,Arial">RDS</font> is
+the calculation of quotients in <i>G</i>. So we calculate a look-up
+table for this.
+<p>
+This pre-calculation is done by the operation
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>. So before you start generating
+difference set, call this function and work with the data structure
+returned by it.
+<p>
+For an exhaustive search, the ordering of <i>G</i> is very important. To
+avoid generating duplicate partial difference sets, we would like to
+represent partial difference sets by <strong>sets</strong>, i.e. ordered lists. But
+in fact, <font face="Gill Sans,Helvetica,Arial">RDS</font> does <strong>not</strong> assume that partial difference
+sets are sets. The operations <a href="CHAP004.htm#SSEC003.9">ExtendedStartSets</a> and <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a>
+assume that the last element of partial difference set is its
+maximum. But they don't test it. So if you start from scratch, these
+methods generate difference sets which are really sets. Whereas the
+<code>NoSort</code> versions disregard the ordering of <i>G</i> and will produce
+duplicates.
+<p>
+The reason for this seemingly strange behaviour is the following:
+Assume that we have a normal subgroup <i>U</i> &#8804; <i>G</i> and know that every
+difference set <i>D</i> &#8838; <i>G</i> contains exactly <i>n</i><sub><i>i</i></sub> elements from the
+<i>i</i><sup><span class="roman">th</span></sup> coset modulo <i>U</i>. Then it is natural to generate
+difference sets by first searching all partial difference sets of
+length <i>n</i><sub>1</sub> containing entirely of elements of the first coset modulo
+<i>U</i> and then proceed with the other cosets. 
+<p>
+This method of difference set generation is normally not compatible
+with the ordering of <i>G</i>. This is why partial difference sets are not
+required to be <strong>sets</strong>. See chapter <a href="../../rds/htm/CHAP006.htm">RDS:An Example Program</a> for an
+example.
+<p>
+<p>
+<h2><a name="SECT003">4.3 Basic functions for startset generation</a></h2>
+<p><p>
+Defining an enumeration of the a group <i>G</i>, every relative difference
+set may be represented by a list of integers. Indexing <i>G</i> in this way
+has the advantage of the automorphism group of <i>G</i> being a permutation
+group acting on the index set for <i>G</i>. As relative difference sets are
+normally calculated in small groups, it is possible to store a
+complete multiplication table of the group in terms of the
+enumeration.
+<p>
+If not stated otherwise, partial difference sets are always considered
+to be lists of integers. Note that it is not required for a partial
+difference set to be a set.
+<p>
+<a name = "SSEC003.1"></a>
+<li><code>PermutationRepForDiffsetCalculations( </code><var>group</var><code> ) O</code>
+<li><code>PermutationRepForDiffsetCalculations( </code><var>group</var><code>, </code><var>autgrp</var><code> ) O</code>
+<p>
+For a group <var>group</var>, <code>PermutationRepForDiffsetCalculations(</code><var>group</var><code>)</code>
+returns a record containing:
+<dl compact>
+ <dt>1.<dd>the group <var>.G</var>=<var>group</var>.
+ <dt>2.<dd>the sorted list <var>.Glist</var>=<code>Set(</code><var>group</var><code>)</code>,
+ <dt>3.<dd>the automorphism group <var>.A</var> of <var>group</var>,
+ <dt>4.<dd>the group <var>.Aac</var>, which is the permutation action of <var>A</var> on the indices of <var>.Glist</var>,
+ <dt>5.<dd><var>.Ahom</var>=<code>ActionHomomorphism(</code><var>.A</var><code>,</code><var>.Glist</var><code>)</code>,
+ <dt>6.<dd>the group <var>.Ai</var> of anti-automorphisms of <var>.group</var> acting on the indices of <var>Glist</var>,
+ <dt>7.<dd>the multiplication table <var>.diffTable</var> of <var>.group</var> in a special form.
+</dl>
+<p>
+<var>.diffTable</var> is a matrix of integers defined such that 
+<code></code><var>.difftable</var><code>[i][j]</code> is the position of <code></code><var>Glist</var><code>[i](</code><var>Glist</var><code>[j])^-1)</code>
+in <var>Glist</var> with <code></code><var>Glist</var><code>[1]=One(</code><var>group</var><code>)</code>.
+<p>
+<code>PermutationRepForDiffsetCalculations</code> runs into an error if 
+<code>Set(</code><var>group</var><code>)[1]</code> is not equal to <code>One(</code><var>group</var><code>)</code>.
+<p>
+If <var>autgrp</var> is given, <code>PermutationRepForDiffsetCalculations</code> will not calculate the
+automorphism group of <var>group</var> but will take <var>autgrp</var> instead without any test.
+<p>
+If <code>Set(</code><var>group</var><code>)[1]</code> is not equal to <code>One(</code><var>group</var><code>)</code>, then
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a> returns an error message.
+In this case, calculating a permutation representation helps:
+<p>
+<pre>
+gap&gt; G:=SL(2,3);
+SL(2,3)
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);
+Error, smallest element of group is not the identity. Try `IsomorphismPermGrou\
+p' called from
+&lt;function&gt;( &lt;arguments&gt; ) called from read-eval-loop
+Entering break read-eval-print loop ...
+you can 'quit;' to quit to outer loop, or
+you can 'return;' to continue
+brk&gt; quit;
+gap&gt; G:=Image(IsomorphismPermGroup(G));
+Group([ (2,3,5)(6,7,8), (1,2,4,7)(3,6,8,5) ])
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);
+</pre>
+<p>
+<a name = "SSEC003.2"></a>
+<li><code>IsDiffset( </code><var>diffset</var><code>, [</code><var>forbidden</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>IsDiffset( </code><var>diffset</var><code>, [</code><var>forbidden</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<p>
+This function tests if <var>diffset</var> is a relative difference set with
+forbidden set <var>forbidden</var> and parameter <var>lambda</var> in the group <var>group</var>.
+If <var>Gdata</var> is the record calculated by <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>,
+<var>diffset</var> and <var>forbidden</var> have to be lists of integers. If a group
+<var>group</var> is given, <var>diffset</var> and <var>forbidden</var> must consist of elements
+of this group.
+<p>
+If <var>forbidden</var> is not given, it is assumed to be trivial. If <var>lambda</var>
+is not given, it is set to 1. Note that 1 (<code>One(</code><var>group</var><code>)</code>, repectively)
+<strong>must not</strong> be element of <var>diffset</var>.
+<p>
+<pre>
+gap&gt; a:=(1,2,3,4,5,6,7);
+(1,2,3,4,5,6,7)
+gap&gt; IsDiffset([a,a^3],Group(a));
+true
+gap&gt; IsDiffset([a,a^3],Group(a),2);
+false
+gap&gt; IsDiffset([a,a^2,a^4],Group(a),2);
+true
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(Group(a));;
+gap&gt; IsDiffset([2,4],Gdata);
+true
+</pre>
+<p>
+<a name = "SSEC003.3"></a>
+<li><code>IsPartialDiffset( </code><var>diffset</var><code>, [</code><var>forbidden</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>IsPartialDiffset( </code><var>diffset</var><code>, [</code><var>forbidden</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<p>
+This function tests if <var>diffset</var> is a partial relative difference set with
+forbidden set <var>forbidden</var> and parameter <var>lambda</var> in the group <var>group</var>.
+If <var>Gdata</var> is the record calculated by <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>,
+<var>diffset</var> and <var>forbidden</var> have to be lists of integers. If a group
+<var>group</var> is given, <var>diffset</var> and <var>forbidden</var> must consist of elements
+of this group.
+<p>
+If <var>forbidden</var> is not given, it is assumed to be trivial. If <var>lambda</var>
+is not given, it is set to 1. Note that 1 (<code>One(</code><var>group</var><code>)</code>, repectively)
+<strong>must not</strong> be element of <var>diffset</var>.
+<p>
+<pre>
+gap&gt; a:=(1,2,3,4,5,6,7);
+(1,2,3,4,5,6,7)
+gap&gt; IsPartialDiffset([a],Group(a));
+true
+gap&gt; IsPartialDiffset([a,a^4],Group(a));
+false
+gap&gt; IsPartialDiffset([a,a^4],Group(a),2);
+true
+</pre>
+<p>
+A partial difference set may be converted from a list of group
+elements to a list of integers using 
+<a name = "SSEC003.4"></a>
+<li><code>GroupList2PermList( </code><var>list</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+converts a list of group elements to integers according to the 
+enumeration given in Gdata.Glist.
+Here <var>Gdata</var> is a record containing .diffTable as returned by 
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>.
+<p>
+The inverse operation is
+performed by 
+<a name = "SSEC003.5"></a>
+<li><code>PermList2GroupList( </code><var>list</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+converts a list of integers into group elements according to the 
+enumeration given in Gdata.Glist.
+Here <var>Gdata</var> is a record containing .diffTable as returned by 
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>.
+<p>
+<pre>
+gap&gt;  G:=DihedralGroup(6);
+&lt;pc group of size 6 with 2 generators&gt;
+gap&gt; N:=NormalSubgroups(G)[2];
+Group([ f2 ])
+gap&gt; dat:=PermutationRepForDiffsetCalculations(G);
+rec( G := &lt;pc group of size 6 with 2 generators&gt;, 
+  Glist := [ &lt;identity&gt; of ..., f1, f2, f1*f2, f2^2, f1*f2^2 ], 
+  A := &lt;group of size 6 with 2 generators&gt;, 
+  Aac := Group([ (3,5)(4,6), (2,4,6) ]), 
+  Ahom := &lt;action homomorphism&gt;, 
+  Ai := Group([ (3,5), (3,5)(4,6), (2,4,6) ]), 
+  diffTable := [ [ 1, 2, 5, 4, 3, 6 ], [ 2, 1, 6, 3, 4, 5 ], 
+      [ 3, 6, 1, 2, 5, 4 ], [ 4, 5, 2, 1, 6, 3 ], 
+      [ 5, 4, 3, 6, 1, 2 ], [ 6, 3, 4, 5, 2, 1 ] ] )
+gap&gt; Nperm:=GroupList2PermList(Set(N),dat);
+[ 1, 3, 5 ]
+</pre>
+<p>
+In the following functions the record <var>Gdata</var> has to contain a matrix
+<var>.diffTable</var> as returned by <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>.
+<p>
+<a name = "SSEC003.6"></a>
+<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newel</var><code>, </code><var>table</var><code> ) O</code>
+<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newel</var><code>, </code><var>Gdata</var><code> ) O</code>
+<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newlist</var><code>, </code><var>Gdata</var><code> ) O</code>
+<li><code>NewPresentables( </code><var>list</var><code>, </code><var>newlist</var><code>, </code><var>table</var><code> ) O</code>
+<p>
+<code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>Gdata</var><code> )</code> takes a record <var>Gdata</var> as 
+returned by <code>PermutationRepForDiffsetCalculations(</code><var>group</var><code>)</code>.
+For <code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>table</var><code> )</code>, <var>table</var> has to be the
+multiplication table in the form of  
+<code>NewPresentables( </code><var>list</var><code>,</code><var>newel</var><code>,</code><var>Gdata.diffTable</var><code>)</code>
+<p>
+The method returns the unordered list of quotients <i>d</i><sub>1</sub><i>newel</i> <sup>&#8722;1</sup> with 
+<i>d</i><sub>1</sub> &#8712; <i>list</i> &#8746;{1} (in permutation representation).
+<p>
+When used with a list <var>newlist</var>, a list of quotients <i>d</i><sub>1</sub><i>d</i><sub>2</sub><sup>&#8722;1</sup> with 
+<i>d</i><sub>1</sub> &#8712; <i>list</i> &#8746;{1} and <i>d</i><sub>2</sub> &#8712; <i>newlist</i>  is returned.
+<p>
+<a name = "SSEC003.7"></a>
+<li><code>AllPresentables( </code><var>list</var><code>, </code><var>table</var><code> ) O</code>
+<li><code>AllPresentables( </code><var>list</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>list</var> be a list of integers representing elements of a group defined 
+by <var>Gdata</var> (or <var>table</var>).
+<code>AllPresentables( </code><var>list</var><code>,</code><var>table</var><code>)</code> returns an unordered list of 
+quotients <i>ab</i><sup>&#8722;1</sup> for all group elements <i>a</i>,<i>b</i>  represented by integers 
+in <var>list</var>. If 1 &#8712; <i>list</i> , an error is issued.
+The multiplication table <var>table</var> has to be of the form as returned by 
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>. And <var>Gdata</var> is a record as 
+calculated by <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>.
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; AllPresentables([2,3],dat);
+[ 2, 3, 7, 2, 7, 6 ]
+gap&gt; NewPresentables([2,3],4,dat);
+[ 4, 5, 6, 3, 7, 2 ]
+gap&gt; AllPresentables([1,2,3],dat);
+Error...
+</pre>
+<a name = "SSEC003.8"></a>
+<li><code>RemainingCompletions( </code><var>diffset</var><code>, </code><var>completions</var><code>[, </code><var>forbidden</var><code>], </code><var>Gdata</var><code>[, </code><var>lambda</var><code>] ) O</code>
+<a name = "SSEC003.8"></a>
+<li><code>RemainingCompletionsNoSort( </code><var>diffset</var><code>, </code><var>completions</var><code>[, </code><var>forbidden</var><code>], </code><var>table</var><code>[, </code><var>lambda</var><code>] ) O</code>
+<p>
+For a partial difference set <var>diffset</var>, 
+<code>RemainingCompletions(</code><var>diffset</var><code>,</code><var>completions</var><code>,</code><var>Gdata</var><code>)</code> returns a 
+subset of the <strong>set</strong> <var>completions</var>, such that each of its elements may be 
+added to <var>diffset</var> without it loosing the property to be a partial 
+difference set. 
+Only elements greater than the last element of <var>diffset</var> are returned.
+<p>
+For partial <strong>relative</strong> difference sets, <var>forbidden</var> is the forbidden set.
+<p>
+<code>RemainingCompletionsNoSort</code> does also return elements from <var>completions</var> which
+are smaller than <code></code><var>diffset</var><code>[Size(</code><var>diffset</var><code>)]</code>. 
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(7);
+&lt;pc group of size 7 with 1 generators&gt;
+gap&gt; dat:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; RemainingCompletionsNoSort([4],[1..7],dat);
+[ 2, 3 ]
+gap&gt; RemainingCompletionsNoSort([4],[1..7],dat,2);
+[ 2, 3, 6, 7 ]
+gap&gt; RemainingCompletions([4],[1..7],dat);        
+[  ]
+gap&gt; RemainingCompletions([4],[1..7],dat,2);
+[ 6, 7 ]
+</pre>
+<p>
+<a name = "SSEC003.9"></a>
+<li><code>ExtendedStartsets( </code><var>startsets</var><code>, </code><var>completions</var><code>, [</code><var>forbiddenset</var><code>][, </code><var>aim</var><code>], </code><var>Gdata</var><code>[, </code><var>lambda</var><code>] ) O</code>
+<a name = "SSEC003.9"></a>
+<li><code>ExtendedStartsetsNoSort( </code><var>startsets</var><code>, </code><var>completions</var><code>, [</code><var>forbiddenset</var><code>][, </code><var>aim</var><code>], </code><var>Gdata</var><code>[, </code><var>lambda</var><code>] ) O</code>
+<p>
+For a set of partial (relative) difference sets <var>startsets</var>, the set of 
+all extensions by one element from <var>completions</var> is returned.
+Here an ``extension'' of a partial diffence set <i>S</i> is a list which has 
+one element more than <i>S</i> and contains <i>S</i>.
+<p>
+Here <var>completions</var> is a set of elements wich may be appended to the lists in 
+<var>startsets</var> to generate new partial difference sets. For relative difference
+sets, the forbidden set <var>forbiddenset</var> must be given. 
+And the integer <var>aim</var> gives the desired total length, i.e. the number 
+of elements of <var>completions</var> that have to be added to each startset 
+plus its length. Note that the elements of <var>startset</var> are always extended
+by <strong>one</strong> element (if they can be extended). <var>aim</var> does only tell how 
+many elements from <var>completions</var> you want to add. A partial difference
+set is only be extended, if there are enough admissible elements in 
+<var>completions</var>, so if for some <i>S</i> &#8712; <i>startsets</i> , we have less than 
+<i>aim</i> &#8722;<tt>Size</tt>(<i>S</i>) elements in <var>completions</var> which can be added to <i>S</i>,
+no extension of <i>S</i> is returned. 
+<p>
+If <var>lambda</var> is not passed as a parameter, it is assumed to be 1.
+<p>
+Note that <code>ExtendedStartsets</code> does use <a href="CHAP004.htm#SSEC003.8">RemainingCompletions</a> while 
+<code>ExtendedStartsetsNoSort</code> uses <a href="CHAP004.htm#SSEC003.8">RemainingCompletionsNoSort</a>. 
+Note that the partial difference sets generated with <code>ExtendedStartsetsNoSort</code>
+are <strong>not</strong> sets (i.e. not sorted). This may result in doing work
+twice. But it can also be useful, especially when generating difference sets 
+``coset by coset''.
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; startsets:=[[2],[4],[6]];;
+gap&gt; ExtendedStartsets(startsets,[1..7],dat);
+[ [ 2, 4 ], [ 2, 6 ] ]
+gap&gt; ExtendedStartsets(startsets,[1..7],3,dat);
+[ [ 2, 4 ] ]
+gap&gt; ExtendedStartsets(startsets,[1..7],dat,2);
+[ [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 4, 6 ], [ 4, 7 ], [ 6, 7 ] ]
+gap&gt; ExtendedStartsetsNoSort(startsets,[1..7],dat);
+[ [ 2, 4 ], [ 2, 6 ], [ 4, 2 ], [ 4, 3 ], [ 6, 2 ], [ 6, 5 ] ]
+</pre>
+<p>
+<p>
+<h2><a name="SECT004">4.4 Brute force methods</a></h2>
+<p><p>
+The following methods can be used to find (partial) difference sets by
+brute force. More examples are contained in chapter <a href="../../rds/htm/CHAP002.htm">RDS:AllDiffsets and OneDiffset</a>
+<p>
+<a name = "SSEC004.1"></a>
+<li><code>AllDiffsets( [</code><var>partial</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>AllDiffsets( </code><var>partial</var><code>, [</code><var>aim</var><code>], </code><var>forbidden</var><code>, </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>AllDiffsets( [</code><var>partial</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>AllDiffsets( </code><var>partial</var><code>, [</code><var>aim</var><code>], </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>AllDiffsets( </code><var>partial</var><code>, </code><var>completions</var><code>, </code><var>aim</var><code>, </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, </code><var>lambda</var><code> ) O</code>
+<p>
+Let <var>partial</var> be a list of elements of the group <var>group</var> which form a
+partial relative difference set with parameter <var>lambda</var> and forbidden 
+set <var>forbidden</var> (which is also a set of group elements). That means that 
+the every non-trivial element in the list of quotients in elements of
+<var>partial</var> occurs at most <var>lambda</var> times and no element of <var>forbidden</var>
+is in this set.
+Then <code>AllDiffsets</code> returns the list of all partial relative difference
+sets of length <var>aim</var> with parameter <var>lambda</var> and forbidden set <var>forbidden</var>
+which contain <var>partial</var>. Only those partial relative difference sets will
+be constructed, which start with <var>partial</var> and continue with elements
+larger than the last element in <var>partial</var>.
+<p>
+To calculate <strong>all</strong> difference sets which contain <var>partial</var> as a subset,
+you can use <a href="CHAP004.htm#SSEC004.2">AllDiffsetsNoSort</a>.
+<p>
+Note that a difference set is also assumed to 
+contain the identity element, but this does not occur in the returned
+lists. So a returned difference set contains <var>aim</var> elements but actually
+represents a set of length <var>aim</var>+1, as it still is a partial relative 
+difference set when the identity element is added.
+If <var>partial</var> is not given or the empty set, all difference set in the 
+group <var>group</var> are calculated. If <var>lambda</var> is not given, it is set to 1.
+Without <var>forbidden</var>, ordinary difference sets are calculated.
+If <var>aim</var> is not given, it is set to the size of a full relative 
+difference set with forbidden set <var>forbidden</var> and parameter <var>lambda</var>.
+<p>
+Instead of using a group <var>group</var>, you can also use the data record 
+<var>Gdata</var> returned by <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>.
+In this case, <var>partial</var> and <var>forbidden</var> must be lists of integers.
+In the last form, <var>completions</var> must be a list of integers and 
+<code>AllDiffsets</code> does only extend <var>partial</var> by elements from <var>completions</var>.
+<p>
+<a name = "SSEC004.2"></a>
+<li><code>AllDiffsetsNoSort( </code><var>partial</var><code>, </code><var>group</var><code> ) O</code>
+<li><code>AllDiffsetsNoSort( </code><var>partial</var><code>, </code><var>Gdata</var><code> ) O</code>
+<li><code>AllDiffsetsNoSort( </code><var>partial</var><code>, [</code><var>completions</var><code>], </code><var>aim</var><code>, [</code><var>forbidden</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>AllDiffsetsNoSort( </code><var>partial</var><code>, [</code><var>completions</var><code>], </code><var>aim</var><code>, [</code><var>forbidden</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<p>
+This calculates all partial relative difference sets which contain the partial
+relative difference set <var>partial</var>. The returned value is a set of lists.
+Each of the returned lists starts with the list <var>partial</var>.
+If <var>partial</var> is not a partial relative difference set, the empty list is 
+returned. 
+<p>
+Note that despite the name, <code>AllDiffsetsNoSort</code> does not calculate all
+difference sets as unordered lists. It just calculates all difference 
+sets which contain <var>partial</var> as a subset.
+<p>
+As it does not only append larger elements to <var>partial</var>, <code>AllDiffsetsNoSort</code>
+works for all groups.
+<p>
+If called with <var>group</var> rather than <var>Gdata</var>, <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a> and
+<a href="CHAP004.htm#SSEC004.2">AllDiffsetsNoSort</a> call <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a>. They
+then work with sets of integers as difference sets and convert the
+result back into group notation.
+<p>
+As <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a> refuses to work if the
+smallest element of the group is not 1, this does not always work. So
+a permutation representation for <var>group</var> is calculated in this
+case. However, this is only done for the <code>NoSort</code> version and if
+<var>partial</var> is empty. Here is an example:
+<p>
+<pre>
+gap&gt; m:=[
+&gt; [0,1,0,0,0,0,0],
+&gt; [0,0,1,0,0,0,0],
+&gt; [0,0,0,1,0,0,0],
+&gt; [0,0,0,0,1,0,0],
+&gt; [0,0,0,0,0,1,0],
+&gt; [0,0,0,0,0,0,1],
+&gt; [1,0,0,0,0,0,0]];;
+gap&gt; G:=Group(m);
+&lt;matrix group with 1 generators&gt;
+gap&gt; Order(G);
+7
+gap&gt; Size(AllDiffsets(G));
+6
+gap&gt; AllDiffsets([m],G);  
+Error, smallest element of group is not the identity. 
+[...]
+gap&gt; Size(AllDiffsetsNoSort([m],G));
+2
+</pre>
+<p>
+The reason for this is the fact that <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a> generates
+difference sets from <var>partial</var> by appending only elements which are
+larger than the last element of <var>partial</var>. In a permutation
+representation, the ordering will be different from the original one,
+so <font face="Gill Sans,Helvetica,Arial">GAP</font> refuses to calculate the permutation representation and issues
+an error.  
+<p>
+<a href="CHAP004.htm#SSEC004.2">AllDiffsetsNoSort</a> first appends one element regardless of ordering
+and then only larger ones.
+<p>
+<a name = "SSEC004.3"></a>
+<li><code>OneDiffset( [</code><var>partial</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>OneDiffset( </code><var>partial</var><code>, [</code><var>aim</var><code>], </code><var>forbidden</var><code>, </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>OneDiffset( [</code><var>partial</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>OneDiffset( </code><var>partial</var><code>, [</code><var>aim</var><code>], </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>OneDiffset( </code><var>partial</var><code>, </code><var>completions</var><code>, </code><var>aim</var><code>, </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, </code><var>lambda</var><code> ) O</code>
+<p>
+This function works exactly like <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a>, but stops once a 
+(partial) relative difference set is found.
+This (partial) relative difference set is then returned. If no set 
+with the requested property exists, the empty list is returned.
+<p>
+If <code>OneDiffset</code> is called using <var>Gdata</var> and lists of integers as
+<var>partial</var> and <var>forbidden</var>, then the returned difference set is 
+the lexicographically smallest one starting with <var>partial</var>.
+If the <var>group</var>-form is used and <var>partial</var> is not empty, <code>OneDiffset</code>
+does only work, if the smallest element of <var>group</var> is the identity.
+This is not the case for matrix groups in general.
+<p>
+<a name = "SSEC004.4"></a>
+<li><code>OneDiffsetNoSort( </code><var>partial</var><code>, </code><var>group</var><code> ) O</code>
+<li><code>OneDiffsetNoSort( </code><var>partial</var><code>, </code><var>Gdata</var><code> ) O</code>
+<li><code>OneDiffsetNoSort( </code><var>partial</var><code>, [</code><var>completions</var><code>], </code><var>aim</var><code>, [</code><var>forbidden</var><code>], </code><var>group</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<li><code>OneDiffsetNoSort( </code><var>partial</var><code>, [</code><var>completions</var><code>], </code><var>aim</var><code>, [</code><var>forbidden</var><code>], </code><var>Gdata</var><code>, [</code><var>lambda</var><code>] ) O</code>
+<p>
+This works exactly as <a href="CHAP004.htm#SSEC004.2">AllDiffsetsNoSort</a> does, but stops once a set 
+with the desired properties is found and returns it.
+If no difference set exists, the empty list is returned.
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP003.htm">Previous</a>] [<a href ="CHAP005.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>

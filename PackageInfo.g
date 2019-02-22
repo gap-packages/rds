@@ -1,102 +1,65 @@
-#############################################################################
-##  
-##  Demo PackageInfo.g for the GitHubPagesForGAP
-##
-
 SetPackageInfo( rec(
 
-PackageName := "GitHubPagesForGAP",
+PackageName := "RDS",
+Subtitle := "A package for searching relative difference sets",
+Version := "1.6dev",
+Date := "16/02/2012", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
-Subtitle := "A GitHub Pages generator for GAP packages",
-Version := "0.2",
-Date := "04/02/2017", # dd/mm/yyyy format
+ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_6",
+ArchiveFormats := ".tar.gz,.tar.bz2,-win.zip", # the others are generated automatically
 
 Persons := [
   rec(
-    LastName      := "Horn",
-    FirstNames    := "Max",
+    LastName      := "Roeder",
+    FirstNames    := "Marc",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "max.horn@math.uni-giessen.de",
-    WWWHome       := "http://www.quendi.de/math",
-    PostalAddress := Concatenation(
-                       "AG Algebra\n",
-                       "Mathematisches Institut\n",
-                       "Justus-Liebig-Universität Gießen\n",
-                       "Arndtstraße 2\n",
-                       "35392 Gießen\n",
-                       "Germany" ),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"
+    Email         := "roeder.marc@gmail.com",
+    WWWHome       := "http://csserver.evansville.edu/~mroeder",
   ),
 
-  rec(
-    LastName      := "Thor",
-    FirstNames    := "A. U.",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    #Email         := "author@example.com",
-  ),
-
-  rec(
-    LastName      := "Itor",
-    FirstNames    := "Jan",
-    IsAuthor      := false,
-    IsMaintainer  := true,
-    #Email         := "janitor@example.com",
-  ),
 ],
 
-Status := "other",
+Status := "accepted",
+CommunicatedBy := "Leonard Soicher (Queen Mary, London)",
+AcceptDate := "02/2008",
 
-# The following are not strictly necessary in your own PackageInfo.g
-# (in the sense that update.g only looks at the usual fields
-# like PackageWWWHome, ArchiveURL etc.). But they are convenient
-# if you use exactly the scheme for your package website that we propose.
-GithubUser := "gap-system",
-GithubRepository := ~.PackageName,
-GithubWWW := Concatenation("https://github.com/", ~.GithubUser, "/", ~.GithubRepository),
+README_URL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/README.rds",
+PackageInfoURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/PackageInfo.g",
 
-PackageWWWHome := Concatenation("https://", ~.GithubUser, ".github.io/", ~.GithubRepository, "/"),
-README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
-PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
-# The following assumes you are using the Github releases system. If not, adjust
-# it accordingly.
-ArchiveURL     := Concatenation(~.GithubWWW,
-                    "/releases/download/v", ~.Version, "/",
-                    ~.GithubRepository, "-", ~.Version),
+AbstractHTML := "This package provides functions for the complete enumeration of relative difference sets.",
 
-ArchiveFormats := ".tar.gz .tar.bz2",
-
-AbstractHTML := 
-  "This is a pseudo package that contains no actual\
-  <span class=\"pkgname\">GAP</span> code. Instead, it is a template for other\
-  GAP packages that allows to quickly setup GitHub Pages.",
+PackageWWWHome := "http://csserver.evansville.edu/~mroeder",
 
 PackageDoc := rec(
-  BookName  := "GitHubPagesForGAP",
-  ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
+  BookName  := "RDS",
+  ArchiveURLSubset := ["doc", "htm"],
+  HTMLStart := "htm/chapters.htm",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "A GitHub Pages generator for GAP packages",
+  LongTitle := "Relative Difference Sets",
+  Autoload  := true
 ),
 
-# The following dependencies are fake and for testing / demo purposes
 Dependencies := rec(
-  GAP := ">=4.8.1",
-  NeededOtherPackages := [
-    ["GAPDoc", ">= 1.2"],
-    ["IO", ">= 4.1"],
-  ],
-  SuggestedOtherPackages := [["orb", ">= 4.2"]],
+  GAP := ">=4.5",
+  NeededOtherPackages := [["DESIGN", ">=1.3"]],
+  SuggestedOtherPackages := [["AutPGrp",">=1.0"]],
   ExternalConditions := []
 ),
 
 AvailabilityTest := ReturnTrue,
+BannerString := Concatenation(
+  "----------------------------------------------------------------\n",
+  "Loading  RDS ", ~.Version, "\n",
+  "by ", ~.Persons[1].FirstNames, " ", ~.Persons[1].LastName," (",
+  ~.Persons[1].Email,")",
+        "\n",
+  "----------------------------------------------------------------\n" ),
 
-Keywords := ["GitHub Pages", "GAP"]
+Autoload := false,
+TestFile := "tst/testall.g",
+Keywords := ["relative difference sets","finite geometries","projective planes"],
 
 ));
-
-

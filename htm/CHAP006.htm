@@ -1,0 +1,154 @@
+<html><head><title>[rds] 6 An Example Program</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP005.htm">Previous</a>] [<a href ="CHAP007.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>6 An Example Program</h1><p>
+<p>
+Here is a similar example to that in chapter <a href="../../rds/htm/CHAP003.htm">RDS:A basic example</a>. But
+now we do a little more handwork to see how things work.  Now we will
+calculate the relative difference sets of ``Dembowski-Piper type d''
+and order 16. These difference sets represent projective planes
+which admit a quasiregular collineation group such that the fixed
+structure is an anti-flag. See <a href="biblio.htm#DembowskiPiper"><cite>DembowskiPiper</cite></a>, <a href="biblio.htm#Dembowski"><cite>Dembowski</cite></a>
+or <a href="biblio.htm#RoederDiss"><cite>RoederDiss</cite></a> for details.
+<p>
+To have a little more output, you may want to increase <a href="CHAP001.htm#SSEC003.1">InfoRDS</a>:
+<pre>
+gap&gt; SetInfoLevel(InfoRDS,3);
+</pre>
+<p>
+First, define some parameters and calculate the data needed:
+<pre>
+gap&gt; k:=16;;lambda:=1;;groupOrder:=255;; #Diffset parameters
+gap&gt; forbiddenGroupOrder:=15;;
+gap&gt; maxtest:=10^6;;                     #Bound for sig testing
+gap&gt; G:=CyclicGroup(groupOrder);
+&lt;pc group of size 255 with 3 generators&gt;
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; MakeImmutable(Gdata);; 
+</pre>
+<p>
+Now the forbidden group is calculated in a very ineffective way. Then
+we calculate admissible signatures. As there are only few normal
+subgroups in <i>G</i>, we calculate them all. For other groups, one should
+choose more wisely.
+<p>
+<pre>
+gap&gt; N:=First(NormalSubgroups(Gdata.G),i-&gt;Size(i)=forbiddenGroupOrder);
+Group([ f1*f3^9, f2*f3^10 ])
+gap&gt; globalSigData:=[];;
+gap&gt; normals:=Filtered(NormalSubgroups(Gdata.G),n-&gt;Size(n) in [2..groupOrder-1]);; 
+gap&gt; sigdat:=SignatureDataForNormalSubgroups(normals,globalSigData,
+&gt;                             N,Gdata,[k,lambda,maxtest,true]);;
+</pre>
+<p>
+The last step gives better results, if a larger <var>maxtest</var> is chosen.
+But it also takes more time. To find a suitable <var>maxtest</var>, the output
+of <a href="CHAP005.htm#SSEC001.8">SignatureDataForNormalSubgroups</a> can be used, if
+<code>InfoLevel(InfoRDS)</code> is at least 2. Note that for recalculating
+signatures, you will have to reset <var>globalSigData</var> to <code>[]</code>. Try experimenting
+with <var>maxtest</var> to see the effect of signatures for the generation of
+startsets.
+<p>
+Now examine the signatures found. Look if there is a normal subgroup
+which has only one admissible signature (of course, you can also use
+<a href="CHAP005.htm#SSEC003.2">NormalSgsHavingAtMostNSigs</a> here):
+<p>
+<pre>
+gap&gt; Set(Filtered(sigdat,s-&gt;Size(s.sigs)=1 and Size(s.sigs[1])&lt;=5),i-&gt;i.sigs);
+[ [ [ 0, 4, 4, 4, 4 ] ], [ [ 4, 4, 8 ] ] ]
+</pre>
+<p>
+Great! we'll take the subgroup of index 3. The cosets modulo this
+group will be used to generate startsets and we assume that the
+trivial coset contains 8 elements of the difference set.
+So we generate startsets in <i>U</i> and make a first reduction. For this,
+we need <i>U</i> and <i>N</i> as lists of integers (recall that difference sets are
+asumed to be lists of integers). We will call these lists <i>Up</i> and
+<i>Np</i>.
+Furthermore, we will have to choose a suitable group of automorphisms
+for reduction. As <i>G</i> is cyclic, we may take <i>Gdata</i>&#183;<i>Aac</i> here. A good
+choice is the stabilizer of all cosets modulo <i>U</i>. Yet sometimes
+larger groups may be possible. For example if we want to generate
+start sets in <i>U</i> and then do a brute force search. In this case, we
+may take the stabilizer of <i>U</i> for reduction.
+<pre>
+gap&gt; U:=First(sigdat,s-&gt;s.sigs=[ [ 4, 4, 8 ] ]).subgroup; 
+Group([ f2, f3 ])
+gap&gt; cosets:=RightCosets(G,U);
+gap&gt; U1:=cosets[2];;U2:=cosets[3];;
+gap&gt; Up:=GroupList2PermList(Set(U),Gdata);;  
+gap&gt; Np:=GroupList2PermList(Set(N),Gdata); 
+[ 1, 12, 25, 43, 78, 97, 115, 116, 134, 151, 169, 188, 207, 238, 249 ]
+gap&gt; comps:=Difference(Up,Np);; 
+gap&gt; ssets:=List(comps,i-&gt;[i]);;
+gap&gt; ssets:=ReducedStartsets(ssets,[Gdata.Aac],sigdat,Gdata.diffTable); 
+#I  Size 80
+#I  2/ 0 @ 0:00:00.061
+[ [ 3 ], [ 4 ] ]
+</pre>
+<p>
+Observe that 1 is assumed to be element of every difference set and
+is not recorded explicitly. So the partial difference sets represented
+by <i>ssets</i> at this point are tt[ [ 1, 3 ], [ 1, 4 ] ]. Now the
+startsets are extended to size 7 using elements of <i>Up</i>. The runtime
+varies depending on the output of <a href="CHAP005.htm#SSEC001.8">SignatureDataForNormalSubgroups</a>
+and hence on <i>maxtest</i>.
+<pre>
+gap&gt; repeat 
+&gt;     ssets:=ExtendedStartsets(ssets,comps,Np,7,Gdata); 
+&gt;     ssets:=ReducedStartsets(ssets,[Gdata.Aac],sigdat,Gdata.diffTable);; 
+&gt; until ssets=[] or Size(ssets[1])=7; 
+#I  Size 133
+#I  3/ 0 @ 0:00:00.133
+#I  Size 847
+#I  4/ 0 @ 0:00:00.949
+#I  Size 6309
+#I  4/ 0 @ 0:00:07.692
+#I  Size 21527
+#I  5/ 0 @ 0:00:28.337
+#I  Size 15884
+#I  4/ 0 @ 0:00:21.837
+#I  Size 1216
+#I  4/ 0 @ 0:00:01.758
+gap&gt; Size(ssets);
+192
+</pre>
+At a higher level of <a href="CHAP001.htm#SSEC003.1">InfoRDS</a>, the number of start sets which are
+discarded because of wrong signatures are also shown.
+Now the cosets are changed. Here we use the <code>NoSort</code> version of
+<a href="CHAP004.htm#SSEC003.9">ExtendedStartsets</a>.  This leads to a lot of start sets in the first
+step. If the number of start sets in <i>U</i> is very large, this could be
+too much for a reduction. Then the only option is using the brute
+force method. But also for the brute force search,
+<a href="CHAP004.htm#SSEC003.9">ExtendedStartSetsNoSort</a> must be called first (remember that we chos
+an enumeration of <i>G</i> and assume the last element from each startset
+to be the largeset ``interesting'' one for further completions).
+<p>
+<pre>
+gap&gt; comps:=Difference(GroupList2PermList(Set(U1),Gdata),Np);;
+gap&gt; ssets:=ExtendedStartsetsNoSort(ssets,comps,Np,11,Gdata);;
+gap&gt; ssets:=ReducedStartsets(ssets,[Gdata.Aac],sigdat,Gdata.diffTable);; 
+#I  Size 8640
+#I  9/ 0 @ 0:00:14.159
+gap&gt; Size(ssets);  
+6899
+</pre>
+And as above, we continue:
+<pre>
+repeat 
+    ssets:=ExtendedStartsets(ssets,comps,Np,11,Gdata); 
+    ssets:=ReducedStartsets(ssets,[Gdata.Aac],sigdat,Gdata.diffTable);; 
+until ssets=[] or Size(ssets[1])=11; 
+comps:=Difference(GroupList2PermList(Set(U2),Gdata),Np); 
+RaiseStartSetLevelNoSort(ssets,comps,Np,15,Gdata); 
+repeat 
+    ssets:=ExtendedStartsets(ssets,comps,Np,15,Gdata); 
+    ssets:=ReducedStartsets(ssets,[Gdata.Aac],sigdat,Gdata.diffTable);; 
+until ssets=[] or Size(ssets[1])=15; 
+</pre>
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP005.htm">Previous</a>] [<a href ="CHAP007.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>

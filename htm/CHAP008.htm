@@ -1,0 +1,504 @@
+<html><head><title>[rds] 8 Block Designs and Projective Planes</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP007.htm">Previous</a>] [<a href ="CHAP009.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>8 Block Designs and Projective Planes</h1><p>
+<P>
+<H3>Sections</H3>
+<oL>
+<li> <A HREF="CHAP008.htm#SECT001">Isomorphisms and Collineations</a>
+<li> <A HREF="CHAP008.htm#SECT002">Central Collineations</a>
+<li> <A HREF="CHAP008.htm#SECT003">Collineations on Baer Subplanes</a>
+<li> <A HREF="CHAP008.htm#SECT004">Invariants for Projective Planes</a>
+</ol><p>
+<p>
+This section contains functions to help studying projective planes.
+There is also a function converting relative difference sets to block
+designs. Those desings can be studied with the <font face="Gill Sans,Helvetica,Arial">DESIGN</font> <a href="biblio.htm#DESIGN"><cite>DESIGN</cite></a>
+package by L. Soicher.
+<p>
+Projective planes are always assumed to consist of positive integers
+(as points) and sets of integers (as blocks). The incidence relation
+is assumed to be the element relation. The blocks of a projective
+plane must be <strong>sets</strong>.
+<p>
+<a name = ""></a>
+<li><code>ProjectivePlane( </code><var>blocks</var><code> ) O</code>
+<p>
+Given a list of lists <var>blocks</var> which represents the blocks of a 
+projective plane, a block design is generated. If the <var>blocks</var> is not 
+a set of sets of the integers <code>[1..v]</code> for some <i>v</i>, the points are 
+sorted and enumerated and the blocks are changed accordingly.
+But the original names are known to the returned BlockDesign.
+<p>
+The block design generated this way will contain two extra entries,
+<var>jblock</var> and <var>isProjectivePlane</var>. The matrix <var>.jblock</var> contains the 
+number of the block containing the points <i>i</i> and <i>j</i> at the (<i>i</i>,<i>j</i>)th 
+position. And <var>isProjectivePlane</var> will be <code>true</code>.
+If <var>blocks</var> do not form the lines of a projective plane, an error is 
+issued.
+<p>
+<a name = ""></a>
+<li><code>PointJoiningLinesProjectivePlane( </code><var>plane</var><code> ) O</code>
+<p>
+Returns a matrix which has as <i>ij</i>th entry the point wich is contained
+in the blocks with numbers <i>i</i> and <i>j</i>. This matrix is also stored in
+<var>plane</var>. Some operations are faster if <var>plane</var> contains this matrix.
+If <var>plane</var> is not a projective plane, an error is issued.
+<p>
+<pre>
+gap&gt; b:=[ [ 1, 3 ], [ 1, 6 ], [ 2, 4 ], [ 2, 7 ], 
+&gt;       [ 3, 5 ], [ 4, 6 ], [ 5, 7 ] ];;
+gap&gt; plane:=ProjectivePlane(b);
+rec( isBlockDesign := true, v := 7, 
+     blocks := [ [ 1, 3 ], [ 1, 6 ], [ 2, 4 ], [ 2, 7 ], 
+                 [ 3, 5 ], [ 4, 6 ], [ 5, 7 ] ], 
+     jblock := [ [ 0, 0, 1, 0, 0, 2, 0 ], [ 0, 0, 0, 3, 0, 0, 4 ], 
+     [ 1, 0, 0, 0, 5, 0, 0 ], [ 0, 3, 0, 0, 0, 6, 0 ], 
+     [ 0, 0, 5, 0, 0, 0, 7 ], [ 2, 0, 0, 6, 0, 0, 0 ], 
+     [ 0, 4, 0, 0, 7, 0, 0 ] ], 
+     isProjectivePlane := true )
+gap&gt; PointJoiningLinesProjectivePlane(plane);
+[ [ 0, 1, 0, 0, 3, 0, 0 ], [ 1, 0, 0, 0, 0, 6, 0 ], [ 0, 0, 0, 2, 0, 4, 0 ], 
+  [ 0, 0, 2, 0, 0, 0, 7 ], [ 3, 0, 0, 0, 0, 0, 5 ], [ 0, 6, 4, 0, 0, 0, 0 ], 
+  [ 0, 0, 0, 7, 5, 0, 0 ] ]
+gap&gt; RecNames(plane);
+[ "isBlockDesign", "v", "blocks", "jblock", "isProjectivePlane", "jpoint" ]
+</pre>
+<p>
+<a name = ""></a>
+<li><code>DevelopmentOfRDS( </code><var>diffset</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+This calculates the development of a (partial relative) difference set
+<var>diffset</var> in the group given by <var>Gdata</var>. 
+That is, the associated block design. 
+<p>
+<var>diffset</var> can be given as a list of group 
+elements or a list of integers (positions in the set of group elements).
+<var>Gdata</var> can either be the record returned by 
+<a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a> or a group or a set of group elements.
+<p>
+In either case, the returned object is a <code>BlockDesign</code> in the sense of 
+L. Soichers DESIGN package.
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(21);;  Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap&gt; AllDiffsets([2],[1..21],4,[],Gdata,1);                                  
+[ [ 2, 5, 16, 17 ], [ 2, 6, 10, 18 ] ]
+gap&gt; d1:=DevelopmentOfRDS(Set(G){[2,5,16,17]},Set(G)); 
+rec( isBlockDesign := true, v := 21, 
+  blocks := [ [ 1, 2, 5, 16, 17 ], [ 1, 3, 14, 15, 21 ], [ 1, 4, 8, 10, 13 ], 
+      [ 1, 6, 7, 9, 20 ], [ 1, 11, 12, 18, 19 ], [ 2, 3, 9, 10, 12 ], 
+      [ 2, 4, 7, 15, 19 ], [ 2, 6, 8, 11, 21 ], [ 2, 13, 14, 18, 20 ], 
+      [ 3, 4, 6, 17, 18 ], [ 3, 5, 8, 19, 20 ], [ 3, 7, 11, 13, 16 ], 
+      [ 4, 5, 9, 11, 14 ], [ 4, 12, 16, 20, 21 ], [ 5, 6, 12, 13, 15 ], 
+      [ 5, 7, 10, 18, 21 ], [ 6, 10, 14, 16, 19 ], [ 7, 8, 12, 14, 17 ], 
+      [ 8, 9, 15, 16, 18 ], [ 9, 13, 17, 19, 21 ], [ 10, 11, 15, 17, 20 ] ], 
+  autSubgroup := &lt;permutation group with 21 generators&gt;, 
+  pointNames := [ &lt;identity&gt; of ..., f1, f2, f1^2, f1*f2, f2^2, f1^2*f2, 
+      f1*f2^2, f2^3, f1^2*f2^2, f1*f2^3, f2^4, f1^2*f2^3, f1*f2^4, f2^5, 
+      f1^2*f2^4, f1*f2^5, f2^6, f1^2*f2^5, f1*f2^6, f1^2*f2^6 ], 
+  blockSizes := [ 5 ], blockNumbers := [ 21 ], isSimple := true, 
+  isBinary := true )
+gap&gt; d2:=DevelopmentOfRDS([2,5,16,17],Gdata);;
+gap&gt; d1=d2
+true
+gap&gt; d1=DevelopmentOfRDS(Set(G){[2,5,16,17]},G);  
+true
+gap&gt; d1=DevelopmentOfRDS([2,5,16,17],G);        
+true
+</pre>
+<p>
+Note that equality for block designs means equality of records. So
+<code>DevelopmentOfRDS</code> generates exactly the same record in each of the
+above examples. The output is in fact independent of the chosen data type of the input (as long as it is valid). In particular, the design always knows its <code>pointNames</code>.
+<p>
+<a name = ""></a>
+<li><code>ProjectiveClosureOfPointSet( </code><var>points</var><code>[, </code><var>maxsize</var><code>], </code><var>plane</var><code> ) O</code>
+<p>
+Let <var>plane</var> be a projective plane. Let <var>points</var> be a set of non-collinear
+points (integers) of this plane. Then
+<code>ProjectiveClosureOfPointSet</code> returns a record with the entries <var>.closure</var> 
+and <var>.embedding</var>.
+<p>
+Here <var>.closure</var> is the projective closure of <var>points</var>  (the smallest 
+projectively closed subset of <var>plane</var> containing the points <var>points</var>). 
+It is not checked, whether this is a projective plane. As the BlockDesign
+<var>.closure</var> has points <code>[1..w]</code> and <var>plane</var> has poins <code>[1..v]</code> with 
+<i>w</i> &#8804; <i>v</i>, we need an embedding of <var>.closure</var> into <var>plane</var>. This embedding
+is the permutation <var>.embedding</var>. It is a permutation on <code>[1..v]</code> which
+takes the points of <var>.closure</var> to a set of points in <var>plane</var> containing
+<var>points</var> and preserving incidence. Note that nothing is known about the
+behaviour of <var>.embedding</var> on any point outside <code>[1..w]</code> and 
+<code>[1..w]^</code><var>.embedding</var><code></code>.
+<p>
+If <i>maxsize</i>  is given and <i>maxsize</i>   &#8800; 0, calculations are stopped
+if the closure is known to
+have at least <var>maxsize</var> points and the plane <var>plane</var> is returned as 
+<var>.closure</var> with the trivial permutation as embedding.
+<p>
+Let's find a Baer subplane in the desarguesian plane of order 4:
+<pre>
+gap&gt; G:=CyclicGroup(21);; Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; AllDiffsets([2],[1..21],4,[],Gdata,1);                                  
+[ [ 2, 5, 16, 17 ], [ 2, 6, 10, 18 ] ]
+gap&gt; plane:=DevelopmentOfRDS([2,5,16,17],Gdata);;
+gap&gt; ProjectiveClosureOfPointSet([1,3,4],plane);  
+rec( closure := rec( isBlockDesign := true, v := 3, 
+     blocks := [ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ] ] 
+     pointNames := [ &lt;identity&gt; of ..., f2, f1^2 ]), 
+     embedding := (2,3,4) )
+gap&gt; IsProjectivePlane(last.closure);
+false
+gap&gt; baer:=ProjectiveClosureOfPointSet([1,3,4,5],plane);;
+gap&gt; baer.closure.blocks;
+[ [ 1, 2, 6 ], [ 1, 3, 5 ], [ 1, 4, 7 ], [ 2, 3, 7 ], 
+  [ 2, 4, 5 ], [ 3, 4, 6 ], [ 5, 6, 7 ] ]
+gap&gt; IsProjectivePlane(baer.closure);
+true
+gap&gt; Set(baer.closure.blocks,b-&gt;OnSets(b,baer.embedding));
+[ [ 1, 3, 14 ], [ 1, 4, 8 ], [ 1, 5, 17 ], [ 3, 4, 17 ], 
+  [ 3, 5, 8 ], [ 4, 5, 14 ], [ 8, 14, 17 ] ]
+</pre>
+<p>
+<p>
+<h2><a name="SECT001">8.1 Isomorphisms and Collineations</a></h2>
+<p><p>
+Isomorphisms of projective planes are mappings which take points to
+points and blocks to blocks and respect incidence. A <strong>collineation</strong> of
+a projective plane <i>P</i> is an isomorphism from <i>P</i> to <i>P</i>.
+<p>
+As projective planes are assumed to live on the integers, isomorphisms
+of projective planes are represented by permutations. To test if a
+permutation on points is actually an isomorphism of projective planes,
+the following methods can be used.
+<p>
+<a name = "SSEC001.1"></a>
+<li><code>IsIsomorphismOfProjectivePlanes( </code><var>perm</var><code>, </code><var>plane1</var><code>, </code><var>plane2</var><code> ) O</code>
+<p>
+Let <var>plane1</var>, <var>plane2</var> be two projective planes.
+<code>IsIsomorphismOfProjectivePlanes</code> test if the permutation
+<var>perm</var> on points defines an isomorphism of the projective planes 
+ <var>plane1</var> and <var>plane2</var>.
+<p>
+<a name = "SSEC001.2"></a>
+<li><code>IsCollineationOfProjectivePlane( </code><var>perm</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+Let <var>plane</var> be a  projective plane and <var>perm</var> a permutation
+on the points of this plane. <code>IsCollineationOfProjectivePlane(</code><var>perm</var><code>,</code><var>plane</var><code>)</code> returns 
+<code>true</code>, if <var>perm</var> induces a collineation of  <var>plane</var>.
+<p>
+This is just another form to call <code>IsIsomorphismOfProjectivePlanes(</code><var>perm</var><code>,</code><var>plane</var><code>,</code><var>plane</var><code>)</code>
+<p>
+<a name = "SSEC001.3"></a>
+<li><code>IsomorphismProjPlanesByGenerators( </code><var>gens1</var><code>, </code><var>plane1</var><code>, </code><var>gens2</var><code>, </code><var>plane2</var><code> ) O</code>
+<a name = "SSEC001.3"></a>
+<li><code>IsomorphismProjPlanesByGeneratorsNC( </code><var>gens1</var><code>, </code><var>plane1</var><code>, </code><var>gens2</var><code>, </code><var>plane2</var><code> ) O</code>
+<p>
+Let <var>gens1</var> be a list of points generating the projective plane  
+<var>plane1</var> and <var>gens2</var> a list of generating points for <var>plane2</var>. Then a 
+permutation is returned representing a mapping from the points of <var>plane1</var> 
+to those of <var>plane2</var> and taking the list <var>gens1</var> to the list <var>gens2</var>.
+If there is no such mapping which defines an isomorphism of projective
+planes, <code>fail</code> is returned.
+<p>
+<code>IsomorphismProjPlanesByGeneratorsNC</code> does <strong>not</strong> check whether <var>gens1</var> 
+and <var>gens2</var> really generate the planes <var>plane1</var> and <var>plane2</var>. 
+<p>
+Look at the above example again:
+<pre>
+gap&gt; P:=ProjectivePlane( [ [ 1, 2, 6 ], [ 1, 3, 5 ], [ 1, 4, 7 ], 
+&gt;       [ 2, 3, 7 ], [ 2, 4, 5 ], [ 3, 4, 6 ], [ 5, 6, 7 ] ]);;
+gap&gt; pi:=IsomorphismProjPlanesByGenerators([1,2,3,4],P,[2,4,6,7],P);
+(1,2,4,7,3,6,5)
+gap&gt; IsIsomorphismOfProjectivePlanes(pi,P,P);
+true
+gap&gt; IsCollineationOfProjectivePlane(pi,P);                 
+true
+gap&gt; IsomorphismProjPlanesByGenerators([1,2,3,4],P,[1,2,3,5],P);
+fail
+gap&gt; ProjectiveClosureOfPointSet([1,2,3,5],P).closure.v;
+4
+</pre>
+<p>
+<p>
+<h2><a name="SECT002">8.2 Central Collineations</a></h2>
+<p><p>
+Let &#981; be a collineation of a projective plane which fixes one
+point block-wise (the so-called <strong>centre</strong>) and one block point-wise
+(the so-called <strong>axis</strong>). If the centre is contained in the axis, &#981;
+is called <strong>elation</strong>. Otherwise, &#981; is called <strong>homology</strong>. The group
+of elations with given axis is called <strong>translation group</strong> of the plane
+(relative to the chosen axis). A projective plane with transitive
+translation group is called <strong>translation plane</strong>. Here transitivity is
+on the points outside the axis.
+<p>
+<a name = "SSEC002.1"></a>
+<li><code>ElationByPair( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pair</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+Let <var>centre</var> be a point and  <var>axis</var> a block of a projective plane  
+<var>plane</var> .
+<var>pair</var>  must be a pair of points outside <var>axis</var> and lie on a block 
+containing <var>center</var>. Then there is a unique collineation fixing <var>axis</var> 
+pointwise  and <var>centre</var> blockwise (an elation) and taking  <var>point[1]</var> 
+to <var>point[2]</var>. 
+<p>
+If one of the conditions is not met, an error is issued. 
+This method is faster, if <var>plane.jpoint</var> is known (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>)
+<p>
+<a name = "SSEC002.2"></a>
+<li><code>AllElationsCentAx( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>plane</var><code>[, "generators"] ) O</code>
+<p>
+Let <var>centre</var> be a point and  <var>axis</var> a block of the projective plane  
+<var>plane</var>.
+<code>AllElationsCentAx</code> returns the group of all elations with centre
+<var>centre</var> and axis <var>axis</var> as a group of permutations on the points of 
+<var>plane</var>.
+<p>
+If ``generators'' is set, only a list of generators of the translation
+group is returned.
+This method is faster, if <var>plane.jpoint</var> is known (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>)
+<p>
+<a name = "SSEC002.3"></a>
+<li><code>AllElationsAx( </code><var>axis</var><code>, </code><var>plane</var><code>[, "generators"] ) O</code>
+<p>
+Let <var>axis</var> be a block of a projective plane <var>plane</var>.
+<code>AllElationsAx</code> returns the group of all elations with axis 
+<var>axis</var>.
+<p>
+If ``generators'' is set, only a set of generators for the group of elations
+is returned.
+This method is faster, if <var>plane.jpoint</var> is known (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>)
+<p>
+<pre>
+gap&gt; P:=ProjectivePlane( [ [ 1, 2, 6 ], [ 1, 3, 5 ], [ 1, 4, 7 ], 
+&gt;       [ 2, 3, 7 ], [ 2, 4, 5 ], [ 3, 4, 6 ], [ 5, 6, 7 ] ]);;
+gap&gt; pi:=ElationByPair(1,[1,2,6],[3,5],P);
+(3,5)(4,7)
+gap&gt; AllElationsCentAx(1,[1,2,6],P);
+Group([ (3,5)(4,7) ])
+gap&gt; AllElationsAx([1,2,6],P); 
+Group([ (3,5)(4,7), (3,7)(4,5) ])
+gap&gt; AllElationsAx([1,2,6],P);
+Group([ (3,5)(4,7), (3,7)(4,5) ])
+gap&gt; Size(last);
+4
+</pre>
+<p>
+<a name = "SSEC002.4"></a>
+<li><code>IsTranslationPlane( [</code><var>infline</var><code>, ]</code><var>plane</var><code> ) O</code>
+<p>
+Returns <code>true</code> if the plane <var>plane</var> has a block <i>b</i> such that the
+group of elations with axis <i>b</i> is transitive outside <i>b</i>.
+<p>
+If <var>infline</var> is given, only the group of elations with axis 
+<var>infline</var> is considered.
+This is faster than 
+calculating the full translation group if the projective plane <var>plane</var> 
+is not a translation plane. If <var>plane</var> is a translation plane, the full
+translation group is calculated.
+<p>
+This method is faster, if <var>plane.jpoint</var> is known (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>)
+<p>
+<pre>
+gap&gt; AllElationsAx(P.blocks[1],P);
+Group([ (3,5)(4,7), (3,7)(4,5) ])
+gap&gt; Size(last);
+4
+gap&gt; IsTranslationPlane(P);
+true
+</pre>
+<p>
+<a name = "SSEC002.5"></a>
+<li><code>HomologyByPair( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>pair</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+<code>HomologyByPair</code> returns the homology defined by the pair
+<var>pair</var> fixing <var>centre</var> blockwise and <var>axis</var> pointwise. 
+The returned permutation fixes <var>axis</var> pointwise and <var>centre</var> linewise and
+takes <var>pair[1]</var> to <var>pair[2]</var>.
+<p>
+<a name = "SSEC002.6"></a>
+<li><code>GroupOfHomologies( </code><var>centre</var><code>, </code><var>axis</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+returns the group of homologies with centre <var>centre</var> and axis 
+<var>axis</var> of the plane <var>plane</var>.
+<p>
+<pre>
+gap&gt; HomologyByPair(3,[1,2,6],[4,5],P);
+Error, The centre must be fixed blockwise called from
+ # ...
+gap&gt; GroupOfHomologies(3,[1,2,6],P);   
+Group(())
+</pre>
+<p>
+<p>
+<h2><a name="SECT003">8.3 Collineations on Baer Subplanes</a></h2>
+<p><p>
+Let <i>P</i> be a projective plane of order <i>n</i><sup>2</sup>. A subplane <i>B</i> of order
+<i>n</i> of <i>P</i> is called <strong>Baer subplane</strong>. Baer suplanes are exactly the
+maximal subplanes of <i>P</i>.
+<p>
+<a name = "SSEC003.1"></a>
+<li><code>InducedCollineation( </code><var>baerplane</var><code>, </code><var>baercoll</var><code>, </code><var>point</var><code>, </code><var>image</var><code>, </code><var>planedata</var><code>, </code><var>embedding</var><code> ) O</code>
+<p>
+If a projective plane contains a Baer subplane, collineations of the 
+subplane may be lifted to the full plane. If such an extension to the 
+full plane exists, it is uniquely determined by the image of one point 
+outside the Baer plane.
+<p>
+Here <var>baercoll</var> is a collineation (a permutation of the points)
+of the projective plane <var>baerplane</var>. 
+The permutation <var>embedding</var> is a permutation on the points of the full pane
+which converts the enumeration of <var>baerplane</var> to that of the full plane. 
+This means that the image of the points of <var>baerplane</var> under <var>embedding</var> 
+is a subset of the points of <var>plane</var>. Namely the one representing the Baer 
+plane  in the enumeration used for the whole plane.
+<var>point</var> and <var>image</var> are points outside the Baer plane.
+<p>
+The data for <var>baerplane</var> and <var>embedding</var> can be calculated using 
+<a href="CHAP008.htm">ProjectiveClosureOfPointSet</a>.
+<p>
+<code>InducedCollineation</code> returns a collineation of the full plane (as a  
+permutation on the points of <var>plane</var>) which takes <var>point</var> to <var>image</var> and 
+acts on the Baer plane as <var>baercoll</var> does. If no such collineation 
+exists, <code>fail</code> is returned.
+<p>
+This method needs <var>plane.jpoint</var>. If it is unknown, it is calculated (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>)
+<p>
+Let's go back to an earlier example and find a planar collineation:
+<pre>
+gap&gt; G:=CyclicGroup(21);; Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap&gt; AllDiffsets([2],[1..21],4,[],Gdata,1); 
+[ [ 2, 5, 16, 17 ], [ 2, 6, 10, 18 ] ]
+gap&gt; plane:=DevelopmentOfRDS([2,5,16,17],Gdata);;
+gap&gt; baer:=ProjectiveClosureOfPointSet([1,3,4,5],plane);; 
+gap&gt; pi:=InducedCollineation(baer.closure,(),21,15,plane,baer.embedding);
+(2,16)(6,18)(7,12)(9,11)(10,13)(15,21)(19,20)
+gap&gt; 21^pi;
+15
+gap&gt; ForAll(OnSets([1..7],baer.embedding),i-&gt;i^pi=i);
+true
+</pre>
+<p>
+<p>
+<h2><a name="SECT004">8.4 Invariants for Projective Planes</a></h2>
+<p><p>
+The functions <code>NrFanoPlanesAtPoints</code>, <code>PRank@RDS</code>, <code>FingerprintAntiFlag</code>
+and <code>FingerprintProjPlane</code> calculate invariants for finite projective
+planes. For more details see <a href="biblio.htm#RoederDiss"><cite>RoederDiss</cite></a> and
+<a href="biblio.htm#MoorhouseGraphs"><cite>MoorhouseGraphs</cite></a>. The values of some of these invariants are
+available from the homepages of <a href="biblio.htm#Moorhouse"><cite>Moorhouse</cite></a> and <a href="biblio.htm#Royle"><cite>Royle</cite></a> for
+many planes.
+<p>
+<a name = "SSEC004.1"></a>
+<li><code>NrFanoPlanesAtPoints( </code><var>points</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+For a projective plane <var>plane</var>, <code>NrFanoPlanesAtPoints(</code><var>points</var><code>,</code><var>plane</var><code>)</code> 
+calculates the so-called Fano invariant. That is, for each point 
+in <var>points</var>, the number of subplanes of order 2 (so-called Fano planes)
+containing this point is calculated.
+The method returns a list of pairs of the form [<i>point</i> ,<i>number</i> ]
+where <var>number</var> is the number of Fano sub-planes in <var>point</var>.
+<p>
+This method is faster, if <var>plane.jpoint</var> is known (see 
+<a href="../../rds/htm/CHAP008.htm">RDS:PointJoiningLinesProjectivePlane</a>). Indeed, if <var>plane.jpoint</var> is 
+not known, this method is very slow.
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(4^2+5);
+&lt;pc group of size 21 with 2 generators&gt;
+gap&gt; diffset:=OneDiffset(G);        
+[ f1, f1*f2, f1^2*f2^4, f1*f2^5 ]
+gap&gt; P:=DevelopmentOfRDS(diffset,G);;
+gap&gt; NrFanoPlanesAtPoints([3],P);
+[ [ 3, 240 ] ]
+</pre>
+<a name = "SSEC004.2"></a>
+<li><code>IncidenceMatrix( </code><var>plane</var><code> ) O</code>
+<p>
+returns a matrix <var>I</var>, where the columns are numbered by the blocks and
+the rows are numbered by points. And <var>I[i][j]=1</var> if and only if 
+<var>points[i]</var> is incident (contained in) <var>blocks[j]</var> (an 0 else). 
+<p>
+<a name = "SSEC004.3"></a>
+<li><code>PRank( </code><var>plane</var><code>, </code><var>p</var><code> ) O</code>
+<p>
+Let <i>I</i> be the incidence matrix of the projective plane <var>plane</var> and <var>p</var> a 
+prime power.
+The rank of <i>I</i>&#183;<i>I</i><sup><i>t</i></sup> as a matrix over
+<i>GF</i>(<i>p</i>) is called  <var>p</var>-rank of the projective plane. Here <i>I</i><sup><i>t</i></sup> denotes
+the transposed matrix. Note that this is a method within the RDS workspace,
+so it has to be called as PRank@RDS
+<p>
+<pre>
+gap&gt; G:=CyclicGroup(2^2+3);
+&lt;pc group of size 7 with 1 generators&gt;
+gap&gt; P:=DevelopmentOfRDS(OneDiffset(G),G);;
+gap&gt; IncidenceMatrix(P);
+[ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
+  [ 1, 0, 0, 0, 0, 1, 1 ], [ 0, 0, 1, 1, 0, 0, 1 ], [ 0, 0, 1, 0, 1, 1, 0 ], 
+  [ 0, 1, 0, 0, 1, 0, 1 ] ]
+gap&gt; PRank@RDS(P,3);
+6
+gap&gt; PRank@RDS(P,2);
+4
+</pre>
+<a name = "SSEC004.4"></a>
+<li><code>FingerprintProjPlane( </code><var>plane</var><code> ) O</code>
+<p>
+For each anti-flag (<i>p</i>,<i>l</i>) of a projective plane <var>plane</var> of order <i>n</i>, 
+define an arbitrary but fixed enumeration of the lines through <i>p</i> and 
+the points on <i>l</i>. Say <i>l</i><sub>1</sub>,...,<i>l</i><sub><i>n</i>+1</sub> and <i>p</i><sub>1</sub>,...,<i>p</i><sub><i>n</i>+1</sub>
+The incidence relation defines a canonical bijection between the <i>l</i><sub><i>i</i></sub> and
+the <i>p</i><sub><i>i</i></sub> and hence a permutation on the indices 1,...,<i>n</i>+1. 
+Let &#963;<sub>(<i>p</i>,<i>l</i>)</sub> be this permutation.
+<p>
+Denote the points and lines of the plane by <i>q</i><sub>1</sub>,... <i>q</i><sub><i>n</i><sup>2</sup>+<i>n</i>+1</sub> 
+and <i>e</i><sub>1</sub>,...,<i>e</i><sub><i>n</i><sup>2</sup>+<i>n</i>+1</sub>. 
+Define the sign matrix as <i>A</i><sub><i>ij</i></sub>=<i>sgn</i>(&#963;<sub>(<i>q</i><sub><i>i</i></sub>,<i>e</i><sub><i>j</i></sub>)</sub>) if (<i>q</i><sub><i>i</i></sub>,<i>e</i><sub><i>j</i></sub>) 
+is an anti-flag and =0 if it is a flag.
+Then the fingerprint is defnied as the multiset of the entries of &#124;<i>AA</i><sup><i>t</i></sup>&#124;.
+<p>
+<a name = "SSEC004.5"></a>
+<li><code>FingerprintAntiFlag( </code><var>point</var><code>, </code><var>linenr</var><code>, </code><var>plane</var><code> ) O</code>
+<p>
+Let <i>m</i><sub>1</sub>,...,<i>m</i><sub><i>n</i>+1</sub> be the lines containing <var>point</var> and 
+<i>E</i><sub>1</sub>,...,<i>E</i><sub><i>n</i>+1</sub> the points on the line given by <var>linenr</var> such that
+<i>E</i><sub><i>i</i></sub> is incident with <i>m</i><sub><i>i</i></sub>. Now label the points of <i>m</i><sub><i>i</i></sub> as 
+<i>point</i> =<i>P</i><sub><i>i</i>,1</sub>,...,<i>P</i><sub><i>i</i>,<i>n</i>+1</sub>=<i>E</i><sub><i>i</i></sub> and the lines of <i>E</i><sub><i>i</i></sub> as
+<i>line</i> =<i>l</i><sub>1</sub>,...,<i>l</i><sub><i>i</i>,<i>n</i>+1</sub>=<i>m</i><sub><i>i</i></sub>. 
+For <i>i</i> &#8800; <i>j</i>, each <i>P</i><sub><i>j</i>,<i>k</i></sub> lies on exactly one line 
+<i>l</i><sub><i>i</i>,<i>k</i>&#963;<sub><i>i</i>,<i>j</i></sub></sub> containing <i>E</i><sub><i>i</i></sub> for some permutation &#963;<sub><i>i</i>,<i>j</i></sub>
+<p>
+Define a matrix <i>A</i>, where <i>A</i><sub><i>i</i>,<i>j</i></sub> is the sign of &#963;<sub><i>i</i>,<i>j</i></sub> if 
+<i>i</i> &#8800; <i>j</i> and <i>A</i><sub><i>i</i>,<i>i</i></sub>=0 for all <i>i</i>.
+The partial fingerprint is the multiset of entries of &#124;<i>AA</i><sup><i>t</i></sup>&#124; where <i>A</i><sup><i>t</i></sup> 
+denotes the transposed matrix of <i>A</i>.
+<p>
+Look at the above example again:
+<pre>
+gap&gt; NrFanoPlanesAtPoints([1,2,3],plane);
+[ [ 1, 240 ], [ 2, 240 ], [ 3, 240 ] ]
+gap&gt; Set(NrFanoPlanesAtPoints([1..plane.v],plane),i-&gt;i[2])=[240];
+true
+gap&gt; PRank@RDS(plane,2);
+10
+gap&gt; PRank@RDS(plane,3);
+21
+gap&gt; PRank@RDS(plane,5);
+20
+gap&gt; FingerprintProjPlane(plane);
+[ [ 12, 420 ], [ 16, 21 ] ]
+gap&gt; FingerprintAntiFlag(1,6,plane);
+[ [ 3, 20 ], [ 4, 5 ] ]
+</pre>
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP007.htm">Previous</a>] [<a href ="CHAP009.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>

@@ -1,0 +1,188 @@
+<html><head><title>[rds] 1 About this package</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>1 About this package</h1><p>
+<P>
+<H3>Sections</H3>
+<oL>
+<li> <A HREF="CHAP001.htm#SECT001">Acknowledgements</a>
+<li> <A HREF="CHAP001.htm#SECT002">Installation</a>
+<li> <A HREF="CHAP001.htm#SECT003">Verbosity</a>
+<li> <A HREF="CHAP001.htm#SECT004">Definitions and Objects</a>
+</ol><p>
+<p>
+The <font face="Gill Sans,Helvetica,Arial">RDS</font> package is meant to help with complete searches for
+relative difference sets in non-abelian groups. Of course, it also
+works for abelian groups, but no special features are implemented for
+this case. In particular, there is no support for multipliers.
+<p>
+<font face="Gill Sans,Helvetica,Arial">RDS</font> has no undocumented functions. While this is generally regarded
+as a feature, it leads to a quite long manual and a lot of
+documentation not needed for everyday work. To make reading easier,
+all but the basic chapters contain a small introductory paragraph
+pointing out which functions may be interesting for the user and which
+are merely helper functions called by other functions.
+<p>
+The structure of this manual is a follows: First, there is a chapter
+about brute force methods which are easy to use but are not suitable
+for very difficult calculations.
+<p>
+Then, chapter <a href="../../rds/htm/CHAP003.htm">RDS:A basic example</a> shows the use of the more advanced
+methods in <font face="Gill Sans,Helvetica,Arial">RDS</font> and explains the basic idea of a complete
+search for difference sets with this package. After reading this
+chapter, you should be able to use <font face="Gill Sans,Helvetica,Arial">RDS</font> even for large
+examples. 
+<p>
+The following chapters <a href="../../rds/htm/CHAP004.htm">RDS:General concepts</a> and <a href="../../rds/htm/CHAP005.htm">RDS:Invariants for Difference Sets</a> contain the documentation of the functions used in a
+search for difference sets. They explain the concepts and low level
+functions which provide a lot of control over the searching process. If
+you are searching for difference sets in several groups of the same
+order, you may find this helpful.
+<p>
+The next chapter shows an example of calculating a relative
+difference set using low level functions.
+<p>
+Chapter <a href="../../rds/htm/CHAP007.htm">RDS:Ordered Signatures</a> introduces another invariant for
+difference sets. The functions for calculating this invariant do only
+work effectively in a few cases, so this part of <font face="Gill Sans,Helvetica,Arial">RDS</font> is a
+little bit experimental. However, the invariant is very powerful, so
+this chapter is kept.
+<p>
+In <a href="../../rds/htm/CHAP008.htm">RDS:Block Designs and Projective Planes</a>, the methods for
+generating a BlockDesign in the sense of <font face="Gill Sans,Helvetica,Arial">DESIGN</font> <a href="biblio.htm#DESIGN"><cite>DESIGN</cite></a> from a
+difference set are described. A few functions for analyzing projective
+planes are given as well.
+<p>
+The final chapter describes a few functions which are not related to
+difference sets and may be useful in other situations.
+<p>
+<p>
+<h2><a name="SECT001">1.1 Acknowledgements</a></h2>
+<p><p>
+I would like to thank U.&nbsp;Dempwolff for supervising the thesis out of
+which <font face="Gill Sans,Helvetica,Arial">RDS</font> grew, and L.&nbsp;Soicher for many suggestions which
+greatly improved the usability of this package.
+<p>
+<p>
+<h2><a name="SECT002">1.2 Installation</a></h2>
+<p><p>
+<font face="Gill Sans,Helvetica,Arial">RDS</font> depends on Leonard Soicher's <font face="Gill Sans,Helvetica,Arial">DESIGN</font> <a href="biblio.htm#DESIGN"><cite>DESIGN</cite></a> package
+which, in turn, depends on <font face="Gill Sans,Helvetica,Arial">GRAPE</font> <a href="biblio.htm#GRAPE"><cite>GRAPE</cite></a>. You need to install these
+packages before you can run <font face="Gill Sans,Helvetica,Arial">RDS</font>.
+<p>
+<ol type=1>
+<li> Download the package archive rds <i>ver</i> . <i>ext</i>
+   where <i>ver</i> is some version number and <i>ext</i> is an extension like tar.bz2,
+   tar.gz, -win.zip or zoo.
+<p>
+<li> Copy the archive to the directory where the other packages live.
+   This is either the directory <code>pkg</code> in the GAP root path or a local directory in your home 
+   directory (on most unix-like systems, this will probably be <code>~/gap/pkg/</code>).
+<p>
+<li> change directory to your package directory and unpack the
+archive by using the right one of the following commands:
+  <dl compact>
+<dt><dd>
+                    tar -xjf rds<var>ver</var>.tar.bz2
+  <dt><dd>tar -xzf rds<var>ver</var>.tar.gz
+  <dt><dd>zoo -extract rds<var>ver</var>.zoo 
+  <dt><dd>unzip rds<var>ver</var>-win.zip 
+<p>
+(replace <i>ver</i> with the version number)
+<p>
+
+</ol>
+<li>
+  start GAP. If you have unpacked the archive to 'gap/pkg' in your
+  home directory, you might have to use ''gap -l '<i>homedir</i>/gap;' ''
+  where <i>homedir</i> is the path of your home directory (use 'pwd' to
+  find out what it is, if you don't know it)
+<p>
+<li> Type <code>LoadPackage("rds");</code> to load <font face="Gill Sans,Helvetica,Arial">RDS</font>
+<p>
+</ol>
+For a test, see the examples in chapters <a href="../../rds/htm/CHAP002.htm">RDS:AllDiffsets and OneDiffset</a> and <a href="../../rds/htm/CHAP003.htm">RDS:A basic example</a>.
+<p>
+<p>
+<h2><a name="SECT003">1.3 Verbosity</a></h2>
+<p><p>
+There are two info classes that control the about of additional
+information <font face="Gill Sans,Helvetica,Arial">RDS</font> prints:
+<p>
+<a name = "SSEC003.1"></a>
+<li><code>InfoRDS V</code>
+<p>
+Some methods of the RDS package print additional information if <code>InfoRDS</code>
+is set to a level of 1 or higher. At level 0, no information is output. 
+The default value is 1.
+<p>
+<a name = "SSEC003.2"></a>
+<li><code>DebugRDS V</code>
+<p>
+Some methods of the RDS package print additional information if <code>DebugRDS</code>
+is set to a level of 1 or higher. At level 0, no information is output. 
+The default level is 0. Expect a lot of output at level 2.
+<p>
+<p>
+<h2><a name="SECT004">1.4 Definitions and Objects</a></h2>
+<p><p>
+This section lists the definition of ordinary and relative difference
+sets as well as the concept of partial difference sets and their
+development.  This will be repeated in <a href="../../rds/htm/CHAP004.htm#SECT001">RDS:Introduction</a> where a
+notion of equivalence is introduced and the implementation in
+<font face="Gill Sans,Helvetica,Arial">RDS</font> is discussed.
+<p>
+Let <i>G</i> be a finite group and <i>N</i> &#8838; <i>G</i>. The set <i>R</i> &#8838; <i>G</i>
+with &#124;<i>R</i>&#124;=<i>k</i> is called a ``relative difference set of order
+<i>k</i>&#8722;&#955; relative to the forbidden set <i>N</i>'' if the following
+properties hold:
+<p>
+<ol>
+<li> The multiset { <i>a</i>&#183;<i>b</i><sup>&#8722;1</sup>:<i>a</i>,<i>b</i> &#8712; <i>R</i>} contains
+  every nontrivial ( &#8800; 1) element of <i>G</i>&#8722;<i>N</i> exactly &#955;
+  times.  
+<li> { <i>a</i>&#183;<i>b</i><sup>&#8722;1</sup>:<i>a</i>,<i>b</i> &#8712; <i>R</i>} does not contain
+  any non-trivial element of <i>N</i>.
+</ol>
+<p>
+Let <i>D</i> &#8838; <i>G</i> be a difference set, then the incidence structure
+with points <i>G</i> and blocks {<i>Dg</i>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<i>g</i> &#8712; <i>G</i>} is called the
+<strong>development</strong> of <i>D</i>. In short:  <span class="roman">dev</span> <i>D</i>. Obviously, <i>G</i> acts on
+<span class="roman">dev</span><i>D</i> by multiplication from the right.
+<p>
+Relative difference sets with <i>N</i>=1 are called (ordinary) difference
+sets. The development of a difference set with <i>N</i>=1 and &#955; = 1
+is projective plane of order <i>k</i>&#8722;1.
+<p>
+In group ring notation a relative difference set satisfies
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> <i>RR</i><sup>&#8722;1</sup>=<i>k</i>+&#955;(<i>G</i>&#8722;<i>N</i>)&#183;</td></tr></table></td></tr></table>
+<p>
+The set <i>D</i> &#8838; <i>G</i> is called <strong>partial relative difference set</strong>
+with forbidden set <i>N</i>, if
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> <i>DD</i><sup>&#8722;1</sup>=&#954;+</td><td nowrap="nowrap" align="center"><small></small><!--sup--><br /><span class="largerstill">&#8721;<br /></span><small><i>g</i> &#8712; <i>G</i>&#8722;<i>N</i></small>&nbsp;<br /></td><td nowrap="nowrap" align="center"><i>v</i><sub><i>g</i></sub><i>g</i> </td></tr></table></td></tr></table> 
+<p>
+holds for some 1 &#8804; &#954; &#8804; <i>k</i> and 0 &#8804; <i>v</i><sub><i>g</i></sub>  &#8804; &#955; for
+all <i>g</i> &#8712; <i>G</i>&#8722;<i>N</i>.  If <i>D</i> is a relative difference set then ,obviously,
+<i>D</i> is also a partial relative difference set.
+<p>
+<strong>IMPORTANT NOTE</strong>
+<p>
+<font face="Gill Sans,Helvetica,Arial">RDS</font> implicitly assumes that the <strong>every</strong> partial difference
+set contains the identity element (see the notion of equivalence in
+<a href="../../rds/htm/CHAP004.htm#SECT001">RDS:Introduction</a> for the mathematical reason). However, the identity
+<strong>must not</strong> be contained in the lists representing partial relative
+difference sets.
+<p>
+So in <font face="Gill Sans,Helvetica,Arial">RDS</font>, the difference set <code>[ (), (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]</code> is represented by the list <code>[ (1,2,3,4,5,6,7),
+(1,4,7,3,6,2,5) ]</code>. And no set of three non-trivial permutations will
+be accepted as an ordinary difference set of <code>Group((1,2,3,4,5,6,7))</code>.
+<p>
+For this reason the lists returned by functions like <a href="CHAP004.htm#SSEC004.1">AllDiffsets</a> do
+only contain non-trivial elements and look too short.
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP002.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>

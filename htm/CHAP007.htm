@@ -1,0 +1,300 @@
+<html><head><title>[rds] 7 Ordered Signatures</title></head>
+<body text="#000000" bgcolor="#ffffff">
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP006.htm">Previous</a>] [<a href ="CHAP008.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<h1>7 Ordered Signatures</h1><p>
+<P>
+<H3>Sections</H3>
+<oL>
+<li> <A HREF="CHAP007.htm#SECT001">Ordered signatures by quotient images</a>
+<li> <A HREF="CHAP007.htm#SECT002">Ordered signatures using representations</a>
+<li> <A HREF="CHAP007.htm#SECT003">Definition</a>
+<li> <A HREF="CHAP007.htm#SECT004">Methods for calculating ordered signatures</a>
+</ol><p>
+<p>
+In this chapter, we will discuss two methods to calculate ordered
+signatures. The first one can be used for relative difference sets
+with forbidden set, while the second one does only work for ordinary
+difference sets.
+<p>
+The methods introduced here can only be used in some special
+cases. 
+<p>
+<p>
+<h2><a name="SECT001">7.1 Ordered signatures by quotient images</a></h2>
+<p><p>
+Let <i>D</i> &#8838; <i>G</i> be a relative difference set with parameters
+(<i>v</i>/<i>n</i>,<i>n</i>,<i>k</i>,&#955;) and forbidden set <i>N</i> &#8838; <i>G</i>. Let <i>U</i> &#8804; <i>G</i> be
+a normal subgroup such that <i>U</i> &#8838; <i>N</i>.
+<p>
+Then the coset signature (<i>v</i><sub>1</sub>,...,<i>v</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub>) of <i>D</i> has only the
+entries 1 (<i>k</i>- times) and 0 (&#124;<i>G</i>:<i>U</i>&#124;&#8722;<i>k</i>- times). And as in chapter
+<a href="../../rds/htm/CHAP005.htm">RDS:Invariants for Difference Sets</a> we have
+<p>
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> </td><td nowrap="nowrap" align="center"><small></small><!--sup--><br /><span class="largerstill">&#8721;<br /></span><small><i>j</i></small>&nbsp;<br /></td><td nowrap="nowrap" align="center"><i>v</i><sub><i>j</i></sub> <i>v</i><sub><i>ij</i></sub> = &#955;(&#124;<i>U</i>&#124;&#8722;&#124;<i>g</i><sub><i>i</i></sub><i>U</i> &#8745;<i>N</i>&#124;)&nbsp;&nbsp;&nbsp;<span class="roman">for</span> &nbsp;<i>g</i><sub><i>i</i></sub> &#8713; <i>U</i> </td></tr></table></td></tr></table>
+<p>
+where <i>v</i><sub><i>ij</i></sub>=&#124;<i>D</i>&#8745;<i>g</i><sub><i>i</i></sub><i>g</i><sub><i>j</i></sub><i>U</i>&#124;.  If the forbidden set <i>N</i> is a
+subgroup of <i>G</i> we have &#124;<i>g</i><sub><i>i</i></sub><i>U</i>&#8745;<i>N</i>&#124; is either 0 or equal to
+&#124;<i>U</i>&#8745;<i>N</i>&#124;=&#124;<i>U</i>&#124;.
+<p>
+Let &#981;:<i>G</i>&#8594; <i>G</i>/<i>U</i> be the canonical epimorphism. Then <i>D</i><sup>&#981;</sup>
+is a relative difference set in <i>G</i>/<i>U</i> with forbidden set <i>N</i><sup>&#981;</sup> and
+parameters (<i>v</i>/<i>n</i>,<i>n</i>/&#124;<i>U</i>&#124;,<i>k</i>,&#124;<i>U</i>&#124;&#955;).
+<p>
+So the ordered signatures with respect to <i>U</i> are equivalent to the
+relative difference sets in <i>G</i>/<i>U</i>. Observe that we may not apply
+reduction in <i>G</i>/<i>U</i> using the full automorphismgroup of <i>G</i>/<i>U</i> but only
+the group induced by the stabiliser of <i>U</i> in the automorphism group
+of <i>G</i>. This is due to the fact that we use an ``induced'' notion of
+equivalence in <i>G</i>/<i>U</i> because we are interested in signatures and not
+primarily in difference sets in <i>G</i>/<i>U</i>.
+<p>
+<a name = "SSEC001.1"></a>
+<li><code>NormalSgsForQuotientImages( </code><var>forbidden</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+calculates all normal subgroups of <var>Gdata.G</var> which lie in <var>forbidden</var>.
+The returned value is a list of normal subgroups which define pairwise
+non-isomorphic factor groups.
+<p>
+<a name = "SSEC001.2"></a>
+<li><code>DataForQuotientImage( </code><var>normal</var><code>, </code><var>forbidden</var><code>, </code><var>k</var><code>, </code><var>lambda</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>Gdata</var> be the usual record for a group <i>G</i>. And let <var>k</var> and <var>lambda</var>
+be the parameters of the relative difference set we want to find. 
+Let then <var>forbidden</var> be the forbidden set (as a group or a list of group 
+elements or integers) and <var>normal</var> a normal subgroup of <i>G</i> which is
+contained in <var>forbidden</var>.
+<p>
+Then <code>DataForQuotientImage</code> returns a record containing the record 
+<var>.Gdata</var> of the factor group <i>G</i>/<i>U</i> where the automorphism group is the one
+induced by the stabiliser of <var>normal</var> in the automorphism group of <i>G</i>.
+Furthermore the returned record contains the forbidden set <var>.forbidden</var> in
+<i>G</i>/<i>U</i> and the new parameter <var>.lambda</var> for the difference set in <i>G</i>/<i>U</i>.
+<p>
+The data returned by <a href="CHAP007.htm#SSEC001.2">DataForQuotientImage</a> can be used to calculate
+difference sets in <i>G</i>/<i>U</i> in the way outlined in chapter <a href="../../rds/htm/CHAP003.htm">RDS:A basic example</a>. A quotient image of a relative difference set has a larger
+&#955; than the initial difference set. So
+<a href="CHAP005.htm#SSEC002.1">MultiplicityInvariantLargeLambda</a> can be used as in invariant here
+(see <a href="../../rds/htm/CHAP005.htm#SECT002">RDS:An invariant for large lambda</a>)
+<p>
+After all difference sets are known, they must be converted
+into ordered signatures. This is done by the following function:
+<p>
+<a name = "SSEC001.3"></a>
+<li><code>OrderedSigsFromQuotientImages( </code><var>fGroupData</var><code>, </code><var>qimages</var><code>, </code><var>forbidden</var><code>, </code><var>normal</var><code>, </code><var>Gdata</var><code> ) O</code>
+<p>
+Let <var>Gdata</var> be the usual record for a group <i>G</i> and <var>normal</var> a normal 
+subgroup of <i>G</i> which lies in the forbidden set <var>forbidden</var>.
+Let then <var>fGroupData</var> be the record <var>.Gdata</var> describing <i>G</i>/<i>normal</i>  as 
+returned by <a href="CHAP007.htm#SSEC001.2">DataForQuotientImage</a> and <var>qimages</var> a set of difference sets 
+in <i>G</i>/<i>normal</i> .
+<p>
+Then <code>OrderedSigsFromQuotientImages</code> returns a record containing a list of 
+ordered signatures <var>.orderedSigs</var> and a list of cosets <var>.cosets</var> as well as
+the factor group <var>.fg</var> defined by <var>fGroupData</var> and its full automorphism
+group <var>fgaut</var> and the image of <var>forbidden</var> in <var>.fg</var> is returned as <var>.Nfg</var>.
+<p>
+<a name = "SSEC001.4"></a>
+<li><code>MatchingFGDataForOrderedSigs( </code><var>forbidden</var><code>, </code><var>Gdata</var><code>, </code><var>Normalsgs</var><code>, </code><var>fgdata</var><code> ) O</code>
+<p>
+Let <var>fgdata</var> be a list of records of the form returned by 
+<a href="CHAP007.htm#SSEC001.3">OrderedSigsFromQuotientImages</a> and <var>Normalsgs</var> a list of normal subgroups
+of the group <var>Gdata.G</var>. Furthermore let <var>forbidden</var> be the forbidden set
+as a list of group elements or integers or a subgroup of <var>Gdata.G</var>.
+<p>
+Then <code>MatchingFGDataForOrderedSigs</code> retruns all elements of <var>fgdata</var> which
+match a normal subgroup of <var>Normalsgs</var>. The returned value is a record 
+containing the normal subgroup <var>.normal</var> from <var>Normalsgs</var>, the record 
+<var>.sigdata</var> from <var>fgdata</var> and a homomorphism <var>.hom</var> which maps <var>Gdata.G</var> 
+onto <var>.sigdata.Gdata.G</var> and takes <var>forbidden</var> to <var>.sigdata.Nfg</var>.
+<p>
+<a name = "SSEC001.5"></a>
+<li><code>OrderedSigInvariant( </code><var>set</var><code>, </code><var>data</var><code> ) O</code>
+<p>
+does the same as <a href="CHAP005.htm#SSEC001.7">SigInvariant</a>, but for ordered signatures. Here <var>data</var> 
+has to be a list of records containing ordered signatures called 
+<var>.orderedSigs</var> and cosets <var>.cosets</var> just as returned by
+<a href="CHAP007.htm#SSEC001.3">OrderedSigsFromQuotientImages</a>. 
+<p>
+Assume we have calculated ordered signatures and have stored them in a
+record <var>.osigs</var> and a list <var>normalSubgroupsData</var> as returned by
+<a href="CHAP005.htm#SSEC003.1">SignatureData</a> containing the admissible signatures.  A function for
+partitioning partial relative difference sets as required by
+<a href="CHAP005.htm#SSEC001.12">ReducedStartsets</a> can be defined as follows:
+<p>
+<pre>
+partitionfunc:=function(list)
+ local si, osi;
+  si:=SigInvariant(Union(list,[1]),normalSubgroupsData);
+  osi:=OrderedSigInvariant(Union(list,[1]),[osigs]);
+  if osi=fail or si=fail
+   then 
+    return fail;
+  else
+    return si;
+  fi;
+end;
+</pre>
+<p>
+<p>
+<h2><a name="SECT002">7.2 Ordered signatures using representations</a></h2>
+<p><p>
+This section contains some methods for ordered signatures in ordinary
+difference sets. Unfortunately, these methods are not as comfortable
+as those for unordered signatures. The reason for this is simply that
+I didn't have any time to tie them together to high-level functions.
+If you need help here, don't hesitate to contact me.
+<p>
+<p>
+<h2><a name="SECT003">7.3 Definition</a></h2>
+<p><p>
+Let <i>R</i>  &#8838; <i>G</i> be a (partial) ordinary difference set (for
+definition see <a href="../../rds/htm/CHAP004.htm#SECT001">RDS:Introduction</a>). Let <i>U</i> &#8804; <i>G</i> be a normal subgroup and
+<i>C</i>={<i>g</i><sub>1</sub>,..., <i>g</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub>} be a system of representatives of <i>G</i>/<i>U</i>.
+<p>
+As in <a href="../../rds/htm/CHAP005.htm#SECT001">RDS:The Coset Signature</a> we may define the coset signature of <i>R</i>
+relative to <i>U</i>.
+<p>
+Let <i>U</i>=<i>g</i><sub>1</sub>,...,<i>g</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub> be an enumeration of <i>G</i>/<i>U</i>. An
+``admissible ordered signature'' for <i>U</i> is a tuple
+(<i>v</i><sub>1</sub>,...,<i>v</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub>) such that 
+<p>
+<br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> </td><td nowrap="nowrap"><table border="0" align="left" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap" align="center"><table border="0" cellspacing="0" cellpadding="2"><tr><td nowrap="nowrap" align="left"> </td><td nowrap="nowrap" align="center"><span class="largerstill">&#8721;<br /></span></td><td nowrap="nowrap"><i>v</i><sub><i>i</i></sub>=<i>k</i></td></tr></table></td></tr> <tr><td nowrap="nowrap" align="center" colspan="1"><table border="0" cellspacing="0" cellpadding="2"><tr><td nowrap="nowrap" align="left"> </td><td nowrap="nowrap" align="center"><span class="largerstill">&#8721;<br /></span></td><td nowrap="nowrap"><i>v</i><sub><i>i</i></sub><sup>2</sup>=&#955;(&#124;<i>U</i>&#124;&#8722;1)+<i>k</i></td></tr></table></td></tr> <tr><td nowrap="nowrap" align="center" colspan="1"><table border="0" cellspacing="0" cellpadding="2"><tr><td nowrap="nowrap" align="center"> </td><td nowrap="nowrap" align="center"><small></small><!--sup--><br /><span class="largerstill">&#8721;<br /></span><small><i>j</i></small>&nbsp;<br /></td><td nowrap="nowrap" align="center"><i>v</i><sub><i>j</i></sub> <i>v</i><sub><i>ij</i></sub> = &#955;(&#124;<i>U</i>&#124;&#8722;1)</td></tr></table></td><td nowrap="nowrap" align="center"><table><tr><td nowrap="nowrap" align="center" colspan="1"><span class="roman">for</span> &nbsp;<i>g</i><sub><i>i</i></sub> &#8713; <i>U</i></td></tr></table></td></tr></table></td><td nowrap="nowrap"> </td></tr></table></td></tr></table> 
+<p>
+holds where we index the <i>v</i><sub><i>i</i></sub> by elements of <i>G</i>/<i>U</i>, so <i>v</i><sub><i>i</i></sub>=<i>v</i><sub><i>g</i><sub><i>i</i></sub></sub>
+and write <i>v</i><sub><i>ij</i></sub>=<i>v</i><sub><i>g</i><sub><i>i</i></sub><i>g</i><sub><i>j</i></sub></sub>. Observe that the third equation is a
+restriction on the ordering of the tuple (<i>v</i><sub>1</sub>,...,<i>v</i><sub>&#124;<i>G</i>:<i>U</i>&#124;</sub>). If
+<i>v</i> is an admissible ordered signature, then the multiset of <i>v</i> is an
+unordered signature.
+<p>
+Getting ordered admissible signatures from unordered ones can be done
+by taking all permutations of the unordered signature and verifying
+the above equations. Obviously, this method isn't very satisfying
+(nevertheless, the methods for testing unordered signatures from
+section <a href="../../rds/htm/CHAP005.htm#SECT001">RDS:The Coset Signature</a> do this to find out if there is an
+ordered signature at all. Except that they stop when they find an
+ordered signature).
+<p>
+For ordinary difference sets in extensions of semidirect products of
+cyclic groups, ordered signatures may be calculated a lot easier (see
+<a href="biblio.htm#RoederDiss"><cite>RoederDiss</cite></a> for details).
+<p>
+<p>
+<h2><a name="SECT004">7.4 Methods for calculating ordered signatures</a></h2>
+<p><p>
+<a name = "SSEC004.1"></a>
+<li><code>NormalSubgroupsForRep( </code><var>groupdata</var><code>, </code><var>divisor</var><code> ) O</code>
+<p>
+Let <var>groupdata</var> be the output of <a href="CHAP004.htm#SSEC003.1">PermutationRepForDiffsetCalculations</a> and 
+<var>divisor</var> an integer. Then <code>NormalSubgroupsForRep</code> calculates all  normal 
+subgroups of <var>groupdata.G</var> such that the size of the factor group is divisible 
+by <var>divisor</var> and the factor group is a semidirect product of cyclic groups.
+<p>
+The output is a record consisting of 
+<dl compact>
+ <dt>1.<dd>a normal subgroup <var>.Nsg</var> of <var>G</var>
+ <dt>2.<dd>the factor group <var>.fgrp</var>:=<var>G</var>/<var>Nsg</var> 
+ <dt>3.<dd>the epimorphism <var>.epi</var> from <var>G</var> to <var>.fgrp</var>
+ <dt>4.<dd>a root of unity <var>.root</var>
+ <dt>5.<dd>a galois automorphism <var>.alpha</var>
+ <dt>6.+7.<dd>generators of the factor group <var>G</var>/<var>.Nsg</var> named <var>.a</var> and <var>.b</var> 
+           such that <var>.a</var> is normalized by <var>.b</var>.
+ <dt>8<dd>a list <var>.int2pairtable</var> such that the <i>i</i><sup><i>th</i></sup> entry is the pair 
+           <var>[m,n]</var> with that <var>Glist[i]^epi=a^(m-1)*b^(n-1)</var>
+</dl>
+<p>
+<var>.alpha</var> and <var>.root</var> may be used as input for <a href="CHAP007.htm#SSEC004.2">OrderedSigs</a>
+<p>
+<a name = "SSEC004.2"></a>
+<li><code>OrderedSigs( </code><var>coeffSums</var><code>, </code><var>absSum</var><code>, </code><var>alpha</var><code>, </code><var>root</var><code> ) O</code>
+<p>
+Let <i>G</i> be group which contains a normal subgroup of index <i>s</i> such that 
+the coset signature for a difference set for this normal subgroup is 
+<var>coeffSums</var>. Let <i>N</i> be a normal subgroup of <i>G</i> such that <i>G</i>/<i>N</i> is a 
+semidirect product of cyclic group of orders <i>s</i>,<i>q</i>  and 
+<i>i</i> divides the order of <i>G</i>/<i>N</i>. 
+<p>
+Then <code>OrderedSigs(</code><var>coeffSums</var><code>,</code><var>absSum</var><code>,</code><var>alpha</var><code>,</code><var>root</var><code>)</code> calculates 
+all ordered signatures for <i>N</i>. Here <var>root</var> is a primitive <i>q</i>-th root 
+of unity and <var>alpha</var> is a Galois- automorphism of <i>CS</i>(<i>q</i>) with order 
+dividing <i>s</i>. <var>absSum</var> is the order of the difference set.
+(i.e. <i>order</i>=<i>k</i>&#8722;&#955;).
+<p>
+<code>OrderedSigs</code> is based on calculations using an <i>s</i>-dimensional unitary 
+representation of <i>G</i>/<i>N</i>. 
+In this representation a subset of <i>G</i> induces a semi-circular matrix.
+The returned value is a list of lists <i>s</i>-tuples
+The entries of the <i>s</i>-tuples are coefficients of  numbers in 
+<b>Z</b>[<i>root</i> ] such that the semi-circular matrix defined by these numbers
+together with <var>alpha</var> meets necessary conditions for matrices induced
+by difference sets.
+To gain the algebraic numbers from the <i>s</i>-tuple <var>tup</var>, use 
+<code>List(</code><var>tup</var><code>,i-&gt;CoeffList2CyclotomicList(i,</code><var>root</var><code>))</code>
+<p>
+Each &#124;<i>coeffSums</i> &#124;-tuple returned defines an ordered signature. The ordering
+of <i>G</i>/<i>N</i> is chosen to fit to the data returned by <a href="CHAP007.htm#SSEC004.1">NormalSubgroupsForRep</a>:
+<p>
+[<i>a</i><sup>0</sup>,<i>a</i><sup>1</sup>,...,<i>a</i><sup><i>q</i>&#8722;1</sup>],[<i>a</i><sup>0</sup><i>b</i>,<i>a</i><sup>1</sup><i>b</i>,...,<i>a</i><sup><i>q</i>&#8722;1</sup><i>b</i>],...,[<i>a</i><sup>0</sup><i>b</i><sup><i>s</i>&#8722;1</sup>,...,<i>a</i><sup><i>q</i>&#8722;1</sup><i>b</i><sup><i>s</i>&#8722;1</sup>]
+<p>
+So for the calculation of ordered signatures, smaller ordered
+signatures <var>coeffSums</var> have to be known. But this is not so bad, as
+small signatures are easy to calculate.
+The following example shows an application.
+<p>
+<pre>
+gap&gt; G:=SmallGroup(273,3);                              
+&lt;pc group of size 273 with 3 generators&gt;
+gap&gt; Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap&gt; CosetSignatures(273,273/3,16);
+[ [ 3, 7, 7 ] ]
+gap&gt; nsgs:=NormalSubgroupsForRep(Gdata,3);           
+[ rec( Nsg := Group([ f2 ]), alpha := ANFAutomorphism( CF(13), 3 ), 
+      root := E(13), fgrp := Group([ f1, &lt;identity&gt; of ..., f2 ]), 
+      epi := [ f1, f2, f3 ] -&gt; [ f1, &lt;identity&gt; of ..., f2 ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 2, 1 ], [ 1, 3 ], 
+...
+          [ 8, 3 ], [ 11, 3 ], [ 5, 2 ], [ 11, 3 ] ] ), 
+  rec( Nsg := Group([ f3 ]), alpha := ANFAutomorphism( CF(7), 2 ), 
+      root := E(7), fgrp := Group([ f1, f2, &lt;identity&gt; of ... ]), 
+      epi := [ f1, f2, f3 ] -&gt; [ f1, f2, &lt;identity&gt; of ... ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 1, 1 ], [ 1, 3 ], 
+...
+          [ 6, 3 ], [ 4, 3 ], [ 4, 2 ], [ 6, 3 ] ] ) ]
+gap&gt; osigs:=OrderedSigs([3,7,7],16,nsgs[2].alpha,nsgs[2].root);
+[ [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 0, 1, 2, 2, 0, 2 ], [ 2, 2, 0, 2, 0, 0, 1 ] ], 
+  [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 1, 2, 2, 0, 2, 0 ], [ 2, 0, 0, 1, 2, 2, 0 ] ], 
+...
+   [ [ 1, 1, 0, 1, 0, 0, 0 ], [ 2, 2, 1, 0, 0, 2, 0 ], [ 2, 1, 0, 0, 2, 0, 2 ] ] ]
+gap&gt; Size(osigs);
+98
+gap&gt; Set(osigs,g-&gt;SortedList(Concatenation(g)));
+[ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ] ]
+</pre>
+<p>
+Note that the signature <code>[3, 7, 7]</code> can be assumed to be ordered (by
+passing to a suitable translate). So even if we are not interested in
+<strong>ordered</strong> signatures, we have found out that there is only one admissible
+unordered signature for this normal subgroup. To get this result using
+<a href="CHAP005.htm#SSEC001.5">TestedSignatures</a> would have taken a <strong>very</strong> long time.
+<p>
+Of course, ordered signatures can also be used directly.
+<p>
+<a name = "SSEC004.3"></a>
+<li><code>OrderedSignatureOfSet( set, normal_data ) O</code>
+<p>
+takes a set <var>set</var> of integers (meant to be a partial difference set) and
+a list of records as returned by <a href="CHAP007.htm#SSEC004.1">NormalSubgroupsForRep</a>.
+The returned value is a list of lists which is the ordered signature of the
+partial difference set <var>set</var> and can be compared to the output of <a href="CHAP007.htm#SSEC004.2">OrderedSigs</a>
+<p>
+<pre>
+gap&gt; OrderedSignatureOfSet([2,3,4,5],nsgs[2]);  
+[ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0, 0, 0 ] ]
+</pre>
+<p>
+<p>
+[<a href = "chapters.htm">Up</a>] [<a href ="CHAP006.htm">Previous</a>] [<a href ="CHAP008.htm">Next</a>] [<a href = "theindex.htm">Index</a>]
+<P>
+<address>rds manual<br>February 2019
+</address></body></html>
