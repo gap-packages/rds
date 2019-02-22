@@ -50,15 +50,7 @@ Dependencies := rec(
 ),
 
 AvailabilityTest := ReturnTrue,
-BannerString := Concatenation(
-  "----------------------------------------------------------------\n",
-  "Loading  RDS ", ~.Version, "\n",
-  "by ", ~.Persons[1].FirstNames, " ", ~.Persons[1].LastName," (",
-  ~.Persons[1].Email,")",
-        "\n",
-  "----------------------------------------------------------------\n" ),
 
-Autoload := false,
 TestFile := "tst/testall.g",
 Keywords := ["relative difference sets","finite geometries","projective planes"],
 
