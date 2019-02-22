@@ -59,7 +59,7 @@ BannerString := Concatenation(
   "----------------------------------------------------------------\n" ),
 
 Autoload := false,
-#TestFile := "tst/testall.g",
-Keywords := ["relative difference sets","finite geometries","projective planes"]
+TestFile := "tst/testall.g",
+Keywords := ["relative difference sets","finite geometries","projective planes"],
 
 ));
