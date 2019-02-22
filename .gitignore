@@ -7,6 +7,7 @@
 /doc/*.bbl
 /doc/*.blg
 /doc/*.brf
+/doc/*.dvi
 /doc/*.idx
 /doc/*.ilg
 /doc/*.ind
@@ -17,8 +18,11 @@
 /doc/*.six
 /doc/*.tex
 /doc/*.toc
+/doc/*.tst
 /doc/manual.pdf
 /doc/title.xml
+
+/htm/
 
 /tmp/
 /gh-pages/
