@@ -2,7 +2,7 @@ SetPackageInfo( rec(
 
 PackageName := "RDS",
 Subtitle := "A package for searching relative difference sets",
-Version := "1.6",
+Version := "1.6dev",
 Date := "16/02/2012", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
