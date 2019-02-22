@@ -1,6 +1,6 @@
 name: RDS
-version: 1.6dev
-date: 2012-02-16
+version: 1.7
+date: 2019-02-23
 description: |
     A package for searching relative difference sets
 
@@ -11,8 +11,10 @@ authors:
 maintainers:
     - name: Marc Roeder
       url: http://csserver.evansville.edu/~mroeder
+    - name: The GAP Team
+      url: mailto:support@gap-system.org
 
-GAP: ">=4.5"
+GAP: ">=4.8"
 
 needed-pkgs:
     - name: "DESIGN"
@@ -24,13 +26,13 @@ suggested-pkgs:
       version: ">=1.0"
       url: "https://gap-packages.github.io/autpgrp/"
 
-www: http://csserver.evansville.edu/~mroeder
+www: https://gap-packages.github.io/rds/
 readme: README.rds
-packageinfo: http://csserver.evansville.edu/~mroeder/rds/gap4_5/PackageInfo.g
+packageinfo: https://gap-packages.github.io/rds/PackageInfo.g
 
 downloads:
-    - name: .tar.gz,.tar.bz2,-win.zip
-      url: http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_6.tar.gz,.tar.bz2,-win.zip
+    - name: .tar.gz
+      url: https://github.com/gap-packages/rds/releases/download/v1.7/rds-1.7.tar.gz
 
 abstract: |
     This package provides functions for the complete enumeration of relative difference sets.
@@ -42,24 +44,28 @@ keywords: |
     relative difference sets, finite geometries, projective planes.
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>Roe12</span>]   <b class='BibAuthor'>Roeder, M.</b>,
+    [<span class='BibKey'>RT19</span>]   <b class='BibAuthor'>Roeder, M. and GAP Team, T.</b>,
      <i class='BibTitle'>RDS, A package for searching relative difference sets,
-             Version 1.6dev</i>
-     (<span class='BibYear'>2012</span>)<br />
+             Version 1.7</i>
+     (<span class='BibYear'>2019</span>)<br />
     (<span class='BibNote'>Refereed GAP package</span>),
-    <span class='BibHowpublished'><a href="http://csserver.evansville.edu/~mroeder">http://csserver.evansville.edu/~mroeder</a></span>.
+    <span class='BibHowpublished'><a href="https://gap-packages.github.io/rds/">https://gap-packages.github.io/rds/</a></span>.
     </p>
     
 
 bibtex: |
-    @misc{ RDS1.6dev,
-      author =           {Roeder, M.},
-      title =            {{RDS}, A package for searching relative difference sets, {V}ersion 1.6dev},
+    @misc{ RDS1.7,
+      author =           {Roeder, M. and GAP Team, T.},
+      title =            {{RDS},  A  package  for  searching relative difference
+                          sets, {V}ersion 1.7},
       month =            {Feb},
-      year =             {2012},
+      year =             {2019},
       note =             {Refereed GAP package},
-      howpublished =     {\href {http://csserver.evansville.edu/~mroeder} {\texttt{http://csserver.evansville.edu/}\discretionary {}{}{}\texttt{\texttt{\symbol{126}}mroeder}}},
-      keywords =         {relative difference sets; finite geometries; projective planes},
-      printedkey =       {Roe12}
+      howpublished =     {\href            {https://gap-packages.github.io/rds/}
+                          {\texttt{https://gap-packages.github.io/}\discretionary
+                          {}{}{}\texttt{rds/}}},
+      keywords =         {relative    difference    sets;   finite   geometries;
+                          projective planes},
+      printedkey =       {RT19}
     }
 

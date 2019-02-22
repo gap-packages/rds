@@ -2,12 +2,9 @@ SetPackageInfo( rec(
 
 PackageName := "RDS",
 Subtitle := "A package for searching relative difference sets",
-Version := "1.6dev",
-Date := "16/02/2012", # dd/mm/yyyy format
+Version := "1.7",
+Date := "23/02/2019", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
-
-ArchiveURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/rds1_6",
-ArchiveFormats := ".tar.gz,.tar.bz2,-win.zip", # the others are generated automatically
 
 Persons := [
   rec(
@@ -18,6 +15,13 @@ Persons := [
     Email         := "roeder.marc@gmail.com",
     WWWHome       := "http://csserver.evansville.edu/~mroeder",
   ),
+  rec(
+    LastName      := "GAP Team",
+    FirstNames    := "The",
+    IsAuthor      := false,
+    IsMaintainer  := true,
+    Email         := "support@gap-system.org",
+  ),
 
 ],
 
@@ -25,12 +29,20 @@ Status := "accepted",
 CommunicatedBy := "Leonard Soicher (Queen Mary, London)",
 AcceptDate := "02/2008",
 
-README_URL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/README.rds",
-PackageInfoURL := "http://csserver.evansville.edu/~mroeder/rds/gap4_5/PackageInfo.g",
+PackageWWWHome  := "https://gap-packages.github.io/rds/",
+README_URL      := Concatenation( ~.PackageWWWHome, "README.rds" ),
+PackageInfoURL  := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
+SourceRepository := rec(
+    Type := "git",
+    URL := "https://github.com/gap-packages/rds",
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
+ArchiveURL      := Concatenation( ~.SourceRepository.URL,
+                                 "/releases/download/v", ~.Version,
+                                 "/rds-", ~.Version ),
+ArchiveFormats := ".tar.gz",
 
 AbstractHTML := "This package provides functions for the complete enumeration of relative difference sets.",
-
-PackageWWWHome := "http://csserver.evansville.edu/~mroeder",
 
 PackageDoc := rec(
   BookName  := "RDS",
@@ -43,22 +55,14 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.5",
+  GAP := ">=4.8",
   NeededOtherPackages := [["DESIGN", ">=1.3"]],
   SuggestedOtherPackages := [["AutPGrp",">=1.0"]],
   ExternalConditions := []
 ),
 
 AvailabilityTest := ReturnTrue,
-BannerString := Concatenation(
-  "----------------------------------------------------------------\n",
-  "Loading  RDS ", ~.Version, "\n",
-  "by ", ~.Persons[1].FirstNames, " ", ~.Persons[1].LastName," (",
-  ~.Persons[1].Email,")",
-        "\n",
-  "----------------------------------------------------------------\n" ),
 
-Autoload := false,
 TestFile := "tst/testall.g",
 Keywords := ["relative difference sets","finite geometries","projective planes"],
 
