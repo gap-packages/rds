@@ -33,7 +33,7 @@ group (and forbidden subgroup) and defining the parameters. Like this:
 gap> LoadPackage("rds");
 ----------------------------------------------------------------
 Loading  RDS 1.2
-by Marc Roeder (marc_roeder@web.de)
+by Marc Roeder (roeder.marc@gmail.com)
 ----------------------------------------------------------------
 true
 gap> k:=9;;lambda:=1;;groupOrder:=81;;
