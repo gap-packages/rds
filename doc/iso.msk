@@ -225,7 +225,7 @@ gap> NrFanoPlanesAtPoints([3],P);
 \Declaration{PRank}
 \beginexample
 gap> G:=CyclicGroup(2^2+3);
-<pc group of size 7 with 1 generators>
+<pc group of size 7 with 1 generator>
 gap> P:=DevelopmentOfRDS(OneDiffset(G),G);;
 gap> IncidenceMatrix(P);
 [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
