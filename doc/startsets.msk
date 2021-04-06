@@ -227,7 +227,7 @@ Error...
 \Declaration{RemainingCompletions}
 \beginexample
 gap> G:=CyclicGroup(7);
-<pc group of size 7 with 1 generators>
+<pc group of size 7 with 1 generator>
 gap> dat:=PermutationRepForDiffsetCalculations(G);;
 gap> RemainingCompletionsNoSort([4],[1..7],dat);
 [ 2, 3 ]
@@ -284,7 +284,7 @@ gap> m:=[
 > [0,0,0,0,0,0,1],
 > [1,0,0,0,0,0,0]];;
 gap> G:=Group(m);
-<matrix group with 1 generators>
+<matrix group with 1 generator>
 gap> Order(G);
 7
 gap> Size(AllDiffsets(G));

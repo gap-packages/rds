@@ -1,5 +1,4 @@
-gap> G:=CyclicGroup(7);
-<pc group of size 7 with 1 generators>
+gap> G:=CyclicGroup(7);;
 gap> AllDiffsets(G);
 [ [ f1, f1^3 ], [ f1, f1^5 ], [ f1^2, f1^3 ], [ f1^2, f1^6 ], [ f1^4, f1^5 ], 
   [ f1^4, f1^6 ] ]
