@@ -14,7 +14,7 @@ the file LICENSE or http://www.gnu.org/copyleft/gpl.html.
 
 The RDS package is completely written in GAP.
 
-Please send bug reports to roeder.marc@gmail.com
+Please submit bug reports at <https://github.com/gap-packages/rds/issues>.
 
        	    	Requirements
 		-----------
@@ -30,7 +30,6 @@ RDS requires GAP version >=4.5 and L. Soicher's DESIGN package version
 
 	rds<ver>.tar.bz2 
 	rds<ver>.tar.gz
-	rds<ver>.zoo
 	rds<ver>-win.zip
 
    (where <ver> is some version number) to the directory pkg/ of the 
@@ -42,7 +41,6 @@ RDS requires GAP version >=4.5 and L. Soicher's DESIGN package version
 
 	tar -xjf rds<ver>.tar.bz2
 	tar -xzf rds<ver>.tar.gz
-	zoo -extract rds<ver>.zoo 
 	unzip rds<ver>-win.zip
 
  (replace <ver> with the version number)
