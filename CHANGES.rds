@@ -1,3 +1,8 @@
+1.8:
+- Avoid incorrect pluralizations in output
+- various janitorial changes
+
+------------------
 1.7:
 - move package to GitHub
 - various janitorial changes
