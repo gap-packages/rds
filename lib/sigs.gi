@@ -30,7 +30,6 @@
 ##  <MaxAutsizeForOrbitCalculation@RDS>, `RepresentativeAction' is used.
 ##
 #BindGlobal("MaxAutsizeForOrbitCalculation@",5*10^6);
-#InstallValue(MaxAutsizeForOrbitCalculation@,5*10^6);
 #MaxAutsizeForOrbitCalculation@:=5*10^6;
 
 #############################################################################

@@ -31,7 +31,7 @@
 ##  The default value for `maxAutsizeForOrbitCalculation' is $5*10^6$.
 ##  If you want to change it, you will have to edit the file `sigs.gd'.
 ##
-DeclareSynonym("MaxAutsizeForOrbitCalculation@",5*10^6);
+BindGlobal("MaxAutsizeForOrbitCalculation@",5*10^6);
 
 #############################################################################
 ##
