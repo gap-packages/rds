@@ -1,5 +1,6 @@
 name: RDS
-version: 1.8
+version: "1.8"
+license: "GPL-2.0-or-later"
 date: 2022-02-21
 description: |
     A package for searching relative difference sets
