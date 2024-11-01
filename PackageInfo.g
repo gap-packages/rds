@@ -51,7 +51,6 @@ PackageDoc := rec(
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Relative Difference Sets",
-  Autoload  := true
 ),
 
 Dependencies := rec(
