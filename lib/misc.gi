@@ -42,11 +42,10 @@ end);
 ##
 InstallGlobalFunction("OnSubgroups",
         function(subgroup,aut)
-    if Size(subgroup)=1 
-       then return subgroup;
-   else
-       return Group(Image(aut,GeneratorsOfGroup(subgroup)));
-   fi;
+    if IsTrivial(subgroup) then
+        return subgroup;
+    fi;
+    return Group(Image(aut,GeneratorsOfGroup(subgroup)));
 end);
 
 #############################################################################
