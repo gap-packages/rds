@@ -11,6 +11,7 @@ tex manual
 bibtex manual
 # TeX the manual again to incorporate the ToC
 tex manual
+tex manual
 # ... and build the index
 ../../../doc/manualindex manual
 # Finally TeX the manual again to get cross-references right
