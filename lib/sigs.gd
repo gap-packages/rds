@@ -172,7 +172,7 @@ DeclareOperation("TestedSignatures",[IsList,IsGroup,IsGroup,IsInt,IsBool]);
 ##  is less than <maxtest> if <maxtest> is set to 0, all signatures are tested 
 ##  this is the default.
 ##  If <moretest> is tue, a signature is tested even if it is the only one left.
-##  This means we do not assume that there must be an admissable signature at all.
+##  This means we do not assume that there must be an admissible signature at all.
 ##  The default for <moretest> is <true>.
 ##
 DeclareOperation("TestedSignaturesRelative",[IsList,IsRecord,IsInt,IsBool]);
@@ -216,7 +216,7 @@ DeclareOperation("TestSignatureCyclicFactorGroup",[IsList,IsInt]);
 
 #############################################################################
 ##
-#F  CosetSignatureOfSet( <set>,<cosets>)        calculate the signature of a patial RDS.
+#F  CosetSignatureOfSet( <set>,<cosets>)        calculate the signature of a partial RDS.
 ##
 ##  `CosetSignatureOfSet( <set>,<cosets>)' returns the *ordered list* of 
 ##  intersection numbers of <set>. That is, the size of the intersection
@@ -230,7 +230,7 @@ DeclareGlobalFunction("CosetSignatureOfSet");
 
 #############################################################################
 ##
-#F  OrderedCosetSignatureOfSet( <set>,<cosets>)        calculate the signature of a patial RDS.
+#F  OrderedCosetSignatureOfSet( <set>,<cosets>)        calculate the signature of a partial RDS.
 ##
 ##  `CosetSignatureOfSet( <set>,<cosets>)' returns the list of 
 ##  intersection numbers of <set>. That is, the size of the intersection
@@ -279,7 +279,7 @@ DeclareOperation("SigInvariant",[IsDenseList,IsDenseList]);
 ##  for which <func> returns `fail' are discarded.
 ##
 ##  If a list <csdata> of records as used for "SigInvariant" (i.e. containing
-##  <.cosets> and <.signatures>) is pased, then `ReducedStartsets'
+##  <.cosets> and <.signatures>) is passed, then `ReducedStartsets'
 ##  uses "SigInvariant" for <func>.
 ##
 DeclareOperation("ReducedStartsets",
