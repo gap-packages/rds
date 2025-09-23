@@ -21,7 +21,7 @@ Group([ (1,3) ])
 \beginexample
 gap> RepsCClassesGivenOrder(SymmetricGroup(5),2);
 [ (4,5), (2,3)(4,5) ]
-\endexample	
+\endexample
 
 %%%%%%%%%%%%%%%%%%%%
 \Section{Iterators}

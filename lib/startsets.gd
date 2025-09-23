@@ -162,7 +162,7 @@ DeclareOperation("RemainingCompletions",[IsDenseList,IsDenseList,IsDenseList,IsR
 ##
 ##  For a set of partial (relative) difference sets <startsets>, the set of 
 ##  all extensions by one element from <completions> is returned.
-##  Here an ``extension'' of a partial diffence set $S$ is a list which has 
+##  Here an ``extension'' of a partial difference set $S$ is a list which has 
 ##  one element more than $S$ and contains $S$.
 ##
 ##  Here <completions> is a set of elements wich may be appended to the lists in 

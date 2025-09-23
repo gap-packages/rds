@@ -47,7 +47,7 @@
 ##  Here <.closure> is the projective closure of <points>  (the smallest 
 ##  projectively closed subset of <plane> containing the points <points>). 
 ##  It is not checked, whether this is a projective plane. As the BlockDesign
-##  <.closure> has points `[1..w]' and <plane> has poins `[1..v]' with 
+##  <.closure> has points `[1..w]' and <plane> has points `[1..v]' with 
 ##  $w\leq v$, we need an embedding of <.closure> into <plane>. This embedding
 ##  is the permutation <.embedding>. It is a permutation on `[1..v]' which
 ##  takes the points of <.closure> to a set of points in <plane> containing
@@ -96,7 +96,7 @@ DeclareOperation("IsCollineationOfProjectivePlane",[IsPerm,IsRecord]);
 ##F  ElationPrecalcSmall( <blocks> )  generate data for calculating elations
 ##
 ##  Given the blocks <blocks> of a projective plane, 
-##  `ElationPrecalc( <blocks> )' returns a record conatining 
+##  `ElationPrecalc( <blocks> )' returns a record containing 
 ##  \beginlist
 ##   \item{.points} the points of the projective plane (immutable)
 ##   \item{.blocks} the blocks as passed to the function (immutable)
@@ -151,7 +151,7 @@ DeclareOperation("AllElationsCentAx",[IsInt,IsVector,IsRecord,IsString]);
 
 #############################################################################
 ##
-#O  AllElationsAx(<axis>,<plane>[,"generators"])  calcualte all elations with given axis.
+#O  AllElationsAx(<axis>,<plane>[,"generators"])  calculate all elations with given axis.
 ##
 ##  Let <axis> be a block of a projective plane <plane>.
 ##  `AllElationsAx' returns the group of all elations with axis 
@@ -312,7 +312,7 @@ DeclareOperation("FingerprintAntiFlag",[IsInt,IsInt,IsRecord]);
 ##  and $e_1,\dots,e_{n^2+n+1}$. 
 ##  Define the sign matrix as $A_{ij}=sgn(\sigma_{(q_i,e_j)})$ if $(q_i,e_j)$ 
 ##  is an anti-flag and $=0$ if it is a flag.
-##  Then the fingerprint is defnied as the multiset of the entries of $|AA^t|$.
+##  Then the fingerprint is defined as the multiset of the entries of $|AA^t|$.
 ##
 DeclareOperation("FingerprintProjPlane",[IsRecord]);
 

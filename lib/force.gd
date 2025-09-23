@@ -2,7 +2,7 @@
 ##
 #W force.gd 			 RDS Package		 Marc Roeder
 ##
-##  Brute force methods for finding relative differnece sets
+##  Brute force methods for finding relative difference sets
 ##
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
@@ -39,7 +39,7 @@ DeclareOperation("AllDiffsets",
 ##
 #O AllDiffsets(<partial>,<aim>,<forbidden>,<Group>,<lambda>)
 ##
-##  Let <partial> be a set of elements of the gorup <Group> which form a
+##  Let <partial> be a set of elements of the group <Group> which form a
 ##  partial relative difference set with parameter <lambda> and forbidden 
 ##  set <forbidden> (which is also a set of group elements). That means that 
 ##  the every non-trivial element in the list of quotients in elements of

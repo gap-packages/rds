@@ -2,7 +2,7 @@
 ##
 #W lazy.gd 			 RDS Package		 Marc Roeder
 ##
-##  Some black-box functions for quick-and-dirty claculations
+##  Some black-box functions for quick-and-dirty calculations
 ##
 ##
 #Y	 Copyright (C) 2006-2011 Marc Roeder 
@@ -34,7 +34,7 @@
 ##  of this group.
 ##
 ##  If <forbidden> is not given, it is assumed to be trivial. If <lambda>
-##  is not given, it is set to $1$. Note that $1$ (`One(<group>)', repectively)
+##  is not given, it is set to $1$. Note that $1$ (`One(<group>)', respectively)
 ##  *must not* be element of <diffset>.
 ## 
 DeclareOperation("IsDiffset",[IsDenseList,IsRecord]);
@@ -60,7 +60,7 @@ DeclareOperation("IsDiffset",[IsDenseList,IsDenseList,IsGroup,IsPosInt]);
 ##  of this group.
 ##
 ##  If <forbidden> is not given, it is assumed to be trivial. If <lambda>
-##  is not given, it is set to $1$. Note that $1$ (`One(<group>)', repectively)
+##  is not given, it is set to $1$. Note that $1$ (`One(<group>)', respectively)
 ##  *must not* be element of <diffset>.
 ## 
 DeclareOperation("IsPartialDiffset",[IsDenseList,IsRecord]);
