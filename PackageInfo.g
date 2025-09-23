@@ -2,8 +2,8 @@ SetPackageInfo( rec(
 
 PackageName := "RDS",
 Subtitle := "A package for searching relative difference sets",
-Version := "1.8",
-Date := "21/02/2022", # dd/mm/yyyy format
+Version := "1.9",
+Date := "24/09/2025", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [

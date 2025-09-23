@@ -1,8 +1,16 @@
+1.9:
+- renamed `PRank@RDS` to `RDS_PRank`
+- renamed `FOO` to `BAR`
+- various janitorial changes
+
+------------------
+
 1.8:
 - Avoid incorrect pluralizations in output
 - various janitorial changes
 
 ------------------
+
 1.7:
 - move package to GitHub
 - various janitorial changes
@@ -15,6 +23,7 @@
 
 1.5:
  - path fixed in PackageInfo.g
+ 
 ------------------
 
 1.4:
@@ -32,6 +41,7 @@
 
 1.2:
 - homepage moved.
+
 ------------------
 
 1.1:
