@@ -139,7 +139,7 @@ InstallMethod(ReducedStartsets,
            then
             for autgrp in autlist
               do
-                userep:=Size(autgrp)>MaxAutsizeForOrbitCalculation@;
+                userep:=Size(autgrp)>RDS_MaxAutsizeForOrbitCalculation;
  #               if not partitionElt=partition[partitionpos]
  #                  then
  #                   Error("wer nicht programmieren kann, soll's lassen!");

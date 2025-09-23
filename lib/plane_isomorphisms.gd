@@ -266,16 +266,15 @@ DeclareOperation("IncidenceMatrix",[IsRecord]);
 
 #############################################################################
 ##
-#O PRank(<plane>,<p>)
+#O RDS_PRank(<plane>,<p>)
 ##
 ##  Let $I$ be the incidence matrix of the projective plane <plane> and <p> a 
 ##  prime power.
 ##  The rank of $I.I^t$ as a matrix over
 ##  $GF(p)$ is called  <p>-rank of the projective plane. Here $I^t$ denotes
-##  the transposed matrix. Note that this is a method within the RDS workspace,
-##  so it has to be called as PRank@RDS
+##  the transposed matrix.
 ##
-DeclareOperation("PRank@",[IsRecord,IsInt]);
+DeclareOperation("RDS_PRank",[IsRecord,IsInt]);
 
 #############################################################################
 ##

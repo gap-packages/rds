@@ -21,16 +21,6 @@
 #Y along with this program; if not, write to the Free Software 
 #Y Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-#############################################################################
-## 
-#V MaxAutsizeForOrbitCalculation@
-## 
-##  In `ReducedStartsets', a bound is needed to decide if `Orbit' or 
-##  `RepresentativeAction' should be used. If the group is larger than 
-##  <MaxAutsizeForOrbitCalculation@RDS>, `RepresentativeAction' is used.
-##
-#BindGlobal("MaxAutsizeForOrbitCalculation@",5*10^6);
-#MaxAutsizeForOrbitCalculation@:=5*10^6;
 
 #############################################################################
 ##
@@ -734,7 +724,7 @@ end);
 #              do
 #                for set in lssets    
 #                  do		  
-#                    if Size(set)>1 and Size(auts)>MaxAutsizeForOrbitCalculation
+#                    if Size(set)>1 and Size(auts)>RDS_MaxAutsizeForOrbitCalculation
 #                       then
 #                        interesting_sets:=Set(Filtered(transset,t->ForAny(t[2],s->RepresentativeAction(auts,s,AsSet(set),OnSets)<>fail)),
 #                                                i->i[1]);
