@@ -207,7 +207,7 @@ gap> Size(ReducedStartsets(ssets,[Gdata.Ai],cosetsigs,Gdata));
 #I  5/ 0 @ 0:00:00.123
 17
 \endexample
-\Declaration{MaxAutsizeForOrbitCalculation}
+\Declaration{RDS_MaxAutsizeForOrbitCalculation}
 
 
 

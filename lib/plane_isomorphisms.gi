@@ -944,7 +944,7 @@ end);
 ##
 #O pRank(<plane>,<p>)
 ##
-InstallMethod(PRank@,
+InstallMethod(RDS_PRank,
         "for projective planes",
         [IsRecord,IsInt],
         function(plane,p)

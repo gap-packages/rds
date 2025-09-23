@@ -23,15 +23,15 @@
 ##
 #############################################################################
 ## 
-#V MaxAutsizeForOrbitCalculation
+#V RDS_MaxAutsizeForOrbitCalculation
 ## 
 ##  In "ReducedStartsets", a bound is needed to decide if `Orbit' or 
 ##  `RepresentativeAction' should be used. If the group is larger than 
-##  <MaxAutsizeForOrbitCalculation@RDS>, `RepresentativeAction' is used.
-##  The default value for `maxAutsizeForOrbitCalculation' is $5*10^6$.
-##  If you want to change it, you will have to edit the file `sigs.gd'.
+##  <RDS_MaxAutsizeForOrbitCalculation>, `RepresentativeAction' is used.
+##  The default value for `RDS_MaxAutsizeForOrbitCalculation' is $5*10^6$.
+##  You can change it by simply setting it to a different value.
 ##
-BindGlobal("MaxAutsizeForOrbitCalculation@",5*10^6);
+RDS_MaxAutsizeForOrbitCalculation := 5*10^6;
 
 #############################################################################
 ##
