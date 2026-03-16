@@ -185,7 +185,7 @@ InstallMethod(AllDiffsets,[IsDenseList,IsGroup],
     local   Gdata;
     Gdata:=PermutationRepForDiffsetCalculations(group);    
     return AllDiffsets(GroupList2PermList(start,Gdata),
-                   []
+                   [],
                    Gdata,
                    1);
 end);
@@ -205,7 +205,7 @@ InstallMethod(AllDiffsets,[IsDenseList,IsGroup,IsInt],
     local   Gdata;
     Gdata:=PermutationRepForDiffsetCalculations(group);    
     return AllDiffsets(GroupList2PermList(start,Gdata),
-                   []
+                   [],
                    Gdata,
                    lambda);
 end);
