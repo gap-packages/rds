@@ -1,6 +1,6 @@
 This file describes changes in the RDS package.
 
-## Unreleased
+## 1.10 (2026-08-02)
 
   - Fix missing commas in the `AllDiffsets` methods taking a start set and a
     group, which made these methods error out
