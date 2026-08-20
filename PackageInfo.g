@@ -46,8 +46,8 @@ AbstractHTML := "This package provides functions for the complete enumeration of
 
 PackageDoc := rec(
   BookName  := "RDS",
-  ArchiveURLSubset := ["doc", "htm"],
-  HTMLStart := "htm/chapters.htm",
+  ArchiveURLSubset := ["doc"],
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Relative Difference Sets",

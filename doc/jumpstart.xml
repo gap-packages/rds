@@ -1,0 +1,189 @@
+<Chapter Label="A basic example">
+<Heading>A basic example</Heading>
+This chapter shows a basic example of how to use <Package>RDS</Package>. Some
+of the functions used here make choices which might not be optimal but
+should suffice for most <Q>everyday</Q> situations.  If you plan to do
+more involved computations, you should also see the other chapters to
+learn about the concepts behind these high-level functions.
+<P/>
+Here we will construct relative difference sets of Dembowski-Piper
+type <Q>b</Q> and order <M>9</M> as an example. We will take the elementary
+abelian group as an example. The general idea is as follows: Find a
+<Q>nice</Q> normal subgroup <M>U</M> and generate relative difference sets
+coset by coset. The normal subgroup has to be chosen such that we know
+how many elements to choose from each coset modulo <M>U</M>.
+<P/>
+The calculations here are very easy, a more demanding example can be found
+in chapter <Ref Chap="An Example Program"/>.
+<Section Label="First Step: Integers instead of group elements">
+<Heading>First Step: Integers instead of group elements</Heading>
+Difference sets are represented by lists of integers. Every difference
+set is assumed to contain <M>1</M>. This is assumed implicitly. So the
+lists representing difference sets <E>must not</E> contain 1 (a partial
+difference set of length <M>n</M> is hence represented by a list of length
+<M>n-1</M>).  If a partial difference set contains <M>1</M>, many functions will
+produce errors.
+<P/>
+To find Difference sets in a group, say <M>G</M>, begin with generating the
+group (and forbidden subgroup) and defining the parameters. Like this:
+<Example><![CDATA[
+gap> LoadPackage("rds");
+true
+gap> k:=9;;lambda:=1;;groupOrder:=81;;
+gap> forbiddenGroupOrder:=9;;
+gap> G:=ElementaryAbelianGroup(groupOrder);
+<pc group of size 81 with 4 generators>
+gap> Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap> N:=Subgroup(G,GeneratorsOfGroup(G){[1,2]});
+Group([ f1, f2 ])
+gap> Size(N)=forbiddenGroupOrder;   #just a test...
+true
+]]></Example>
+Once we have calculated <A>Gdata</A>, this will be used very often to
+represent the group <A>G</A> as it contains much more information.
+</Section>
+<Section Label="Signatures: An important tool">
+<Heading>Signatures: An important tool</Heading>
+The <Q>signature</Q> of a subset <M>S\subseteq G</M> of a group relative to a
+normal subgroup <M>U</M> is the multiset of numbers of elements <M>S</M>
+contains from each coset modulo <M>U</M>. Possible values of these numbers
+can be calculated a priori for relative difference sets.
+<Example><![CDATA[
+gap> sigdat:=SignatureData(Gdata,N,k,lambda,10^5);;
+]]></Example>
+The argument <M>10^5</M> depends on your degree of impatience. Larger
+numbers take more time in this step, but give better results for later
+reduction steps.
+<P/>
+Now we will look for a <Q>nice</Q> normal subgroup. A normal subgroup is
+<Q>nice</Q>, if it has only few signatures and the number of different
+entries in each signature is low. If you have different choices here
+do some experiments, to see what works. Let's see what we have:
+<Example><![CDATA[
+gap> NormalSgsHavingAtMostNSigs(sigdat,1,[1..7]); 
+[ rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f4 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3*f4 ]) ), 
+  rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3^2*f4 ]) ) ]
+]]></Example>
+The second parameter of <Ref Func="NormalSgsHavingAtMostNSigs"/> is the maximal
+number of signatures the subgroup may have. The third parameter gives
+the desired lengths of the signatures (the index of the normal
+subgroup).
+<P/>
+So in this example we have no real choice.  Let's take the first group
+for <M>U</M>. The signature means that we have to get <M>3</M> elements from
+each coset modulo <M>U</M>. So we generate startsets of length <M>2</M> in the
+trivial coset <M>U</M> (representing partial relative difference sets of
+length <M>3</M>). 
+This could be done using <Ref Func="AllDiffsets"/>, of course. But here we will
+use another method. The function <Ref Func="StartsetsInCoset"/> generates
+startsets in <M>U</M> by generating an initial set of startsets and then
+raising the length of each startset by <M>1</M>.  Then a reduction using
+signatures and automorphism is performed.  This is done until all
+startsets have the desired length or no startset remains (in which
+case there is no relative difference set). For the reduction, a
+suitable set of automorphisms must be chosen. This is done by the
+function <Ref Func="SuitableAutomorphismsForReduction"/>:
+<Log><![CDATA[
+gap> U:=last[1].subgroup;
+Group([ f1, f2, f3 ])
+gap> auts:=SuitableAutomorphismsForReduction(Gdata,U);
+[ <permutation group of size 303264 with 8 generators> ]
+gap> startsets:=StartsetsInCoset([],U,N,2,auts,sigdat,Gdata,lambda);
+#I  Size 18
+#I  1/ 0 @ 0:00:00.071
+#I  Size 8
+#I  1/ 0 @ 0:00:00.038
+#I  -->1 @ 0:00:00.042
+[ [ 4, 22 ] ]
+]]></Log>
+For larger examples, this takes a wile. Taking <M>10^6</M> (or even more)
+for the generation of <A>sigdat</A> can save some time here. A few remarks
+about the parameters of <Ref Func="StartsetsInCoset"/>. The first parameter <C>[]</C>
+is the set of startsets which we start with (as we just started, this
+is empty). The second parameter is the coset we use to generate
+startsets and third parameter is the forbidden subgroup. The fourth
+parameter is the length of the startsets we want to generate (remember
+that <M>1</M> is assumed to be in every startset without being listed. So
+we want startsets of size <M>3</M> represented by lists of length <M>2</M>.
+Hence the <M>2</M> in this place).  Instead of <A>auts</A> a suitable list of
+groups of automorphisms of <M>G</M> in permutation representation may be
+inserted. These are used for the reduction of startsets. For large
+groups &lt;auts[1]&gt; it is a good idea to add some subgroups of &lt;auts[1]&gt;
+to the list (ascending in order) <A>auts</A>, as the reduction is done
+using the first group in the list and then reducing the already
+reduced list again using the next group.
+</Section>
+<Section Label="Change of coset vs. brute force">
+<Heading>Change of coset vs. brute force</Heading>
+Now we have startsets of length <M>2</M> in <M>U</M> and there are two
+possibilities:
+<P/>
+(1) Find <M>3</M> more elements from another coset like this:
+<Log><![CDATA[
+gap> cosets:=RightCosets(G,U);
+[ RightCoset(Group( [ f1, f2, f3 ] ),<identity> of ...), 
+  RightCoset(Group( [ f1, f2, f3 ] ),f4), 
+  RightCoset(Group( [ f1, f2, f3 ] ),f4^2) ]
+gap> startsets:=StartsetsInCoset(startsets,cosets[2],N,5,auts,sigdat,Gdata,lambda);
+#I  Size 27
+#I  1/ 0 @ 0:00:00.127
+#I  Size 11
+#I  1/ 0 @ 0:00:00.058
+#I  -->1 @ 0:00:03.311
+#I  Size 2
+#I  2/ 2 @ 0:00:00.015
+#I  -->2 @ 0:00:00.015
+[ [ 4, 22, 5, 28, 73 ], [ 4, 22, 5, 28, 77 ] ]
+]]></Log>
+And <M>3</M> more from the last one (of course, we could also change to
+force, but it seems to work this way...).
+<Log><![CDATA[
+gap> startsets:=StartsetsInCoset(startsets,cosets[3],N,8,auts,sigdat,Gdata,lambda);
+#I  Size 9
+#I  1/ 0 @ 0:00:00.056
+#I  Size 1
+#I  1/ 1 @ 0:00:00.006
+#I  -->1 @ 0:00:00.009
+#I  Size 1
+#I  1/ 1 @ 0:00:00.006
+#I  -->1 @ 0:00:00.006
+[ [ 4, 22, 5, 28, 73, 37, 66, 78 ] ]
+]]></Log>
+So we found one difference set of order <M>9</M> in the elementary abelian
+group of order <M>81</M>. To get the difference set containing <M>1</M>
+explicitly and as a subset of <M>G</M>, say
+<Example><![CDATA[
+gap> PermList2GroupList(Concatenation(startsets[1],[1]),Gdata); 
+Error, Variable: 'startsets' must have a value
+]]></Example>
+(2) Do a brute force search. Here we have to convert
+the forbidden group <M>N</M> into a list of integers <M>Np</M>. And we have to
+raise the length of the startsets by one before we can start. This is
+due to the ordering we chose (which is not necessarily compatible with
+the cosets modulo <M>U</M>).
+<Log><![CDATA[
+gap> Np:=GroupList2PermList(Set(N),Gdata);
+[ 1, 2, 3, 6, 7, 10, 16, 19, 32 ]
+gap> startsets:=ExtendedStartsetsNoSort(startsets,[1..groupOrder],Np,8,Gdata,lambda);;
+gap> Size(startsets);
+54
+gap> foundsets:=[];;     
+gap> for set in startsets
+>  do
+>   Append(foundsets,AllDiffsets(set,[1..groupOrder],k-1,Np,Gdata,lambda));
+> od;
+gap> Size(foundsets);
+162
+]]></Log>
+Now <A>foundsets</A> contains <M>162</M> relative <M>(9,9,9,1)</M>-difference sets
+(represented by lists of length <M>8</M>). These are all equivalent (as seen above). Equivalence can be tested like this:
+<Log><![CDATA[
+gap> ReducedStartsets(foundsets,[Gdata.Aac],i->true,Gdata);
+#I  Size 162
+#I  1/ 0 @ 0:00:00.001
+[ [ 4, 22, 36, 39, 49, 50, 60, 61 ] ]
+]]></Log>
+</Section>
+</Chapter>

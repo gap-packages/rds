@@ -1,0 +1,226 @@
+<Chapter Label="General concepts">
+<Heading>General concepts</Heading>
+In this chapter, we first give a definition of relative difference
+sets and outline a part of the theory. Then we have a quick look at
+the way difference sets are represented in &RDS;.
+<P/>
+After that, some basic methods for the generation of difference sets
+are explained.
+<P/>
+If you already read chapter <Ref Chap="A basic example"/> and want to know
+what <Ref Func="StartsetsInCoset"/> really does, you may want to read this
+chapter.  
+The most important method here is 
+<Ref Func="PermutationRepForDiffsetCalculations"/> as this is the function all
+searches start with. The main high-level function for difference set
+generation in this chapter is <Ref Func="ExtendedStartsets"/>.
+<Section Label="Introduction">
+<Heading>Introduction</Heading>
+Let <M>G</M> be a finite group and <M>N\subseteq G</M>. The set <M>R\subseteq G</M>
+with <M>|R|=k</M> is called a <Q>relative difference set of order
+<M>k-\lambda</M> relative to the forbidden set <M>N</M></Q> if the following
+properties hold:
+<List>
+<Mark>(a)</Mark>
+<Item> The multiset <M>\{ a.b^{-1}\colon a,b\in R\}</M> contains
+  every nontrivial (<M>\neq 1</M>) element of <M>G-N</M> exactly <M>\lambda</M>
+  times.  
+</Item>
+<Mark>(b)</Mark>
+<Item> <M>\{ a.b^{-1}\colon a,b\in R\}</M> does not contain
+  any non-trivial element of <M>N</M>.</Item>
+</List>
+Relative difference sets with <M>N=1</M> are called (ordinary) difference
+sets. As a special case, difference sets with <M>N=1</M> and <M>\lambda=1</M>
+correspond to projective planes of order <M>k-1</M>.  Here the blocks are
+the translates of <M>R</M> and the points are the elements of <M>G</M>.
+<P/>
+In group ring notation a relative difference set satisfies
+<Display>
+RR^{-1}=k+\lambda(G-N).
+</Display>
+<P/>
+The set <M>D\subseteq G</M> is called <E>partial relative difference set</E>
+with forbidden set <M>N</M>, if
+<Display>
+    DD^{-1}=\kappa+\sum_{g\in G-N}v_gg   
+</Display>
+<P/>
+holds for some <M>1\leq\kappa\leq k</M> and <M>0\leq v_g \leq \lambda</M> for
+all <M>g\in G-N</M>.  If <M>D</M> is a relative difference set then ,obviously,
+<M>D</M> is also a partial relative difference set.
+<P/>
+Two relative difference sets <M>D,D'\subseteq G</M> are called <E>strongly
+equivalent</E> if they have the same forbidden set <M>N\subseteq G</M> and if
+there is <M>g\in G</M> and an automorphism <M>\alpha</M> of <M>G</M> such that
+<M>D'g^{-1}=D^\alpha</M>. The same term is applied to partial relative
+difference sets.
+<P/>
+Let <M>D\subseteq G</M> be a difference set, then the incidence structure
+with points <M>G</M> and blocks <M>\{Dg|g\in G\}</M> is called the
+<E>development</E> of <M>D</M>. In short:  <M>{ dev} D</M>. Obviously, <M>G</M> acts on
+<M>{ dev}D</M> by multiplication from the right.
+<P/>
+If <M>D</M> is a difference set, then <M>D^{-1}</M> is also a difference set.
+And <M>{ dev} D^{-1}</M> is the dual of <M>{ dev} D</M>. So a group
+admitting an operation some structure defined by a difference set does
+also admit an operation on the dual structure. We may therefore change
+the notion of equivalence and take <M>\phi</M> to be an automorphism or an
+anti-automorphism. Forbidden sets are closed under inversion, so this
+gives a <Q>weak</Q> sort of strong equivalence.
+</Section>
+<Section Label="How partial difference sets are represented">
+<Heading>How partial difference sets are represented</Heading>
+Let <M>G</M> be a group. We define an enumeration <M>\{g_1,\dots,g_n\}=G</M> and
+represent <M>D\subseteq G</M> as a list of integers (where, of course, <M>i</M>
+represents <M>g_i</M> for all <M>1\leq i\leq n</M>).  So the automorphism group
+of <M>G</M> is represented as a permutation group of degree <M>n</M>.  One of
+the operations performed most often by methods in &RDS; is
+the calculation of quotients in <M>G</M>. So we calculate a look-up
+table for this.
+<P/>
+This pre-calculation is done by the operation
+<Ref Func="PermutationRepForDiffsetCalculations"/>. So before you start generating
+difference set, call this function and work with the data structure
+returned by it.
+<P/>
+For an exhaustive search, the ordering of <M>G</M> is very important. To
+avoid generating duplicate partial difference sets, we would like to
+represent partial difference sets by <E>sets</E>, i.e. ordered lists. But
+in fact, &RDS; does <E>not</E> assume that partial difference
+sets are sets. The operations <Ref Func="ExtendedStartsets"/> and <Ref Func="AllDiffsets"/>
+assume that the last element of partial difference set is its
+maximum. But they don't test it. So if you start from scratch, these
+methods generate difference sets which are really sets. Whereas the
+<C>NoSort</C> versions disregard the ordering of <M>G</M> and will produce
+duplicates.
+<P/>
+The reason for this seemingly strange behaviour is the following:
+Assume that we have a normal subgroup <M>U\leq G</M> and know that every
+difference set <M>D\subseteq G</M> contains exactly <M>n_i</M> elements from the
+<M>i^{ th}</M> coset modulo <M>U</M>. Then it is natural to generate
+difference sets by first searching all partial difference sets of
+length <M>n_1</M> containing entirely of elements of the first coset modulo
+<M>U</M> and then proceed with the other cosets.
+<P/>
+This method of difference set generation is normally not compatible
+with the ordering of <M>G</M>. This is why partial difference sets are not
+required to be <E>sets</E>. See chapter <Ref Chap="An Example Program"/> for an
+example.
+</Section>
+<Section Label="Basic functions for startset generation">
+<Heading>Basic functions for startset generation</Heading>
+Defining an enumeration of the a group <M>G</M>, every relative difference
+set may be represented by a list of integers. Indexing <M>G</M> in this way
+has the advantage of the automorphism group of <M>G</M> being a permutation
+group acting on the index set for <M>G</M>. As relative difference sets are
+normally calculated in small groups, it is possible to store a
+complete multiplication table of the group in terms of the
+enumeration.
+<P/>
+If not stated otherwise, partial difference sets are always considered
+to be lists of integers. Note that it is not required for a partial
+difference set to be a set.
+<P/>
+<#Include Label="PermutationRepForDiffsetCalculations">
+<P/>
+If <C>Set(<A>group</A>)[1]</C> is not equal to <C>One(<A>group</A>)</C>, then
+<Ref Func="PermutationRepForDiffsetCalculations"/> returns an error message.
+In this case, calculating a permutation representation helps:
+<Log><![CDATA[
+gap> G:=SL(2,3);
+SL(2,3)
+gap> Gdata:=PermutationRepForDiffsetCalculations(G);
+Error, smallest element of group is not the identity. Try `IsomorphismPermGrou\
+p' called from
+<function>( <arguments> ) called from read-eval-loop
+Entering break read-eval-print loop ...
+you can 'quit;' to quit to outer loop, or
+you can 'return;' to continue
+brk> quit;
+gap> G:=Image(IsomorphismPermGroup(G));
+Group([ (2,3,5)(6,7,8), (1,2,4,7)(3,6,8,5) ])
+gap> Gdata:=PermutationRepForDiffsetCalculations(G);
+]]></Log>
+<#Include Label="IsDiffset">
+<P/>
+<#Include Label="IsPartialDiffset">
+<P/>
+A partial difference set may be converted from a list of group
+elements to a list of integers using 
+<#Include Label="GroupList2PermList">
+The inverse operation is
+performed by 
+<#Include Label="PermList2GroupList">
+<P/>
+In the following functions the record <A>Gdata</A> has to contain a matrix
+&lt;.diffTable&gt; as returned by <Ref Func="PermutationRepForDiffsetCalculations"/>.
+<P/>
+<#Include Label="NewPresentables">
+<#Include Label="AllPresentables">
+<Log><![CDATA[
+gap> G:=CyclicGroup(7);;dat:=PermutationRepForDiffsetCalculations(G);;
+gap> AllPresentables([2,3],dat);
+[ 2, 3, 7, 2, 7, 6 ]
+gap> NewPresentables([2,3],4,dat);
+[ 4, 5, 6, 3, 7, 2 ]
+gap> AllPresentables([1,2,3],dat);
+Error...
+]]></Log>
+<#Include Label="RemainingCompletions">
+<P/>
+<#Include Label="ExtendedStartsets">
+</Section>
+<Section Label="Brute force methods">
+<Heading>Brute force methods</Heading>
+The following methods can be used to find (partial) difference sets by
+brute force. More examples are contained in chapter <Ref Chap="AllDiffsets and OneDiffset"/>
+<P/>
+<#Include Label="AllDiffsets">
+<#Include Label="AllDiffsetsNoSort">
+<P/>
+If called with <A>group</A> rather than <A>Gdata</A>, <Ref Func="AllDiffsets"/> and
+<Ref Func="AllDiffsetsNoSort"/> call <Ref Func="PermutationRepForDiffsetCalculations"/>. They
+then work with sets of integers as difference sets and convert the
+result back into group notation.
+<P/>
+As <Ref Func="PermutationRepForDiffsetCalculations"/> refuses to work if the
+smallest element of the group is not 1, this does not always work. So
+a permutation representation for <A>group</A> is calculated in this
+case. However, this is only done for the <C>NoSort</C> version and if
+<A>partial</A> is empty. Here is an example:
+<Log><![CDATA[
+gap> m:=[
+> [0,1,0,0,0,0,0],
+> [0,0,1,0,0,0,0],
+> [0,0,0,1,0,0,0],
+> [0,0,0,0,1,0,0],
+> [0,0,0,0,0,1,0],
+> [0,0,0,0,0,0,1],
+> [1,0,0,0,0,0,0]];;
+gap> G:=Group(m);
+<matrix group with 1 generator>
+gap> Order(G);
+7
+gap> Size(AllDiffsets(G));
+6
+gap> AllDiffsets([m],G);  
+Error, smallest element of group is not the identity. 
+[...]
+gap> Size(AllDiffsetsNoSort([m],G));
+2
+]]></Log>
+The reason for this is the fact that <Ref Func="AllDiffsets"/> generates
+difference sets from <A>partial</A> by appending only elements which are
+larger than the last element of <A>partial</A>. In a permutation
+representation, the ordering will be different from the original one,
+so &GAP; refuses to calculate the permutation representation and issues
+an error.
+<P/>
+<Ref Func="AllDiffsetsNoSort"/> first appends one element regardless of ordering
+and then only larger ones.
+<P/>
+<#Include Label="OneDiffset">
+<#Include Label="OneDiffsetNoSort">
+</Section>
+</Chapter>

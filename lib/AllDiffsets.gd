@@ -30,38 +30,48 @@
 #O AllDiffsets(<partial>,[<aim>],<forbidden>,<Gdata>,[<lambda>])
 #O AllDiffsets(<partial>,<completions>,<aim>,<forbidden>,<Gdata>,<lambda>)
 ##
-##  Let <partial> be a list of elements of the group <group> which form a
-##  partial relative difference set with parameter <lambda> and forbidden 
-##  set <forbidden> (which is also a set of group elements). That means that 
+##  <#GAPDoc Label="AllDiffsets">
+##  <ManSection>
+##  <Oper Name="AllDiffsets" Arg="[partial],group,[lambda]"/>
+##  <Oper Name="AllDiffsets" Label="for partial,[aim],forbidden,group,[lambda]" Arg="partial,[aim],forbidden,group,[lambda]"/>
+##  <Oper Name="AllDiffsets" Label="for [partial],Gdata,[lambda]" Arg="[partial],Gdata,[lambda]"/>
+##  <Oper Name="AllDiffsets" Label="for partial,[aim],forbidden,Gdata,[lambda]" Arg="partial,[aim],forbidden,Gdata,[lambda]"/>
+##  <Oper Name="AllDiffsets" Label="for partial,completions,aim,forbidden,Gdata,lambda" Arg="partial,completions,aim,forbidden,Gdata,lambda"/>
+##  <Description>
+##  Let <A>partial</A> be a list of elements of the group <A>group</A> which form a
+##  partial relative difference set with parameter <A>lambda</A> and forbidden
+##  set <A>forbidden</A> (which is also a set of group elements). That means that
 ##  the every non-trivial element in the list of quotients in elements of
-##  <partial> occurs at most <lambda> times and no element of <forbidden>
+##  <A>partial</A> occurs at most <A>lambda</A> times and no element of <A>forbidden</A>
 ##  is in this set.
-##  Then `AllDiffsets' returns the list of all partial relative difference
-##  sets of length <aim> with parameter <lambda> and forbidden set <forbidden>
-##  which contain <partial>. Only those partial relative difference sets will
-##  be constructed, which start with <partial> and continue with elements
-##  larger than the last element in <partial>.
-##
-##  To calculate *all* difference sets which contain <partial> as a subset,
-##  you can use "AllDiffsetsNoSort".
-##
-##  Note that a difference set is also assumed to 
+##  Then <C>AllDiffsets</C> returns the list of all partial relative difference
+##  sets of length <A>aim</A> with parameter <A>lambda</A> and forbidden set <A>forbidden</A>
+##  which contain <A>partial</A>. Only those partial relative difference sets will
+##  be constructed, which start with <A>partial</A> and continue with elements
+##  larger than the last element in <A>partial</A>.
+##  <P/>
+##  To calculate <E>all</E> difference sets which contain <A>partial</A> as a subset,
+##  you can use <Ref Func="AllDiffsetsNoSort"/>.
+##  <P/>
+##  Note that a difference set is also assumed to
 ##  contain the identity element, but this does not occur in the returned
-##  lists. So a returned difference set contains <aim> elements but actually
-##  represents a set of length <aim>+1, as it still is a partial relative 
+##  lists. So a returned difference set contains <A>aim</A> elements but actually
+##  represents a set of length <A>aim</A>+1, as it still is a partial relative
 ##  difference set when the identity element is added.
-##  If <partial> is not given or the empty set, all difference set in the 
-##  group <group> are calculated. If <lambda> is not given, it is set to 1.
-##  Without <forbidden>, ordinary difference sets are calculated.
-##  If <aim> is not given, it is set to the size of a full relative 
-##  difference set with forbidden set <forbidden> and parameter <lambda>.
-##
-##  Instead of using a group <group>, you can also use the data record 
-##  <Gdata> returned by "PermutationRepForDiffsetCalculations".
-##  In this case, <partial> and <forbidden> must be lists of integers.
-##  In the last form, <completions> must be a list of integers and 
-##  `AllDiffsets' does only extend <partial> by elements from <completions>.
-##  
+##  If <A>partial</A> is not given or the empty set, all difference set in the
+##  group <A>group</A> are calculated. If <A>lambda</A> is not given, it is set to 1.
+##  Without <A>forbidden</A>, ordinary difference sets are calculated.
+##  If <A>aim</A> is not given, it is set to the size of a full relative
+##  difference set with forbidden set <A>forbidden</A> and parameter <A>lambda</A>.
+##  <P/>
+##  Instead of using a group <A>group</A>, you can also use the data record
+##  <A>Gdata</A> returned by <Ref Func="PermutationRepForDiffsetCalculations"/>.
+##  In this case, <A>partial</A> and <A>forbidden</A> must be lists of integers.
+##  In the last form, <A>completions</A> must be a list of integers and
+##  <C>AllDiffsets</C> does only extend <A>partial</A> by elements from <A>completions</A>.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 DeclareOperation("AllDiffsets",
         [IsDenseList,IsDenseList,IsPosInt,IsDenseList,IsRecord,IsPosInt]);
 DeclareOperation("AllDiffsets",[IsGroup]);
@@ -89,19 +99,28 @@ DeclareOperation("AllDiffsets",[IsDenseList,IsPosInt,IsDenseList,IsRecord,IsPosI
 #O AllDiffsetsNoSort(<partial>,[<completions>],<aim>,[<forbidden>],<group>,[<lambda>])
 #O AllDiffsetsNoSort(<partial>,[<completions>],<aim>,[<forbidden>],<Gdata>,[<lambda>])
 ##
+##  <#GAPDoc Label="AllDiffsetsNoSort">
+##  <ManSection>
+##  <Oper Name="AllDiffsetsNoSort" Arg="partial,group"/>
+##  <Oper Name="AllDiffsetsNoSort" Label="for partial,Gdata" Arg="partial,Gdata"/>
+##  <Oper Name="AllDiffsetsNoSort" Label="for partial,[completions],aim,[forbidden],group,[lambda]" Arg="partial,[completions],aim,[forbidden],group,[lambda]"/>
+##  <Oper Name="AllDiffsetsNoSort" Label="for partial,[completions],aim,[forbidden],Gdata,[lambda]" Arg="partial,[completions],aim,[forbidden],Gdata,[lambda]"/>
+##  <Description>
 ##  This calculates all partial relative difference sets which contain the partial
-##  relative difference set <partial>. The returned value is a set of lists.
-##  Each of the returned lists starts with the list <partial>.
-##  If <partial> is not a partial relative difference set, the empty list is 
-##  returned. 
-##
-##  Note that despite the name, `AllDiffsetsNoSort' does not calculate all
-##  difference sets as unordered lists. It just calculates all difference 
-##  sets which contain <partial> as a subset.
-##
-##  As it does not only append larger elements to <partial>, `AllDiffsetsNoSort'
+##  relative difference set <A>partial</A>. The returned value is a set of lists.
+##  Each of the returned lists starts with the list <A>partial</A>.
+##  If <A>partial</A> is not a partial relative difference set, the empty list is
+##  returned.
+##  <P/>
+##  Note that despite the name, <C>AllDiffsetsNoSort</C> does not calculate all
+##  difference sets as unordered lists. It just calculates all difference
+##  sets which contain <A>partial</A> as a subset.
+##  <P/>
+##  As it does not only append larger elements to <A>partial</A>, <C>AllDiffsetsNoSort</C>
 ##  works for all groups.
-##
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
 DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsGroup]);
 DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsRecord]);
 DeclareOperation("AllDiffsetsNoSort",[IsDenseList,IsGroup,IsPosInt]);

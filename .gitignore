@@ -1,28 +1,15 @@
-/doc/chap*.html
-/doc/chap*.txt
 /doc/*.css
 /doc/*.js
+/doc/_*.xml
+/doc/_main.*
+/doc/chap*.html
+/doc/chap*.txt
 /doc/chooser.html
-/doc/*.aux
-/doc/*.bbl
-/doc/*.blg
-/doc/*.brf
-/doc/*.dvi
-/doc/*.idx
-/doc/*.ilg
-/doc/*.ind
-/doc/*.lab
-/doc/*.log
-/doc/*.out
-/doc/*.pnr
-/doc/*.six
-/doc/*.tex
-/doc/*.toc
-/doc/*.tst
+/doc/manual.lab
 /doc/manual.pdf
+/doc/manual.six
 /doc/title.xml
 
+# Output of the old plain-TeX manual; kept ignored until the leftover
+# directory is removed for good.
 /htm/
-
-/tmp/
-/gh-pages/
