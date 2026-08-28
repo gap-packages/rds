@@ -8,6 +8,8 @@
 /doc/manual.lab
 /doc/manual.pdf
 /doc/manual.six
+# generated from rdsbib.xml for the LaTeX build
+/doc/rdsbib.xml.bib
 /doc/title.xml
 
 # Output of the old plain-TeX manual; kept ignored until the leftover

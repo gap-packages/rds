@@ -28,7 +28,7 @@ AutoDoc(rec(
             "iso.xml",
             "misc.xml"
         ],
-        bib := "rds.bib",
+        bib := "rdsbib.xml",
         entities := rec(
             RDS := "<Package>RDS</Package>",
         ),
