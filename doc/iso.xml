@@ -2,7 +2,7 @@
 <Heading>Block Designs and Projective Planes</Heading>
 This section contains functions to help studying projective planes.
 There is also a function converting relative difference sets to block
-designs. Those desings can be studied with the <Package>DESIGN</Package> <Cite Key="DESIGN"/>
+designs. Those designs can be studied with the <Package>DESIGN</Package> <Cite Key="DESIGN"/>
 package by L. Soicher.
 <P/>
 Projective planes are always assumed to consist of positive integers
@@ -101,7 +101,7 @@ on the points outside the axis.
 <Section Label="Collineations on Baer Subplanes">
 <Heading>Collineations on Baer Subplanes</Heading>
 Let <M>P</M> be a projective plane of order <M>n^2</M>. A subplane <M>B</M> of order
-<M>n</M> of <M>P</M> is called <E>Baer subplane</E>. Baer suplanes are exactly the
+<M>n</M> of <M>P</M> is called <E>Baer subplane</E>. Baer subplanes are exactly the
 maximal subplanes of <M>P</M>.
 <P/>
 <#Include Label="InducedCollineation">

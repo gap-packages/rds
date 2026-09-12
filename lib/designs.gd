@@ -99,7 +99,7 @@ DeclareOperation("IsProjectivePlane",[IsRecord]);
 ##  <ManSection>
 ##  <Oper Name="PointJoiningLinesProjectivePlane" Arg="plane"/>
 ##  <Description>
-##  Returns a matrix which has as <M>ij</M>th entry the point wich is contained
+##  Returns a matrix which has as <M>ij</M>th entry the point which is contained
 ##  in the blocks with numbers <M>i</M> and <M>j</M>. This matrix is also stored in
 ##  <A>plane</A>. Some operations are faster if <A>plane</A> contains this matrix.
 ##  If <A>plane</A> is not a projective plane, an error is issued.

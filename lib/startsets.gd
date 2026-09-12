@@ -244,7 +244,7 @@ DeclareOperation("RemainingCompletions",[IsDenseList,IsDenseList,IsDenseList,IsR
 ##   Here an <Q>extension</Q> of a partial difference set <M>S</M> is a list which has
 ##   one element more than <M>S</M> and contains <M>S</M>.
 ##  <P/>
-##  Here <A>completions</A> is a set of elements wich may be appended to the lists in
+##  Here <A>completions</A> is a set of elements which may be appended to the lists in
 ##   <A>startsets</A> to generate new partial difference sets. For relative difference
 ##   sets, the forbidden set <A>forbiddenset</A> must be given.
 ##   And the integer <A>aim</A> gives the desired total length, i.e. the number

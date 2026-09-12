@@ -54,7 +54,7 @@ group will be used to generate startsets and we assume that the
 trivial coset contains <M>8</M> elements of the difference set.
 So we generate startsets in <M>U</M> and make a first reduction. For this,
 we need <M>U</M> and <M>N</M> as lists of integers (recall that difference sets are
-asumed to be lists of integers). We will call these lists <M>Up</M> and
+assumed to be lists of integers). We will call these lists <M>Up</M> and
 <M>Np</M>.
 Furthermore, we will have to choose a suitable group of automorphisms
 for reduction. As <M>G</M> is cyclic, we may take <M>Gdata.Aac</M> here. A good

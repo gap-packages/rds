@@ -12,7 +12,7 @@ all but the basic chapters contain a small introductory paragraph
 pointing out which functions may be interesting for the user and which
 are merely helper functions called by other functions.
 <P/>
-The structure of this manual is a follows: First, there is a chapter
+The structure of this manual is as follows: First, there is a chapter
 about brute force methods which are easy to use but are not suitable
 for very difficult calculations.
 <P/>
@@ -83,9 +83,9 @@ archive by using the right one of the following commands:
 
 </Item>
 <Mark>4.</Mark>
-<Item>  start GAP. If you have unpacked the archive to 'gap/pkg' in your
-  home directory, you might have to use ''gap -l '<M>homedir</M>/gap;' ''
-  where <M>homedir</M> is the path of your home directory (use 'pwd' to
+<Item>  start GAP. If you have unpacked the archive to <C>gap/pkg</C> in your
+  home directory, you might have to use <C>gap -l "<A>homedir</A>/gap;"</C>
+  where <A>homedir</A> is the path of your home directory (use <C>pwd</C> to
   find out what it is, if you don't know it)
 
 </Item>
@@ -96,7 +96,7 @@ For a test, see the examples in chapters <Ref Chap="AllDiffsets and OneDiffset"/
 </Section>
 <Section Label="Verbosity">
 <Heading>Verbosity</Heading>
-There are two info classes that control the about of additional
+There are two info classes that control the amount of additional
 information <Package>RDS</Package> prints:
 <P/>
 <#Include Label="InfoRDS">
@@ -126,12 +126,12 @@ properties hold:
 </List>
 Let <M>D\subseteq G</M> be a difference set, then the incidence structure
 with points <M>G</M> and blocks <M>\{Dg|g\in G\}</M> is called the
-<E>development</E> of <M>D</M>. In short:  <M>{ dev} D</M>. Obviously, <M>G</M> acts on
-<M>{ dev}D</M> by multiplication from the right.
+<E>development</E> of <M>D</M>. In short:  <M>&dev; D</M>. Obviously, <M>G</M> acts on
+<M>&dev; D</M> by multiplication from the right.
 <P/>
 Relative difference sets with <M>N=1</M> are called (ordinary) difference
 sets. The development of a difference set with <M>N=1</M> and <M>\lambda=1</M>
-is projective plane of order <M>k-1</M>.
+is a projective plane of order <M>k-1</M>.
 <P/>
 In group ring notation a relative difference set satisfies
 <Display>
@@ -145,12 +145,12 @@ with forbidden set <M>N</M>, if
 </Display>
 <P/>
 holds for some <M>1\leq\kappa\leq k</M> and <M>0\leq v_g \leq \lambda</M> for
-all <M>g\in G-N</M>.  If <M>D</M> is a relative difference set then ,obviously,
+all <M>g\in G-N</M>.  If <M>D</M> is a relative difference set then, obviously,
 <M>D</M> is also a partial relative difference set.
 <P/>
 <E>IMPORTANT NOTE</E>
 <P/>
-<Package>RDS</Package> implicitly assumes that the <E>every</E> partial difference
+<Package>RDS</Package> implicitly assumes that <E>every</E> partial difference
 set contains the identity element (see the notion of equivalence in
 <Ref Sect="Introduction"/> for the mathematical reason). However, the identity
 <E>must not</E> be contained in the lists representing partial relative

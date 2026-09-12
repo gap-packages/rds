@@ -91,7 +91,7 @@ DeclareProperty("IsRootOfUnity",IsCyclotomic);
 ##  <ManSection>
 ##  <Oper Name="CoeffList2CyclotomicList" Arg="list,root"/>
 ##  <Description>
-##  <C>CoeffList2CyclogomicList( <A>list</A>, <A>root</A> )</C> takes a list of integers
+##  <C>CoeffList2CyclotomicList( <A>list</A>, <A>root</A> )</C> takes a list of integers
 ##  <A>list</A> and a root of unity <A>root</A> and returns a list <A>list2</A>, where
 ##  &lt;list2[i]=list[i]* root^(i-1)&gt;.
 ##  </Description>

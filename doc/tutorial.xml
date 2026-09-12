@@ -8,7 +8,7 @@ in section <Ref Sect="Brute force methods"/>.
 <P/>
 Do not expect too much from these methods alone! If
 you want to find examples of relative difference sets in larger
-groups, you should familiarize with the notion of coset signatures by
+groups, you should familiarize yourself with the notion of coset signatures by
 also reading the next chapter.
 <P/>
 The functions <Ref Func="AllDiffsets"/> and <Ref Func="OneDiffset"/> present the
@@ -35,7 +35,7 @@ assumes it implicitly. So difference sets of length <M>n</M> are
 represented by lists of length <M>n-1</M>.
 <P/>
 We can calculate all ordinary difference sets in <M>G</M> which contain the
-last element using <Ref Func="AllDiffsetsNoSort"/>. Observe, that <Ref Func="AllDiffsets"/>
+last element using <Ref Func="AllDiffsetsNoSort"/>. Observe that <Ref Func="AllDiffsets"/>
 calculates partial difference sets by adding elements to the given
 list which are lexicographically larger than the last one of this
 list:

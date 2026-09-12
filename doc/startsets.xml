@@ -47,7 +47,7 @@ with forbidden set <M>N</M>, if
 </Display>
 <P/>
 holds for some <M>1\leq\kappa\leq k</M> and <M>0\leq v_g \leq \lambda</M> for
-all <M>g\in G-N</M>.  If <M>D</M> is a relative difference set then ,obviously,
+all <M>g\in G-N</M>.  If <M>D</M> is a relative difference set then, obviously,
 <M>D</M> is also a partial relative difference set.
 <P/>
 Two relative difference sets <M>D,D'\subseteq G</M> are called <E>strongly
@@ -58,12 +58,12 @@ difference sets.
 <P/>
 Let <M>D\subseteq G</M> be a difference set, then the incidence structure
 with points <M>G</M> and blocks <M>\{Dg|g\in G\}</M> is called the
-<E>development</E> of <M>D</M>. In short:  <M>{ dev} D</M>. Obviously, <M>G</M> acts on
-<M>{ dev}D</M> by multiplication from the right.
+<E>development</E> of <M>D</M>. In short:  <M>&dev; D</M>. Obviously, <M>G</M> acts on
+<M>&dev; D</M> by multiplication from the right.
 <P/>
 If <M>D</M> is a difference set, then <M>D^{-1}</M> is also a difference set.
-And <M>{ dev} D^{-1}</M> is the dual of <M>{ dev} D</M>. So a group
-admitting an operation some structure defined by a difference set does
+And <M>&dev; D^{-1}</M> is the dual of <M>&dev; D</M>. So a group
+admitting an operation on some structure defined by a difference set does
 also admit an operation on the dual structure. We may therefore change
 the notion of equivalence and take <M>\phi</M> to be an automorphism or an
 anti-automorphism. Forbidden sets are closed under inversion, so this
@@ -81,7 +81,7 @@ table for this.
 <P/>
 This pre-calculation is done by the operation
 <Ref Func="PermutationRepForDiffsetCalculations"/>. So before you start generating
-difference set, call this function and work with the data structure
+difference sets, call this function and work with the data structure
 returned by it.
 <P/>
 For an exhaustive search, the ordering of <M>G</M> is very important. To
@@ -89,7 +89,7 @@ avoid generating duplicate partial difference sets, we would like to
 represent partial difference sets by <E>sets</E>, i.e. ordered lists. But
 in fact, &RDS; does <E>not</E> assume that partial difference
 sets are sets. The operations <Ref Func="ExtendedStartsets"/> and <Ref Func="AllDiffsets"/>
-assume that the last element of partial difference set is its
+assume that the last element of a partial difference set is its
 maximum. But they don't test it. So if you start from scratch, these
 methods generate difference sets which are really sets. Whereas the
 <C>NoSort</C> versions disregard the ordering of <M>G</M> and will produce
@@ -98,9 +98,9 @@ duplicates.
 The reason for this seemingly strange behaviour is the following:
 Assume that we have a normal subgroup <M>U\leq G</M> and know that every
 difference set <M>D\subseteq G</M> contains exactly <M>n_i</M> elements from the
-<M>i^{ th}</M> coset modulo <M>U</M>. Then it is natural to generate
+<M>i</M>-th coset modulo <M>U</M>. Then it is natural to generate
 difference sets by first searching all partial difference sets of
-length <M>n_1</M> containing entirely of elements of the first coset modulo
+length <M>n_1</M> consisting entirely of elements of the first coset modulo
 <M>U</M> and then proceed with the other cosets.
 <P/>
 This method of difference set generation is normally not compatible

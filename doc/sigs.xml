@@ -15,7 +15,7 @@ skip a large part of this and go straight to the explanation of
 <P/>
 The functions <Ref Func="RDSFactorGroupData"/>, <Ref Func="MatchingFGData"/> will be
 interesting for you, if you look for difference sets with the same
-parameters in different gorups. <Ref Func="SignatureDataForNormalSubgroups"/> and
+parameters in different groups. <Ref Func="SignatureDataForNormalSubgroups"/> and
 <Ref Func="SigInvariant"/>
 <P/>
 The last section (<Ref Sect="Blackbox functions"/>) of this chapter has some

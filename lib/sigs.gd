@@ -151,7 +151,7 @@ DeclareOperation("MatchingFGData",[IsList,IsRecord]);
 ##  Here <A>Nsize</A> is the size of the forbidden group,
 ##  <A>Intersectsizes</A> is a list of integers determining the size of the
 ##  intersection of the forbidden set and the normal Subgroup of order <A>Usize</A>.
-##  The pararmeters <A>k</A> and <A>lambda</A> are the usual ones for designs.
+##  The parameters <A>k</A> and <A>lambda</A> are the usual ones for designs.
 ##  <C>CosetSignatures</C> returns a list containing one pair for each entry <A>i</A> of
 ##  <A>Intersectsizes</A>. The first entry of this pair is
 ##  <M>[&lt;Gsize&gt;,&lt;Nsize&gt;,&lt;Usize&gt;,&lt;i&gt;,&lt;k&gt;,&lt;lambda&gt;]</M> and the second one is a list

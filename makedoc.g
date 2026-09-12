@@ -31,6 +31,13 @@ AutoDoc(rec(
         bib := "rdsbib.xml",
         entities := rec(
             RDS := "<Package>RDS</Package>",
+            # GAPDoc's text output has no upright math font and would print
+            # the macro name, so spell out what each format gets.
+            dev := Concatenation(
+                "<Alt Only=\"LaTeX\">\\mathrm{dev}</Alt>",
+                "<Alt Only=\"HTML,MathJax\">\\mathrm{dev}</Alt>",
+                "<Alt Only=\"HTML,noMathJax\">dev</Alt>",
+                "<Alt Only=\"Text\">dev</Alt>" ),
         ),
     ),
 ));
