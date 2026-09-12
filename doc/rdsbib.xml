@@ -27,6 +27,7 @@
   <year>1955</year>
   <volume>78</volume>
   <pages>464--481</pages>
+  <doi>10.1090/s0002-9947-1955-0069791-3</doi>
 </article></entry>
 <entry id="BreuersAnswer"><misc>
   <author>
@@ -47,6 +48,7 @@
   <number>44</number>
   <series><value key="ergebnisse"/></series>
   <address><value key="sploc"/></address>
+  <doi>10.1007/978-3-642-62012-6</doi>
 </book></entry>
 <entry id="DembowskiPiper"><article>
   <author>
@@ -59,6 +61,7 @@
   <year>1967</year>
   <volume>99</volume>
   <pages>53--75</pages>
+  <doi>10.1007/bf01118689</doi>
 </article></entry>
 <entry id="Moorhouse"><misc>
   <author>
@@ -76,6 +79,7 @@
   <year>1995</year>
   <volume>226--228</volume>
   <pages>529--551</pages>
+  <doi>10.1016/0024-3795(95)00242-j</doi>
 </article></entry>
 <entry id="RoederDiss"><phdthesis>
   <author>
