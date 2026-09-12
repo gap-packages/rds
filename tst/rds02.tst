@@ -33,9 +33,5 @@ gap> NormalSgsHavingAtMostNSigs(sigdat,1,[1..7]);
   rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3*f4 ]) ), 
   rec( sigs := [ [ 3, 3, 3 ] ], subgroup := Group([ f1, f2, f3^2*f4 ]) ) ]
 
-# doc/jumpstart.xml:157-160
-gap> PermList2GroupList(Concatenation(startsets[1],[1]),Gdata); 
-Error, Variable: 'startsets' must have a value
-
 #
 gap> STOP_TEST("rds02.tst", 1);
