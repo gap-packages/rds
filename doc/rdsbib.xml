@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "bibxmlext.dtd">
+<file>
+<string key="archmath" value="Archiv der Mathematik"/>
+<string key="jcd" value="Journal of Combinatorial Designs"/>
+<string key="geomded" value="Geometriae Dedicata"/>
+<string key="mathz" value="Mathematische Zeitschrift"/>
+<string key="dcc" value="Designs Codes and Cryptography"/>
+<string key="jcdissn" value="1063-8539"/>
+<string key="jcta" value="Journal of Combinatorial Theory, Series A"/>
+<string key="jctaissn" value="0097-3165"/>
+<string key="transamermathsoc" value="Transactions of the American Mathematical Society"/>
+<string key="springer" value="Springer-Verlag"/>
+<string key="lecnotesmath" value="Lecture Notes in Mathematics"/>
+<string key="sploc" value="Berlin Heidelberg"/>
+<string key="gradtexts" value="Graduate Texts in Mathematics"/>
+<string key="grundlehren" value="Die Grundlehren der mathematischen Wissenschaften in Einzeldarstellungen"/>
+<string key="ergebnisse" value="Ergebnisse der Mathematik und ihrer Grenzgebiete"/>
+<string key="cup" value="Cambridge University Press"/>
+<string key="cuploc" value="Cambridge"/>
+<entry id="Bruck55"><article>
+  <author>
+    <name><first>Richard H.</first><last>Bruck</last></name>
+  </author>  
+  <title>Difference Sets in a Finite Group</title>
+  <journal><value key="transamermathsoc"/></journal>
+  <year>1955</year>
+  <volume>78</volume>
+  <pages>464--481</pages>
+  <doi>10.1090/s0002-9947-1955-0069791-3</doi>
+</article></entry>
+<entry id="BreuersAnswer"><misc>
+  <author>
+    <name><first>Thomas</first><last>Breuer</last></name>
+  </author>  
+  <title>Re: Filter trouble</title>
+  <howpublished>Posting at the GAP forum</howpublished>
+  <month>Jun</month>
+  <year>2005</year>
+</misc></entry>
+<entry id="Dembowski"><book>
+  <author>
+    <name><first>Peter</first><last>Dembowski</last></name>
+  </author>  
+  <title>Finite Geometries</title>
+  <publisher><value key="springer"/></publisher>
+  <year>1968</year>
+  <number>44</number>
+  <series><value key="ergebnisse"/></series>
+  <address><value key="sploc"/></address>
+  <doi>10.1007/978-3-642-62012-6</doi>
+</book></entry>
+<entry id="DembowskiPiper"><article>
+  <author>
+    <name><first>Peter</first><last>Dembowski</last></name>
+    <name><first>Fred</first><last>Piper</last></name>
+  </author>  
+  <title>Quasiregular collineation groups of finite
+                  projective planes</title>
+  <journal><value key="mathz"/></journal>
+  <year>1967</year>
+  <volume>99</volume>
+  <pages>53--75</pages>
+  <doi>10.1007/bf01118689</doi>
+</article></entry>
+<entry id="Moorhouse"><misc>
+  <author>
+    <name><first>G. Eric</first><last>Moorhouse</last></name>
+  </author>  
+  <title>Data for Projective Planes</title>
+  <howpublished><URL>http://www.uwyo.edu/moorhouse/</URL></howpublished>
+</misc></entry>
+<entry id="MoorhouseGraphs"><article>
+  <author>
+    <name><first>G. Eric</first><last>Moorhouse</last></name>
+  </author>  
+  <title>Two-Graphs and Skew Two-Graphs in Finite Geometries</title>
+  <journal>Linear Algebra and its Applications</journal>
+  <year>1995</year>
+  <volume>226--228</volume>
+  <pages>529--551</pages>
+  <doi>10.1016/0024-3795(95)00242-j</doi>
+</article></entry>
+<entry id="RoederDiss"><phdthesis>
+  <author>
+    <name><first>Marc</first><last>Röder</last></name>
+  </author>  
+  <title>Quasiregular Projective Planes of Order <M>16</M> -- A Computational
+      Approach</title>
+  <school>Technische Universität Kaiserslautern</school>
+  <year>2006</year>
+</phdthesis></entry>
+<entry id="Royle"><misc>
+  <author>
+    <name><first>Gordon</first><last>Royle</last></name>
+  </author>  
+  <title>Combinatorial Catalogues</title>
+  <howpublished><URL>http://www.csse.uwa.edu.au/~gordon/data.html</URL></howpublished>
+</misc></entry>
+<entry id="DESIGN"><misc>
+  <author>
+    <name><first>Leonard H.</first><last>Soicher</last></name>
+  </author>  
+  <title>The DESIGN package for GAP</title>
+  <howpublished><URL>http://designtheory.org/software/gap_design</URL></howpublished>
+  <year>2006</year>
+  <note>Version 1.3</note>
+</misc></entry>
+<entry id="GRAPE"><misc>
+  <author>
+    <name><first>Leonard H.</first><last>Soicher</last></name>
+  </author>  
+  <title>The GRAPE package for GAP</title>
+  <howpublished><URL>http://www.maths.qmul.ac.uk/~leonard/grape/</URL></howpublished>
+  <year>2006</year>
+  <note>Version 4.3</note>
+</misc></entry>
+</file>

@@ -1,0 +1,156 @@
+<Chapter Label="Block Designs and Projective Planes">
+<Heading>Block Designs and Projective Planes</Heading>
+This section contains functions to help studying projective planes.
+There is also a function converting relative difference sets to block
+designs. Those designs can be studied with the <Package>DESIGN</Package> <Cite Key="DESIGN"/>
+package by L. Soicher.
+<P/>
+Projective planes are always assumed to consist of positive integers
+(as points) and sets of integers (as blocks). The incidence relation
+is assumed to be the element relation. The blocks of a projective
+plane must be <E>sets</E>.
+<P/>
+<Section Label="Block Designs and Projective Planes (functions)">
+<Heading>Block Designs and Projective Planes</Heading>
+<#Include Label="ProjectivePlane">
+<#Include Label="PointJoiningLinesProjectivePlane">
+<P/>
+<#Include Label="DevelopmentOfRDS">
+<P/>
+Note that equality for block designs means equality of records. So
+<C>DevelopmentOfRDS</C> generates exactly the same record in each of the
+above examples. The output is in fact independent of the chosen data type of the input (as long as it is valid). In particular, the design always knows its <C>pointNames</C>.
+<P/>
+<#Include Label="ProjectiveClosureOfPointSet">
+<P/>
+Let's find a Baer subplane in the desarguesian plane of order <M>4</M>:
+<Example><![CDATA[
+gap> G:=CyclicGroup(21);; Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap> AllDiffsets([2],[1..21],4,[],Gdata,1);                                  
+[ [ 2, 5, 16, 17 ], [ 2, 6, 10, 18 ] ]
+gap> plane:=DevelopmentOfRDS([2,5,16,17],Gdata);;
+gap> ProjectiveClosureOfPointSet([1,3,4],plane);  
+rec( 
+  closure := rec( blocks := [ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ] ], 
+      isBlockDesign := true, pointNames := [ <identity> of ..., f2, f1^2 ], 
+      v := 3 ), embedding := (2,3,4) )
+gap> IsProjectivePlane(last.closure);
+false
+gap> baer:=ProjectiveClosureOfPointSet([1,3,4,5],plane);;
+gap> baer.closure.blocks;
+[ [ 1, 2, 6 ], [ 1, 3, 5 ], [ 1, 4, 7 ], [ 2, 3, 7 ], [ 2, 4, 5 ], 
+  [ 3, 4, 6 ], [ 5, 6, 7 ] ]
+gap> IsProjectivePlane(baer.closure);
+true
+gap> Set(baer.closure.blocks,b->OnSets(b,baer.embedding));
+[ [ 1, 3, 14 ], [ 1, 4, 8 ], [ 1, 5, 17 ], [ 3, 4, 17 ], [ 3, 5, 8 ], 
+  [ 4, 5, 14 ], [ 8, 14, 17 ] ]
+]]></Example>
+</Section>
+<Section Label="Isomorphisms and Collineations">
+<Heading>Isomorphisms and Collineations</Heading>
+Isomorphisms of projective planes are mappings which take points to
+points and blocks to blocks and respect incidence. A <E>collineation</E> of
+a projective plane <M>P</M> is an isomorphism from <M>P</M> to <M>P</M>.
+<P/>
+As projective planes are assumed to live on the integers, isomorphisms
+of projective planes are represented by permutations. To test if a
+permutation on points is actually an isomorphism of projective planes,
+the following methods can be used.
+<P/>
+<#Include Label="IsIsomorphismOfProjectivePlanes">
+<#Include Label="IsCollineationOfProjectivePlane">
+<#Include Label="IsomorphismProjPlanesByGenerators">
+<P/>
+Look at the above example again:
+<Example><![CDATA[
+gap> P:=ProjectivePlane( [ [ 1, 2, 6 ], [ 1, 3, 5 ], [ 1, 4, 7 ], 
+>       [ 2, 3, 7 ], [ 2, 4, 5 ], [ 3, 4, 6 ], [ 5, 6, 7 ] ]);;
+gap> pi:=IsomorphismProjPlanesByGenerators([1,2,3,4],P,[2,4,6,7],P);
+(1,2,4,7,3,6,5)
+gap> IsIsomorphismOfProjectivePlanes(pi,P,P);
+true
+gap> IsCollineationOfProjectivePlane(pi,P);                 
+true
+gap> IsomorphismProjPlanesByGenerators([1,2,3,4],P,[1,2,3,5],P);
+fail
+gap> ProjectiveClosureOfPointSet([1,2,3,5],P).closure.v;
+4
+]]></Example>
+</Section>
+<Section Label="Central Collineations">
+<Heading>Central Collineations</Heading>
+Let <M>\phi</M> be a collineation of a projective plane which fixes one
+point block-wise (the so-called <E>centre</E>) and one block point-wise
+(the so-called <E>axis</E>). If the centre is contained in the axis, <M>\phi</M>
+is called <E>elation</E>. Otherwise, <M>\phi</M> is called <E>homology</E>. The group
+of elations with given axis is called <E>translation group</E> of the plane
+(relative to the chosen axis). A projective plane with transitive
+translation group is called <E>translation plane</E>. Here transitivity is
+on the points outside the axis.
+<P/>
+<#Include Label="ElationByPair">
+<#Include Label="AllElationsCentAx">
+<#Include Label="AllElationsAx">
+<P/>
+<#Include Label="IsTranslationPlane">
+<P/>
+<#Include Label="HomologyByPair">
+<#Include Label="GroupOfHomologies">
+</Section>
+<Section Label="Collineations on Baer Subplanes">
+<Heading>Collineations on Baer Subplanes</Heading>
+Let <M>P</M> be a projective plane of order <M>n^2</M>. A subplane <M>B</M> of order
+<M>n</M> of <M>P</M> is called <E>Baer subplane</E>. Baer subplanes are exactly the
+maximal subplanes of <M>P</M>.
+<P/>
+<#Include Label="InducedCollineation">
+<P/>
+Let's go back to an earlier example and find a planar collineation:
+<Example><![CDATA[
+gap> G:=CyclicGroup(21);; Gdata:=PermutationRepForDiffsetCalculations(G);; 
+gap> AllDiffsets([2],[1..21],4,[],Gdata,1); 
+[ [ 2, 5, 16, 17 ], [ 2, 6, 10, 18 ] ]
+gap> plane:=DevelopmentOfRDS([2,5,16,17],Gdata);;
+gap> baer:=ProjectiveClosureOfPointSet([1,3,4,5],plane);; 
+gap> pi:=InducedCollineation(baer.closure,(),21,15,plane,baer.embedding);
+(2,16)(6,18)(7,12)(9,11)(10,13)(15,21)(19,20)
+gap> 21^pi;
+15
+gap> ForAll(OnSets([1..7],baer.embedding),i->i^pi=i);
+true
+]]></Example>
+</Section>
+<Section Label="Invariants for Projective Planes">
+<Heading>Invariants for Projective Planes</Heading>
+The functions <C>NrFanoPlanesAtPoints</C>, <C>RDS_PRank</C>, <C>FingerprintAntiFlag</C>
+and <C>FingerprintProjPlane</C> calculate invariants for finite projective
+planes. For more details see <Cite Key="RoederDiss"/> and
+<Cite Key="MoorhouseGraphs"/>. The values of some of these invariants are
+available from the homepages of <Cite Key="Moorhouse"/> and <Cite Key="Royle"/> for
+many planes.
+<P/>
+<#Include Label="NrFanoPlanesAtPoints">
+<#Include Label="IncidenceMatrix">
+<#Include Label="RDS_PRank">
+<#Include Label="FingerprintProjPlane">
+<#Include Label="FingerprintAntiFlag">
+Look at the above example again:
+<Example><![CDATA[
+gap> NrFanoPlanesAtPoints([1,2,3],plane);
+[ [ 1, 240 ], [ 2, 240 ], [ 3, 240 ] ]
+gap> Set(NrFanoPlanesAtPoints([1..plane.v],plane),i->i[2])=[240];
+true
+gap> RDS_PRank(plane,2);
+10
+gap> RDS_PRank(plane,3);
+21
+gap> RDS_PRank(plane,5);
+20
+gap> FingerprintProjPlane(plane);
+[ [ 12, 420 ], [ 16, 21 ] ]
+gap> FingerprintAntiFlag(1,6,plane);
+[ [ 3, 20 ], [ 4, 5 ] ]
+]]></Example>
+</Section>
+</Chapter>

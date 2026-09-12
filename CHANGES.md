@@ -1,5 +1,11 @@
 This file describes changes in the RDS package.
 
+## Unreleased
+
+  - Convert the manual from plain TeX to GAPDoc; its examples are now
+    extracted to `tst/` and run by the test suite
+  - Require GAP 4.12 or later
+
 ## 1.10 (2026-08-02)
 
   - Fix missing commas in the `AllDiffsets` methods taking a start set and a

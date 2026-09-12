@@ -46,15 +46,15 @@ AbstractHTML := "This package provides functions for the complete enumeration of
 
 PackageDoc := rec(
   BookName  := "RDS",
-  ArchiveURLSubset := ["doc", "htm"],
-  HTMLStart := "htm/chapters.htm",
+  ArchiveURLSubset := ["doc"],
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Relative Difference Sets",
 ),
 
 Dependencies := rec(
-  GAP := ">=4.8",
+  GAP := ">=4.12",
   NeededOtherPackages := [["DESIGN", ">=1.3"], ["SmallGrp", ">=1.0"]],
   SuggestedOtherPackages := [["AutPGrp",">=1.0"]],
   ExternalConditions := []

@@ -1,0 +1,177 @@
+<Chapter Label="Ordered Signatures">
+<Heading>Ordered Signatures</Heading>
+In this chapter, we will discuss two methods to calculate ordered
+signatures. The first one can be used for relative difference sets
+with forbidden set, while the second one does only work for ordinary
+difference sets.
+<P/>
+The methods introduced here can only be used in some special
+cases.
+<Section Label="Ordered signatures by quotient images">
+<Heading>Ordered signatures by quotient images</Heading>
+Let <M>D\subseteq G</M> be a relative difference set with parameters
+<M>(v/n,n,k,\lambda)</M> and forbidden set <M>N\subseteq G</M>. Let <M>U\leq G</M> be
+a normal subgroup such that <M>U\subseteq N</M>.
+<P/>
+Then the coset signature <M>(v_1,\dots,v_{|G:U|})</M> of <M>D</M> has only the
+entries <M>1</M> (<M>k</M>- times) and <M>0</M> (<M>|G:U|-k</M>- times). And as in chapter
+<Ref Chap="Invariants for Difference Sets"/> we have
+<P/>
+<Display>
+\sum_j v_j v_{ij}=
+	 \lambda(|U|-|g_iU \cap N|){ for }   g_i\not\in U
+</Display>
+<P/>
+where <M>v_{ij}=|D\cap g_ig_jU|</M>.  If the forbidden set <M>N</M> is a
+subgroup of <M>G</M> we have <M>|g_iU\cap N|</M> is either <M>0</M> or equal to
+<M>|U\cap N|=|U|</M>.
+<P/>
+Let <M>\phi\colon G\to G/U</M> be the canonical epimorphism. Then <M>D^\phi</M>
+is a relative difference set in <M>G/U</M> with forbidden set <M>N^\phi</M> and
+parameters <M>(v/n,n/|U|,k,|U|\lambda)</M>.
+<P/>
+So the ordered signatures with respect to <M>U</M> are equivalent to the
+relative difference sets in <M>G/U</M>. Observe that we may not apply
+reduction in <M>G/U</M> using the full automorphismgroup of <M>G/U</M> but only
+the group induced by the stabiliser of <M>U</M> in the automorphism group
+of <M>G</M>. This is due to the fact that we use an <Q>induced</Q> notion of
+equivalence in <M>G/U</M> because we are interested in signatures and not
+primarily in difference sets in <M>G/U</M>.
+<P/>
+<#Include Label="NormalSgsForQuotientImages">
+<P/>
+<#Include Label="DataForQuotientImage">
+<P/>
+The data returned by <Ref Func="DataForQuotientImage"/> can be used to calculate
+difference sets in <M>G/U</M> in the way outlined in chapter <Ref Chap="A basic example"/>. A quotient image of a relative difference set has a larger
+<M>\lambda</M> than the initial difference set. So
+<Ref Func="MultiplicityInvariantLargeLambda"/> can be used as in invariant here
+(see <Ref Sect="An invariant for large lambda"/>)
+<P/>
+After all difference sets are known, they must be converted
+into ordered signatures. This is done by the following function:
+<P/>
+<#Include Label="OrderedSigsFromQuotientImages">
+<P/>
+<#Include Label="MatchingFGDataForOrderedSigs">
+<P/>
+<#Include Label="OrderedSigInvariant">
+<P/>
+Assume we have calculated ordered signatures and have stored them in a
+record &lt;.osigs&gt; and a list <A>normalSubgroupsData</A> as returned by
+<Ref Func="SignatureData"/> containing the admissible signatures.  A function for
+partitioning partial relative difference sets as required by
+<Ref Func="ReducedStartsets"/> can be defined as follows:
+<Log><![CDATA[
+partitionfunc:=function(list)
+ local si, osi;
+  si:=SigInvariant(Union(list,[1]),normalSubgroupsData);
+  osi:=OrderedSigInvariant(Union(list,[1]),[osigs]);
+  if osi=fail or si=fail
+   then 
+    return fail;
+  else
+    return si;
+  fi;
+end;
+]]></Log>
+</Section>
+<Section Label="Ordered signatures using representations">
+<Heading>Ordered signatures using representations</Heading>
+This section contains some methods for ordered signatures in ordinary
+difference sets. Unfortunately, these methods are not as comfortable
+as those for unordered signatures. The reason for this is simply that
+I didn't have any time to tie them together to high-level functions.
+If you need help here, don't hesitate to contact me.
+</Section>
+<Section Label="Definition">
+<Heading>Definition</Heading>
+Let <M>R \subseteq G</M> be a (partial) ordinary difference set (for
+definition see <Ref Sect="Introduction"/>). Let <M>U\leq G</M> be a normal subgroup and
+<M>C=\{g_1,\dots, g_{|G:U|}\}</M> be a system of representatives of <M>G/U</M>.
+<P/>
+As in <Ref Sect="The Coset Signature"/> we may define the coset signature of <M>R</M>
+relative to <M>U</M>.
+<P/>
+Let <M>U=g_1,\dots,g_{|G:U|}</M> be an enumeration of <M>G/U</M>. An
+<Q>admissible ordered signature</Q> for <M>U</M> is a tuple
+<M>(v_1,\dots,v_{|G:U|})</M> such that
+<P/>
+<Display>
+\matrix{
+\sum v_i=k\\
+\sum v_i^2=\lambda(|U|-1)+k\\
+\sum_j v_j v_{ij}=
+	 \lambda(|U|-1)&amp;{ for }   g_i\not\in U}
+</Display>
+<P/>
+holds where we index the <M>v_i</M> by elements of <M>G/U</M>, so <M>v_i=v_{g_i}</M>
+and write <M>v_{ij}=v_{g_ig_j}</M>. Observe that the third equation is a
+restriction on the ordering of the tuple <M>(v_1,\dots,v_{|G:U|})</M>. If
+<M>v</M> is an admissible ordered signature, then the multiset of <M>v</M> is an
+unordered signature.
+<P/>
+Getting ordered admissible signatures from unordered ones can be done
+by taking all permutations of the unordered signature and verifying
+the above equations. Obviously, this method isn't very satisfying
+(nevertheless, the methods for testing unordered signatures from
+section <Ref Sect="The Coset Signature"/> do this to find out if there is an
+ordered signature at all. Except that they stop when they find an
+ordered signature).
+<P/>
+For ordinary difference sets in extensions of semidirect products of
+cyclic groups, ordered signatures may be calculated a lot easier (see
+<Cite Key="RoederDiss"/> for details).
+</Section>
+<Section Label="Methods for calculating ordered signatures">
+<Heading>Methods for calculating ordered signatures</Heading>
+<#Include Label="NormalSubgroupsForRep">
+<P/>
+<#Include Label="OrderedSigs">
+<P/>
+So for the calculation of ordered signatures, smaller ordered
+signatures <A>coeffSums</A> have to be known. But this is not so bad, as
+small signatures are easy to calculate.
+The following example shows an application.
+<Log><![CDATA[
+gap> G:=SmallGroup(273,3);                              
+<pc group of size 273 with 3 generators>
+gap> Gdata:=PermutationRepForDiffsetCalculations(G);;
+gap> CosetSignatures(273,273/3,16);
+[ [ 3, 7, 7 ] ]
+gap> nsgs:=NormalSubgroupsForRep(Gdata,3);           
+[ rec( Nsg := Group([ f2 ]), alpha := ANFAutomorphism( CF(13), 3 ), 
+      root := E(13), fgrp := Group([ f1, <identity> of ..., f2 ]), 
+      epi := [ f1, f2, f3 ] -> [ f1, <identity> of ..., f2 ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 1, 1 ], [ 2, 1 ], [ 1, 3 ], 
+...
+          [ 8, 3 ], [ 11, 3 ], [ 5, 2 ], [ 11, 3 ] ] ), 
+  rec( Nsg := Group([ f3 ]), alpha := ANFAutomorphism( CF(7), 2 ), 
+      root := E(7), fgrp := Group([ f1, f2, <identity> of ... ]), 
+      epi := [ f1, f2, f3 ] -> [ f1, f2, <identity> of ... ], a := f2, 
+      b := f1, 
+      int2pairtable := [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 1, 1 ], [ 1, 3 ], 
+...
+          [ 6, 3 ], [ 4, 3 ], [ 4, 2 ], [ 6, 3 ] ] ) ]
+gap> osigs:=OrderedSigs([3,7,7],16,nsgs[2].alpha,nsgs[2].root);
+[ [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 0, 1, 2, 2, 0, 2 ], [ 2, 2, 0, 2, 0, 0, 1 ] ], 
+  [ [ 0, 0, 0, 1, 0, 1, 1 ], [ 0, 1, 2, 2, 0, 2, 0 ], [ 2, 0, 0, 1, 2, 2, 0 ] ], 
+...
+   [ [ 1, 1, 0, 1, 0, 0, 0 ], [ 2, 2, 1, 0, 0, 2, 0 ], [ 2, 1, 0, 0, 2, 0, 2 ] ] ]
+gap> Size(osigs);
+98
+gap> Set(osigs,g->SortedList(Concatenation(g)));
+[ [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ] ]
+]]></Log>
+Note that the signature <C>[3, 7, 7]</C> can be assumed to be ordered (by
+passing to a suitable translate). So even if we are not interested in
+<E>ordered</E> signatures, we have found out that there is only one admissible
+unordered signature for this normal subgroup. To get this result using
+<Ref Func="TestedSignatures"/> would have taken a <E>very</E> long time.
+<P/>
+Of course, ordered signatures can also be used directly.
+<P/>
+<#Include Label="OrderedSignatureOfSet">
+</Section>
+</Chapter>
