@@ -23,8 +23,8 @@ gap> RepsCClassesGivenOrder(SymmetricGroup(5),2);
 [ (4,5), (2,3)(4,5) ]
 
 # doc/../lib/reps.gd:130-133
-gap> List2Tuples([1..6],2);
-[ [ 1 .. 3 ], [ 4 .. 6 ] ]
+gap> List(List2Tuples([1..6],2), l -> [l[1], l[Length(l)]]);
+[ [ 1, 3 ], [ 4, 6 ] ]
 
 # doc/../lib/reps.gd:161-168
 gap> CycsGivenCoeffSum(3,E(3));

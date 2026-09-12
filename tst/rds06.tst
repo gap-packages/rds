@@ -138,9 +138,10 @@ gap> P:=DevelopmentOfRDS(diffset,G);;
 gap> NrFanoPlanesAtPoints([3],P);
 [ [ 3, 240 ] ]
 
-# doc/../lib/plane_isomorphisms.gd:389-401
-gap> G:=CyclicGroup(2^2+3);
-<pc group of size 7 with 1 generator>
+# doc/../lib/plane_isomorphisms.gd:389-402
+gap> G:=CyclicGroup(2^2+3);;
+gap> Size(G);
+7
 gap> P:=DevelopmentOfRDS(OneDiffset(G),G);;
 gap> IncidenceMatrix(P);
 [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 

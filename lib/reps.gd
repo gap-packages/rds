@@ -128,8 +128,8 @@ DeclareOperation("AbssquareInCyclotomics",[IsSmallList,IsCyc]);
 ##  <C>Concatenation( <A>list2</A> )= <A>list</A></C> and every element of <A>list2</A> has the
 ##   same size.
 ##  <Example><![CDATA[
-##  gap> List2Tuples([1..6],2);
-##  [ [ 1 .. 3 ], [ 4 .. 6 ] ]
+##  gap> List(List2Tuples([1..6],2), l -> [l[1], l[Length(l)]]);
+##  [ [ 1, 3 ], [ 4, 6 ] ]
 ##  ]]></Example>
 ##  </Description>
 ##  </ManSection>

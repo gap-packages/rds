@@ -387,8 +387,9 @@ DeclareOperation("IncidenceMatrix",[IsRecord]);
 ##  <M>GF(p)</M> is called  <A>p</A>-rank of the projective plane. Here <M>I^t</M> denotes
 ##  the transposed matrix.
 ##  <Example><![CDATA[
-##  gap> G:=CyclicGroup(2^2+3);
-##  <pc group of size 7 with 1 generator>
+##  gap> G:=CyclicGroup(2^2+3);;
+##  gap> Size(G);
+##  7
 ##  gap> P:=DevelopmentOfRDS(OneDiffset(G),G);;
 ##  gap> IncidenceMatrix(P);
 ##  [ [ 1, 1, 1, 0, 0, 0, 0 ], [ 1, 0, 0, 1, 1, 0, 0 ], [ 0, 1, 0, 1, 0, 1, 0 ], 
